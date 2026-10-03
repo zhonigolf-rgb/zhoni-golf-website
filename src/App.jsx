@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { findRoute, siteRoutes } from "./siteRoutes";
 import { trackAnalytics } from "./analytics.jsx";
 import { TurnstileField } from "./turnstile.jsx";
+import { addInquirySource, applySeo, inquirySourceForLocation } from "./seo.js";
 import "./showcase.css";
 import "./products.css";
 import "./zhoni-pages.css";
@@ -128,6 +129,8 @@ function QuotePage() {
     if (formStatus === "submitting") return;
     const form = event.currentTarget;
     const data = new FormData(form);
+    data.set("source", inquirySourceForLocation());
+    data.set("page_language", document.documentElement.lang || "en");
     data.set("page_path", window.location.pathname);
     data.set("page_url", window.location.href);
     data.set("referrer", document.referrer);
@@ -148,11 +151,11 @@ function QuotePage() {
       form.reset();
       setFormStatus("success");
       setFormMessage("Thank you—your project brief has been received. Our team will review the details and reply with the appropriate next step.");
-      track("generate_lead", { form_name: "quote_page_project_brief", page_path: window.location.pathname, page_location: window.location.href });
+      track("generate_lead", { form_name: "quote_page_project_brief", form_source: inquirySourceForLocation(), page_path: window.location.pathname, page_location: window.location.href, page_language: document.documentElement.lang || "en", lead_type: "inquiry" });
     } catch (error) {
       setFormStatus("error");
       setFormMessage("Your brief was not sent. Please try again, or use WhatsApp for a direct project conversation.");
-      track("inquiry_submit_error", { form_name: "quote_page_project_brief", page_path: window.location.pathname });
+      track("inquiry_submit_error", { form_name: "quote_page_project_brief", form_source: inquirySourceForLocation(), page_path: window.location.pathname, page_language: document.documentElement.lang || "en" });
     } finally {
       window.clearTimeout(timeout);
     }
@@ -164,7 +167,7 @@ function QuotePage() {
       <div className="quote-rail" aria-hidden="true"><strong>Z</strong><span>CUSTOM GOLF MERCHANDISE</span><i>BRANDED FOR A HIGHER STANDARD</i></div>
       <div className="quote-ledger-main">
         <div className="quote-ledger-intro"><p>REQUEST A QUOTE</p><h1>Start with<br />the project brief.</h1><p>One product or a complete branded set—we review the details with you.</p></div>
-        <form className="quote-ledger-form" onSubmit={submitInquiry} onFocus={event => { if (!event.currentTarget.dataset.started) { event.currentTarget.dataset.started = "true"; track("form_start", { form_name: "quote_page_project_brief", page_path: window.location.pathname }); } }}>
+        <form className="quote-ledger-form" onSubmit={submitInquiry} onFocus={event => { if (!event.currentTarget.dataset.started) { event.currentTarget.dataset.started = "true"; track("form_start", { form_name: "quote_page_project_brief", form_source: inquirySourceForLocation(), page_path: window.location.pathname, page_language: document.documentElement.lang || "en" }); } }}>
           <fieldset><legend><b>01</b><span>Contact<small>Tell us who to get in touch with.</small></span></legend><div className="quote-form-row"><label>FULL NAME <input required name="name" autoComplete="name" placeholder="Your name" /></label><label>BUSINESS EMAIL <input required type="email" name="email" autoComplete="email" placeholder="you@company.com" /></label></div></fieldset>
           <fieldset><legend><b>02</b><span>Project<small>What are you looking to create?</small></span></legend><div className="quote-form-row"><label>PRODUCT INTEREST <select required name="project_type" defaultValue=""><option value="" disabled>Select product or category</option><option>Custom golf headcovers</option><option>Custom golf towels</option><option>Golf accessories</option><option>Golf gift set</option><option>Tournament merchandise</option><option>Corporate golf gifts</option><option>Custom packaging</option></select></label><label>APPROXIMATE QUANTITY <select required name="quantity_range" defaultValue=""><option value="" disabled>Select range</option><option>Under 100</option><option>100–249</option><option>250–499</option><option>500–999</option><option>1,000+</option><option>Still planning</option></select></label></div></fieldset>
           <fieldset><legend><b>03</b><span>Context<small>When and where is this for?</small></span></legend><div className="quote-form-row"><label>TARGET IN-HANDS DATE <input type="date" name="target_date" /></label><label>DESTINATION <input name="destination" placeholder="City, state or country" /></label></div></fieldset>
@@ -356,23 +359,20 @@ export function App() {
     const trackContactClick = event => {
       const link = event.target instanceof Element ? event.target.closest("a[href]") : null;
       if (!link) return;
-      const url = new URL(link.href, window.location.origin);
-      const details = { page_path: window.location.pathname, page_location: window.location.href, placement: link.dataset.analyticsPlacement || "site_link" };
+      let url = new URL(link.href, window.location.origin);
+      const details = { page_path: window.location.pathname, page_location: window.location.href, page_language: document.documentElement.lang || "en", form_source: inquirySourceForLocation(), placement: link.dataset.analyticsPlacement || "site_link" };
       if (url.hostname === "wa.me") track("whatsapp_click", details);
-      if (url.origin === window.location.origin && url.pathname.startsWith("/request-a-quote")) track("quote_cta_click", details);
+      if (url.origin === window.location.origin && url.pathname.startsWith("/request-a-quote")) {
+        url = addInquirySource(url.href, route);
+        link.href = url.href;
+        track("quote_cta_click", { ...details, form_source: url.searchParams.get("source") });
+      }
     };
     document.addEventListener("click", trackContactClick);
     return () => document.removeEventListener("click", trackContactClick);
   }, []);
   useEffect(() => {
-    document.title = route.title;
-    let description = document.querySelector('meta[name="description"]');
-    if (!description) {
-      description = document.createElement("meta");
-      description.name = "description";
-      document.head.appendChild(description);
-    }
-    description.content = route.description;
+    applySeo(route);
   }, [route]);
   if (route === siteRoutes.products) return <ProductsHub />;
   if (route === siteRoutes.headcovers) return <ProductCategoryPage type="headcovers" />;
@@ -401,6 +401,8 @@ export function App() {
     if (formStatus === "submitting") return;
     const form = event.currentTarget;
     const data = new FormData(form);
+    data.set("source", inquirySourceForLocation());
+    data.set("page_language", document.documentElement.lang || "en");
     data.set("page_path", window.location.pathname);
     data.set("page_url", window.location.href);
     data.set("referrer", document.referrer);
@@ -421,11 +423,11 @@ export function App() {
       form.reset();
       setFormStatus("success");
       setFormMessage("Thank you—your project brief has been received. Our team will review the details and reply with the appropriate next step.");
-      track("generate_lead", { form_name: "homepage_custom_project", page_path: window.location.pathname, page_location: window.location.href });
+      track("generate_lead", { form_name: "homepage_custom_project", form_source: inquirySourceForLocation(), page_path: window.location.pathname, page_location: window.location.href, page_language: document.documentElement.lang || "en", lead_type: "inquiry" });
     } catch (error) {
       setFormStatus("error");
       setFormMessage("Your brief was not sent. Please try again, or use WhatsApp for a direct project conversation.");
-      track("inquiry_submit_error", { form_name: "homepage_custom_project", page_path: window.location.pathname });
+      track("inquiry_submit_error", { form_name: "homepage_custom_project", form_source: inquirySourceForLocation(), page_path: window.location.pathname, page_language: document.documentElement.lang || "en" });
     } finally {
       window.clearTimeout(timeout);
     }
@@ -460,10 +462,9 @@ export function App() {
 
     <section className="faq shell" id="faq"><div><p className="eyebrow green">PURCHASING QUESTIONS</p><h2>Answers for the project you are planning.</h2><p>Specific, project-relevant answers make it easier to evaluate the next step.</p></div><div className="faq-list">{faqs.map(([question, answer], i) => <article key={question}><button onClick={() => setFaq(faq === i ? -1 : i)} aria-expanded={faq === i}><span>{question}</span><b>{faq === i ? "−" : "+"}</b></button>{faq === i && <p>{answer}</p>}</article>)}</div></section>
 
-    <section className="quote shell" id="quote" ref={quoteRef}><div><p className="eyebrow green">START A CUSTOM PROJECT</p><h2>Tell us what you are building.</h2><p>Share your product direction, expected quantity and event date. We will use the brief to guide the appropriate next step.</p></div><form onSubmit={submitInquiry} onFocus={event => { if (!event.currentTarget.dataset.started) { event.currentTarget.dataset.started = "true"; track("form_start", { form_name: "homepage_custom_project", page_path: window.location.pathname }); } }}><label>Name<input required name="name" autoComplete="name" /></label><label>Business email<input required type="email" name="email" autoComplete="email" /></label><label>Project type<select name="project_type"><option>Golf gift set</option><option>Tournament merchandise</option><option>Corporate golf gifts</option><option>Private label collection</option><option>Custom packaging</option></select></label><label>Tell us about the project<textarea required name="message" rows="3" placeholder="Products, quantity, event date, packaging needs…" /></label><label className="honeypot" aria-hidden="true">Website<input name="company_website" tabIndex="-1" autoComplete="off" /></label><TurnstileField /><button className="button button-primary" type="submit" disabled={formStatus === "submitting"}>{formStatus === "submitting" ? "SENDING PROJECT BRIEF…" : "SEND PROJECT BRIEF"} <Arrow /></button><div className={`form-status ${formStatus}`} role="status" aria-live="polite">{formMessage}{formStatus === "error" && <> <a href={whatsappLink} target="_blank" rel="noopener noreferrer" >OPEN WHATSAPP <Arrow /></a></>}</div><small>Your details are used only to review this project request.</small></form></section>
+    <section className="quote shell" id="quote" ref={quoteRef}><div><p className="eyebrow green">START A CUSTOM PROJECT</p><h2>Tell us what you are building.</h2><p>Share your product direction, expected quantity and event date. We will use the brief to guide the appropriate next step.</p></div><form onSubmit={submitInquiry} onFocus={event => { if (!event.currentTarget.dataset.started) { event.currentTarget.dataset.started = "true"; track("form_start", { form_name: "homepage_custom_project", form_source: inquirySourceForLocation(), page_path: window.location.pathname, page_language: document.documentElement.lang || "en" }); } }}><label>Name<input required name="name" autoComplete="name" /></label><label>Business email<input required type="email" name="email" autoComplete="email" /></label><label>Project type<select name="project_type"><option>Golf gift set</option><option>Tournament merchandise</option><option>Corporate golf gifts</option><option>Private label collection</option><option>Custom packaging</option></select></label><label>Tell us about the project<textarea required name="message" rows="3" placeholder="Products, quantity, event date, packaging needs…" /></label><label className="honeypot" aria-hidden="true">Website<input name="company_website" tabIndex="-1" autoComplete="off" /></label><TurnstileField /><button className="button button-primary" type="submit" disabled={formStatus === "submitting"}>{formStatus === "submitting" ? "SENDING PROJECT BRIEF…" : "SEND PROJECT BRIEF"} <Arrow /></button><div className={`form-status ${formStatus}`} role="status" aria-live="polite">{formMessage}{formStatus === "error" && <> <a href={whatsappLink} target="_blank" rel="noopener noreferrer" >OPEN WHATSAPP <Arrow /></a></>}</div><small>Your details are used only to review this project request.</small></form></section>
 
     <footer><div className="shell footer"><div className="brand"><strong>ZHONI</strong><small>CUSTOM GOLF MERCHANDISE</small></div><p>Custom golf merchandise, coordinated gift sets and packaging for clubs, events and brands.</p><nav><a href="/products/">Products</a><a href="/solutions/">Solutions</a><a href="/our-process/">Process</a><a href="/request-a-quote/">Contact</a></nav></div></footer>
     <aside className={`float ${floatOpen ? "float-open" : ""} ${floatHidden || heroVisible ? "float-hidden" : ""}`} aria-label="Project contact actions" aria-hidden={floatHidden || heroVisible}><div className="float-panel" id="project-contact-menu"><a href="/request-a-quote/" tabIndex={floatHidden || heroVisible || !floatOpen ? -1 : 0} onClick={() => setFloatOpen(false)}><img src="/assets/quote-brief-icon.png" alt="" aria-hidden="true" /><strong>GET A QUOTE</strong><Arrow /></a><a href={whatsappLink} target="_blank" rel="noopener noreferrer" tabIndex={floatHidden || heroVisible || !floatOpen ? -1 : 0} ><img src="/assets/whatsapp-contact-icon.png" alt="" aria-hidden="true" /><strong>WHATSAPP</strong><Arrow /></a></div><button className="golf-flag-mark" type="button" aria-label="Open project contact options" aria-expanded={floatOpen} aria-controls="project-contact-menu" tabIndex={floatHidden || heroVisible ? -1 : 0} onClick={() => setFloatOpen(open => !open)}><img src="/assets/golf-flag-marker-v2.png" alt="" /></button></aside>
-    <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify({"@context":"https://schema.org","@type":"Organization",name:"ZHONI",description:"Custom golf merchandise, golf gift sets and custom packaging for clubs, events and brands."})}} />
   </main>;
 }

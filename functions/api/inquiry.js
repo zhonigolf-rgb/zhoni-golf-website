@@ -11,6 +11,14 @@ function textValue(form, name, maxLength = 500) {
   return typeof value === "string" ? value.trim().slice(0, maxLength) : "";
 }
 
+function cleanSource(value) {
+  return /^[a-z0-9-]{3,120}$/.test(value) ? value : "direct-quote";
+}
+
+function cleanLanguage(value) {
+  return /^[a-z]{2,3}(-[a-z]{2})?$/i.test(value) ? value.toLowerCase() : "en";
+}
+
 function isBusinessEmail(value) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) && value.length <= 254;
 }
@@ -50,7 +58,7 @@ async function rateLimit(request, env) {
 }
 
 function buildEmailHtml(fields) {
-  const rows = [["Name", fields.name], ["Business email", fields.email], ["Project type", fields.projectType], ["Quantity range", fields.quantityRange], ["Target in-hands date", fields.targetDate], ["Destination", fields.destination], ["Source page", fields.pagePath], ["Page URL", fields.pageUrl], ["Referrer", fields.referrer]].filter(([, value]) => value).map(([label, value]) => `<tr><th align="left" style="padding:7px 14px 7px 0;vertical-align:top">${escapeHtml(label)}</th><td style="padding:7px 0">${escapeHtml(value)}</td></tr>`).join("");
+  const rows = [["Name", fields.name], ["Business email", fields.email], ["Project type", fields.projectType], ["Quantity range", fields.quantityRange], ["Target in-hands date", fields.targetDate], ["Destination", fields.destination], ["Inquiry source", fields.source], ["Page language", fields.pageLanguage], ["Source page", fields.pagePath], ["Page URL", fields.pageUrl], ["Referrer", fields.referrer]].filter(([, value]) => value).map(([label, value]) => `<tr><th align="left" style="padding:7px 14px 7px 0;vertical-align:top">${escapeHtml(label)}</th><td style="padding:7px 0">${escapeHtml(value)}</td></tr>`).join("");
   return `<!doctype html><html><body style="font-family:Arial,sans-serif;color:#102b25"><h2>New ZHONI website project brief</h2><table>${rows}</table><h3>Project details</h3><p style="white-space:pre-wrap">${escapeHtml(fields.message)}</p></body></html>`;
 }
 
@@ -69,7 +77,7 @@ export async function onRequestPost(context) {
   if (!await verifyTurnstile(textValue(form, "cf-turnstile-response", 4096), request, env)) return json({ ok: false, error: "Please complete the spam-protection check and try again." }, 400);
 
   const fields = {
-    name: textValue(form, "name", 120), email: textValue(form, "email", 254).toLowerCase(), projectType: textValue(form, "project_type", 140), quantityRange: textValue(form, "quantity_range", 80), targetDate: textValue(form, "target_date", 32), destination: textValue(form, "destination", 180), message: textValue(form, "message", 5000), pagePath: textValue(form, "page_path", 500), pageUrl: textValue(form, "page_url", 2000), referrer: textValue(form, "referrer", 2000),
+    name: textValue(form, "name", 120), email: textValue(form, "email", 254).toLowerCase(), projectType: textValue(form, "project_type", 140), quantityRange: textValue(form, "quantity_range", 80), targetDate: textValue(form, "target_date", 32), destination: textValue(form, "destination", 180), message: textValue(form, "message", 5000), source: cleanSource(textValue(form, "source", 120)), pageLanguage: cleanLanguage(textValue(form, "page_language", 16)), pagePath: textValue(form, "page_path", 500), pageUrl: textValue(form, "page_url", 2000), referrer: textValue(form, "referrer", 2000),
   };
   if (!fields.name || !isBusinessEmail(fields.email) || !fields.projectType || !fields.message) return json({ ok: false, error: "Please complete your name, business email, project type and project details." }, 400);
 
@@ -84,7 +92,7 @@ export async function onRequestPost(context) {
   const payload = {
     from: env.INQUIRY_FROM_EMAIL, to: [env.INQUIRY_TO_EMAIL], ...(env.INQUIRY_BACKUP_EMAIL ? { bcc: [env.INQUIRY_BACKUP_EMAIL] } : {}), reply_to: fields.email,
     subject: `New ZHONI project brief — ${fields.projectType}`, html: buildEmailHtml(fields),
-    text: `New ZHONI website project brief\n\nName: ${fields.name}\nBusiness email: ${fields.email}\nProject type: ${fields.projectType}\nQuantity range: ${fields.quantityRange}\nTarget date: ${fields.targetDate}\nDestination: ${fields.destination}\nSource page: ${fields.pagePath}\nPage URL: ${fields.pageUrl}\n\nProject details:\n${fields.message}`,
+    text: `New ZHONI website project brief\n\nName: ${fields.name}\nBusiness email: ${fields.email}\nProject type: ${fields.projectType}\nQuantity range: ${fields.quantityRange}\nTarget date: ${fields.targetDate}\nDestination: ${fields.destination}\nInquiry source: ${fields.source}\nPage language: ${fields.pageLanguage}\nSource page: ${fields.pagePath}\nPage URL: ${fields.pageUrl}\n\nProject details:\n${fields.message}`,
     ...(attachments.length ? { attachments } : {}),
   };
 
