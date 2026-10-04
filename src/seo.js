@@ -60,12 +60,21 @@ function setCanonical(url) {
 }
 
 function schemaFor(route, canonical) {
-  const organizationId = `${SITE_ORIGIN}/#organization`;
+  const companyId = `${SITE_ORIGIN}/#company`;
+  const brandId = `${SITE_ORIGIN}/#brand`;
   const websiteId = `${SITE_ORIGIN}/#website`;
+  const guideRoutes = [siteRoutes.golfGiftGuide, siteRoutes.audienceGiftGuide, siteRoutes.brandingGuide, siteRoutes.artworkGuide, siteRoutes.firstOrder, siteRoutes.exportReadiness];
   const graph = [
-    { "@type": "Organization", "@id": organizationId, name: "ZHONI", description: "Custom golf merchandise, golf gift sets and custom packaging for clubs, events and brands.", url: SITE_ORIGIN },
-    { "@type": "WebSite", "@id": websiteId, name: "ZHONI", url: SITE_ORIGIN, inLanguage: "en" },
-    { "@type": "WebPage", "@id": `${canonical}#webpage`, url: canonical, name: route.title, description: route.description, inLanguage: "en", isPartOf: { "@id": websiteId }, about: { "@id": organizationId } },
+    {
+      "@type": "Organization", "@id": companyId,
+      name: "Xiamen Jindongyu Trading Co., Ltd.", legalName: "Xiamen Jindongyu Trading Co., Ltd.",
+      description: "China-based custom golf merchandise manufacturing and sourcing partner for clubs, tournaments, corporate teams and brands.",
+      url: SITE_ORIGIN, email: "sales@zhonigolf.com", telephone: "+8617759190848", areaServed: "International",
+      contactPoint: { "@type": "ContactPoint", contactType: "sales", email: "sales@zhonigolf.com", telephone: "+8617759190848", availableLanguage: "English" },
+    },
+    { "@type": "Brand", "@id": brandId, name: "ZHONI", description: "Custom golf merchandise, golf gift sets and custom packaging for clubs, events and brands.", url: SITE_ORIGIN, brandOf: { "@id": companyId } },
+    { "@type": "WebSite", "@id": websiteId, name: "ZHONI", url: SITE_ORIGIN, inLanguage: "en", publisher: { "@id": companyId }, about: { "@id": brandId } },
+    { "@type": "WebPage", "@id": `${canonical}#webpage`, url: canonical, name: route.title, description: route.description, inLanguage: "en", isPartOf: { "@id": websiteId }, about: { "@id": brandId } },
   ];
 
   if (route.path !== "/") {
@@ -79,7 +88,14 @@ function schemaFor(route, canonical) {
   }
 
   if ([siteRoutes.headcovers, siteRoutes.towels, siteRoutes.accessories, siteRoutes.packaging, siteRoutes.corporateGifts, siteRoutes.tournamentGifts].includes(route)) {
-    graph.push({ "@type": "Service", name: route.title, description: route.description, provider: { "@id": organizationId }, url: canonical, areaServed: "International" });
+    graph.push({ "@type": "Service", name: route.title, description: route.description, provider: { "@id": companyId }, brand: { "@id": brandId }, url: canonical, areaServed: "International" });
+  }
+
+  if (route === siteRoutes.golfGifts) {
+    graph.push({
+      "@type": "CollectionPage", name: "Custom Golf Gifts Procurement Guides", url: canonical, isPartOf: { "@id": websiteId }, about: { "@id": brandId },
+      mainEntity: { "@type": "ItemList", name: "Custom Golf Gifts Guide Collection", itemListElement: guideRoutes.map((guide, index) => ({ "@type": "ListItem", position: index + 1, name: guide.title, url: absolute(guide.path) })) },
+    });
   }
 
   if (route === siteRoutes.faq) {
