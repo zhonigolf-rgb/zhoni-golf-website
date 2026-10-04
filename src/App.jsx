@@ -67,6 +67,12 @@ function ZhoniPageFooter() {
   return <footer className="zhoni-footer"><a className="zhoni-wordmark" href="/"><strong>ZHONI</strong><small>CUSTOM GOLF MERCHANDISE</small></a><p>Custom golf merchandise, coordinated gift sets and packaging for clubs, events and brands.</p><nav><a href="/about/">About</a><a href="/our-process/">Process</a><a href="/capabilities/">Capabilities</a><a href="/request-a-quote/">Contact</a></nav></footer>;
 }
 
+function FloatingContactActions({ hidden = false }) {
+  const [open, setOpen] = useState(true);
+  const whatsappLink = typeof window === "undefined" ? WHATSAPP_URL : createWhatsAppLink();
+  return <aside className={`float ${open ? "float-open" : ""} ${hidden ? "float-hidden" : ""}`} aria-label="Project contact actions" aria-hidden={hidden}><div className="float-panel" id="project-contact-menu"><a href="/request-a-quote/" tabIndex={hidden || !open ? -1 : 0} onClick={() => setOpen(false)}><img src="/assets/quote-brief-icon.png" alt="" aria-hidden="true" /><strong>GET A QUOTE</strong><Arrow /></a><a href={whatsappLink} target="_blank" rel="noopener noreferrer" tabIndex={hidden || !open ? -1 : 0}><img src="/assets/whatsapp-contact-icon.png" alt="" aria-hidden="true" /><strong>WHATSAPP</strong><Arrow /></a></div><button className="golf-flag-mark" type="button" aria-label={open ? "Hide project contact options" : "Show project contact options"} aria-expanded={open} aria-controls="project-contact-menu" tabIndex={hidden ? -1 : 0} onClick={() => setOpen(value => !value)}><img src="/assets/golf-flag-marker-v2.png" alt="" /></button></aside>;
+}
+
 function AboutPage() {
   return <main className="zhoni-page about-page"><ZhoniPageHeader active="about" />
     <section className="zhoni-about-hero"><img src="/assets/images/zhoni-golf-collection-hero-v2.png" alt="ZHONI custom golf gift box, golf ball and coordinated accessories" /><div><p>ABOUT ZHONI</p><h1>Built for considered<br />golf projects.</h1><p>ZHONI works with clubs, tournaments, brands and business teams on custom golf merchandise, gift sets and packaging.</p><a href="/request-a-quote/">START A PROJECT <Arrow /></a></div></section>
@@ -327,7 +333,6 @@ export function App() {
   const [faq, setFaq] = useState(0);
   const [floatHidden, setFloatHidden] = useState(false);
   const [heroVisible, setHeroVisible] = useState(true);
-  const [floatOpen, setFloatOpen] = useState(false);
   const [formStatus, setFormStatus] = useState("idle");
   const [formMessage, setFormMessage] = useState("");
   const [scrolled, setScrolled] = useState(false);
@@ -374,26 +379,26 @@ export function App() {
   useEffect(() => {
     applySeo(route);
   }, [route]);
-  if (route === siteRoutes.products) return <ProductsHub />;
-  if (route === siteRoutes.headcovers) return <ProductCategoryPage type="headcovers" />;
-  if (route === siteRoutes.towels) return <ProductCategoryPage type="towels" />;
-  if (route === siteRoutes.accessories) return <ProductCategoryPage type="accessories" />;
-  if (route === siteRoutes.packaging) return <ProductCategoryPage type="packaging" />;
-  if (route === siteRoutes.solutions) return <SolutionsPage />;
-  if (route === siteRoutes.golfGifts) return <GolfGiftsHub />;
-  if (route === siteRoutes.golfGiftGuide) return <GolfGiftGuidePage />;
-  if (route === siteRoutes.audienceGiftGuide) return <AudienceGolfGiftGuidePage />;
-  if (route === siteRoutes.brandingGuide) return <BrandingGuidePage />;
-  if (route === siteRoutes.artworkGuide) return <ArtworkGuidePage />;
-  if (route === siteRoutes.firstOrder) return <FirstOrderHub />;
-  if (route === siteRoutes.exportReadiness) return <ExportReadinessHub />;
-  if (route === siteRoutes.corporateGifts) return <CorporateGiftsPage />;
-  if (route === siteRoutes.tournamentGifts) return <TournamentGiftsPage />;
-  if (route === siteRoutes.about) return <AboutPage />;
-  if (route === siteRoutes.process) return <ProcessPage />;
-  if (route === siteRoutes.capabilities) return <CapabilitiesPage />;
-  if (route === siteRoutes.faq) return <FAQPage />;
-  if (route === siteRoutes.quote) return <QuotePage />;
+  if (route === siteRoutes.products) return <><ProductsHub /><FloatingContactActions /></>;
+  if (route === siteRoutes.headcovers) return <><ProductCategoryPage type="headcovers" /><FloatingContactActions /></>;
+  if (route === siteRoutes.towels) return <><ProductCategoryPage type="towels" /><FloatingContactActions /></>;
+  if (route === siteRoutes.accessories) return <><ProductCategoryPage type="accessories" /><FloatingContactActions /></>;
+  if (route === siteRoutes.packaging) return <><ProductCategoryPage type="packaging" /><FloatingContactActions /></>;
+  if (route === siteRoutes.solutions) return <><SolutionsPage /><FloatingContactActions /></>;
+  if (route === siteRoutes.golfGifts) return <><GolfGiftsHub /><FloatingContactActions /></>;
+  if (route === siteRoutes.golfGiftGuide) return <><GolfGiftGuidePage /><FloatingContactActions /></>;
+  if (route === siteRoutes.audienceGiftGuide) return <><AudienceGolfGiftGuidePage /><FloatingContactActions /></>;
+  if (route === siteRoutes.brandingGuide) return <><BrandingGuidePage /><FloatingContactActions /></>;
+  if (route === siteRoutes.artworkGuide) return <><ArtworkGuidePage /><FloatingContactActions /></>;
+  if (route === siteRoutes.firstOrder) return <><FirstOrderHub /><FloatingContactActions /></>;
+  if (route === siteRoutes.exportReadiness) return <><ExportReadinessHub /><FloatingContactActions /></>;
+  if (route === siteRoutes.corporateGifts) return <><CorporateGiftsPage /><FloatingContactActions /></>;
+  if (route === siteRoutes.tournamentGifts) return <><TournamentGiftsPage /><FloatingContactActions /></>;
+  if (route === siteRoutes.about) return <><AboutPage /><FloatingContactActions /></>;
+  if (route === siteRoutes.process) return <><ProcessPage /><FloatingContactActions /></>;
+  if (route === siteRoutes.capabilities) return <><CapabilitiesPage /><FloatingContactActions /></>;
+  if (route === siteRoutes.faq) return <><FAQPage /><FloatingContactActions /></>;
+  if (route === siteRoutes.quote) return <><QuotePage /><FloatingContactActions /></>;
   const active = slides[slide];
   const whatsappLink = typeof window === "undefined" ? WHATSAPP_URL : createWhatsAppLink();
   const submitInquiry = async event => {
@@ -465,6 +470,6 @@ export function App() {
     <section className="quote shell" id="quote" ref={quoteRef}><div><p className="eyebrow green">START A CUSTOM PROJECT</p><h2>Tell us what you are building.</h2><p>Whether you need one custom product or a complete gifting solution, share the direction, expected quantity and event date. We will guide the appropriate next step.</p></div><form onSubmit={submitInquiry} onFocus={event => { if (!event.currentTarget.dataset.started) { event.currentTarget.dataset.started = "true"; track("form_start", { form_name: "homepage_custom_project", form_source: inquirySourceForLocation(), page_path: window.location.pathname, page_language: document.documentElement.lang || "en" }); } }}><label>Name<input required name="name" autoComplete="name" /></label><label>Business email<input required type="email" name="email" autoComplete="email" /></label><label>Project type<select name="project_type"><option>Individual custom golf product</option><option>Custom golf headcovers</option><option>Custom golf towels</option><option>Ball markers &amp; divot tools</option><option>Golf accessories</option><option>Golf gift set</option><option>Tournament merchandise</option><option>Corporate golf gifts</option><option>Private label collection</option><option>Custom packaging</option></select></label><label>Tell us about the project<textarea required name="message" rows="3" placeholder="Product, quantity, customization ideas, event date or packaging needs…" /></label><label className="honeypot" aria-hidden="true">Website<input name="company_website" tabIndex="-1" autoComplete="off" /></label><TurnstileField /><button className="button button-primary" type="submit" disabled={formStatus === "submitting"}>{formStatus === "submitting" ? "SENDING PROJECT BRIEF…" : "SEND PROJECT BRIEF"} <Arrow /></button><div className={`form-status ${formStatus}`} role="status" aria-live="polite">{formMessage}{formStatus === "error" && <> <a href={whatsappLink} target="_blank" rel="noopener noreferrer" >OPEN WHATSAPP <Arrow /></a></>}</div><small>Your details are used only to review this project request.</small></form></section>
 
     <footer><div className="shell footer"><div className="brand"><strong>ZHONI</strong><small>CUSTOM GOLF MERCHANDISE</small></div><p>Custom golf merchandise, coordinated gift sets and packaging for clubs, events and brands.</p><nav><a href="/products/">Products</a><a href="/solutions/">Solutions</a><a href="/our-process/">Process</a><a href="/request-a-quote/">Contact</a></nav></div></footer>
-    <aside className={`float ${floatOpen ? "float-open" : ""} ${floatHidden || heroVisible ? "float-hidden" : ""}`} aria-label="Project contact actions" aria-hidden={floatHidden || heroVisible}><div className="float-panel" id="project-contact-menu"><a href="/request-a-quote/" tabIndex={floatHidden || heroVisible || !floatOpen ? -1 : 0} onClick={() => setFloatOpen(false)}><img src="/assets/quote-brief-icon.png" alt="" aria-hidden="true" /><strong>GET A QUOTE</strong><Arrow /></a><a href={whatsappLink} target="_blank" rel="noopener noreferrer" tabIndex={floatHidden || heroVisible || !floatOpen ? -1 : 0} ><img src="/assets/whatsapp-contact-icon.png" alt="" aria-hidden="true" /><strong>WHATSAPP</strong><Arrow /></a></div><button className="golf-flag-mark" type="button" aria-label="Open project contact options" aria-expanded={floatOpen} aria-controls="project-contact-menu" tabIndex={floatHidden || heroVisible ? -1 : 0} onClick={() => setFloatOpen(open => !open)}><img src="/assets/golf-flag-marker-v2.png" alt="" /></button></aside>
+    <FloatingContactActions hidden={floatHidden || heroVisible} />
   </main>;
 }
