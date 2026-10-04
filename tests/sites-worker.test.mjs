@@ -109,6 +109,21 @@ test("indexes the custom golf caps product route in the sitemap", async () => {
   assert.match(sitemap, /https:\/\/zhonigolf\.com\/custom-golf-caps\//);
 });
 
+test("keeps inquiry contact details beneath the form action and prevents compact contact layout", async () => {
+  const [app, styles, pageStyles] = await Promise.all([
+    readFile(new URL("../src/App.jsx", import.meta.url), "utf8"),
+    readFile(new URL("../src/styles.css", import.meta.url), "utf8"),
+    readFile(new URL("../src/zhoni-pages.css", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(app, /<span>EMAIL<\/span><strong>sales@zhonigolf\.com<\/strong>/);
+  assert.match(app, /<span>WHATSAPP<\/span><strong>\+86 177 5919 0848<\/strong>/);
+  assert.match(styles, /\.quote form>\.inquiry-submit-contact\{grid-column:1\/-1/);
+  assert.match(pageStyles, /\.quote-ledger-form \.inquiry-submit-contact\{grid-column:1\/-1/);
+  assert.match(pageStyles, /\.after-inquiry-actions strong\{[^}]*white-space:nowrap/);
+  assert.match(pageStyles, /\.quote-entity-contact a\{[^}]*white-space:nowrap/);
+});
+
 test("emits the files required by Sites packaging", async () => {
   await access(new URL("../dist/client/index.html", import.meta.url));
   await access(new URL("../dist/server/index.js", import.meta.url));
