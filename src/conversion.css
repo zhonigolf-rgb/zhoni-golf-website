@@ -5,3 +5,7 @@
 @media(max-width:800px){.float .float-panel a{width:155px;min-height:45px}.golf-flag-mark{width:54px;height:54px}.golf-flag-mark img{width:60px;height:60px}}@media(max-width:480px){.float .float-panel a{width:145px;min-height:43px;padding:0 10px}.float-panel a>img{width:19px;height:19px}.golf-flag-mark{width:50px;height:50px}.golf-flag-mark img{width:56px;height:56px}}@media(prefers-reduced-motion:reduce){.float-panel{transition:none}}
 
 .turnstile-field{min-height:65px}.quote .turnstile-field{grid-column:1/-1;margin:0}.quote-ledger-form .turnstile-field{margin:1.15rem 0 0 3.7rem}@media(max-width:700px){.quote-ledger-form .turnstile-field{margin-left:0}}
+/* Keep the complete flag, cup and green visible inside the floating contact control. */
+.golf-flag-mark img{width:46px;height:46px;object-fit:contain;transform:translateY(-1px)}
+@media(max-width:800px){.golf-flag-mark img{width:45px;height:45px;transform:translateY(-1px)}}
+@media(max-width:480px){.golf-flag-mark img{width:42px;height:42px;transform:translateY(-1px)}}
