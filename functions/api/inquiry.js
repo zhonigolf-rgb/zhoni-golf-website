@@ -74,6 +74,7 @@ export async function onRequestPost(context) {
   try { form = await request.formData(); } catch { return json({ ok: false, error: "We could not read this project brief." }, 400); }
   if (textValue(form, "company_website", 200)) return json({ ok: true });
   if (!await rateLimit(request, env)) return json({ ok: false, error: "Please wait a few minutes before sending another request." }, 429);
+  if (!env.TURNSTILE_SECRET_KEY) return json({ ok: false, error: "Online inquiry is temporarily unavailable. Please email sales@zhonigolf.com or use WhatsApp." }, 503);
   if (!await verifyTurnstile(textValue(form, "cf-turnstile-response", 4096), request, env)) return json({ ok: false, error: "Please complete the spam-protection check and try again." }, 400);
 
   const fields = {
