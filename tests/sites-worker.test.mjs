@@ -121,6 +121,20 @@ test("connects every golf caps buyer guide to the product, solutions, process an
   }
 });
 
+test("keeps golf caps visible in shared SEO paths and prefills the inquiry form", async () => {
+  const [app, routes, robots] = await Promise.all([
+    readFile(new URL("../src/App.jsx", import.meta.url), "utf8"),
+    readFile(new URL("../src/siteRoutes.js", import.meta.url), "utf8"),
+    readFile(new URL("../public/robots.txt", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(routes, /caps and visors, towels, accessories, gift sets and packaging/);
+  assert.match(app, /productAliases/);
+  assert.match(app, /defaultValue=\{prefilledProduct\}/);
+  assert.match(app, /Custom Golf Caps & Headwear/);
+  assert.match(robots, /User-agent: \*\s+Allow: \/\s+\s*Sitemap: https:\/\/zhonigolf\.com\/sitemap\.xml/);
+});
+
 test("keeps inquiry contact details beneath the form action and prevents compact contact layout", async () => {
   const [app, styles, pageStyles] = await Promise.all([
     readFile(new URL("../src/App.jsx", import.meta.url), "utf8"),
