@@ -7,6 +7,7 @@ const breadcrumbNames = {
   "/": "Home",
   "/products/": "Products",
   "/custom-golf-headcovers/": "Custom Golf Headcovers",
+  "/custom-golf-caps/": "Custom Golf Caps & Headwear",
   "/custom-golf-towels/": "Custom Golf Towels",
   "/custom-golf-accessories/": "Custom Golf Accessories",
   "/custom-golf-packaging/": "Custom Golf Packaging",
@@ -52,7 +53,7 @@ const breadcrumbNames = {
 };
 
 const faqEntities = [
-  ["What custom golf products can be discussed?", "ZHONI can discuss coordinated golf merchandise including headcovers, towels, accessories, ball markers, divot tools, golf balls, gift sets and presentation packaging. The appropriate route depends on the purpose, product direction and project brief."],
+  ["What custom golf products can be discussed?", "ZHONI can discuss coordinated golf merchandise including headcovers, caps and visors, towels, accessories, ball markers, divot tools, golf balls, gift sets and presentation packaging. The appropriate route depends on the purpose, product direction and project brief."],
   ["What should we include in a project brief?", "A useful starting point is the product or occasion, approximate quantity, target date, destination, brand assets and any packaging expectations. Reference images are useful when you have them."],
   ["What is the MOQ for custom golf merchandise?", "MOQ varies by product, material, construction, decoration method, colour, packaging and customisation depth. Share the product direction and estimated quantity so the applicable requirements can be reviewed."],
   ["Can packaging be included in the project?", "Yes. Boxes, inserts, sleeves, cards, labels and presentation details can be considered alongside the selected products. Packaging requirements are reviewed as part of the complete project scope."],
@@ -111,7 +112,7 @@ function schemaFor(route, canonical) {
     });
   }
 
-  if ([siteRoutes.headcovers, siteRoutes.towels, siteRoutes.accessories, siteRoutes.packaging, siteRoutes.corporateGifts, siteRoutes.tournamentGifts].includes(route)) {
+  if ([siteRoutes.headcovers, siteRoutes.caps, siteRoutes.towels, siteRoutes.accessories, siteRoutes.packaging, siteRoutes.corporateGifts, siteRoutes.tournamentGifts].includes(route)) {
     graph.push({ "@type": "Service", name: route.title, description: route.description, provider: { "@id": companyId }, brand: { "@id": brandId }, url: canonical, areaServed: "International" });
   }
 

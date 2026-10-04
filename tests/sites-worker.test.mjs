@@ -103,6 +103,12 @@ test("indexes every buyer guide route in the guide hub and sitemap", async () =>
   for (const path of routes) assert.match(sitemap, new RegExp(`https://zhonigolf\\.com${path}`.replaceAll("/", "\\/")), `Expected ${path} in sitemap.`);
 });
 
+test("indexes the custom golf caps product route in the sitemap", async () => {
+  assert.equal(findRoute("/custom-golf-caps/"), siteRoutes.caps);
+  const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
+  assert.match(sitemap, /https:\/\/zhonigolf\.com\/custom-golf-caps\//);
+});
+
 test("emits the files required by Sites packaging", async () => {
   await access(new URL("../dist/client/index.html", import.meta.url));
   await access(new URL("../dist/server/index.js", import.meta.url));
