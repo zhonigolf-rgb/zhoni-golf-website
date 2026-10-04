@@ -86,6 +86,12 @@ test("indexes every buyer guide route in the guide hub and sitemap", async () =>
     "/guides/tournament-gifts-sponsor-gifts-and-winner-prizes/",
     "/guides/how-to-build-a-premium-golf-gift-set/",
     "/guides/what-to-include-in-a-golf-event-brief/",
+    "/guides/how-to-compare-custom-golf-product-quotes/",
+    "/guides/what-affects-a-custom-golf-merchandise-quote/",
+    "/guides/custom-golf-merchandise-moq-explained/",
+    "/guides/custom-golf-merchandise-quality-checklist/",
+    "/guides/how-to-plan-a-golf-merchandise-delivery-date/",
+    "/guides/what-happens-after-a-custom-golf-project-brief/",
     "/first-order-guide/",
     "/quality-packaging-export-readiness/",
   ];
