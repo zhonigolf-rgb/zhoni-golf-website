@@ -63,14 +63,27 @@ function ZhoniPageHeader({ active }) {
   </header>;
 }
 
+function SiteFooter() {
+  return <footer className="site-footer"><div className="site-footer-main"><a className="zhoni-wordmark" href="/"><strong>ZHONI</strong><small>CUSTOM GOLF MERCHANDISE</small></a><div className="site-footer-copy"><p>Custom golf merchandise, coordinated gift sets and packaging for clubs, events and brands.</p><span>GIFT SETS · HEADCOVERS · TOWELS · MARKERS · PACKAGING</span></div><nav aria-label="Footer navigation"><a href="/products/">Products</a><a href="/solutions/">Solutions</a><a href="/our-process/">Process</a><a href="/capabilities/">Capabilities</a><a href="/about/">About</a><a href="/request-a-quote/">Contact <Arrow /></a></nav></div><div className="site-footer-base"><span>ZHONI · CUSTOM GOLF MERCHANDISE</span><span>Operated by Xiamen Jindongyu Trading Co., Ltd.</span></div></footer>;
+}
+
 function ZhoniPageFooter() {
-  return <footer className="zhoni-footer"><a className="zhoni-wordmark" href="/"><strong>ZHONI</strong><small>CUSTOM GOLF MERCHANDISE</small></a><p>Custom golf merchandise, coordinated gift sets and packaging for clubs, events and brands.</p><nav><a href="/about/">About</a><a href="/our-process/">Process</a><a href="/capabilities/">Capabilities</a><a href="/request-a-quote/">Contact</a></nav></footer>;
+  return <SiteFooter />;
 }
 
 function FloatingContactActions({ hidden = false }) {
   const [open, setOpen] = useState(true);
+  const [footerVisible, setFooterVisible] = useState(false);
   const whatsappLink = typeof window === "undefined" ? WHATSAPP_URL : createWhatsAppLink();
-  return <aside className={`float ${open ? "float-open" : ""} ${hidden ? "float-hidden" : ""}`} aria-label="Project contact actions" aria-hidden={hidden}><div className="float-panel" id="project-contact-menu"><a href="/request-a-quote/" tabIndex={hidden || !open ? -1 : 0} onClick={() => setOpen(false)}><img src="/assets/quote-brief-icon.png" alt="" aria-hidden="true" /><strong>GET A QUOTE</strong><Arrow /></a><a href={whatsappLink} target="_blank" rel="noopener noreferrer" tabIndex={hidden || !open ? -1 : 0}><img src="/assets/whatsapp-contact-icon.png" alt="" aria-hidden="true" /><strong>WHATSAPP</strong><Arrow /></a></div><button className="golf-flag-mark" type="button" aria-label={open ? "Hide project contact options" : "Show project contact options"} aria-expanded={open} aria-controls="project-contact-menu" tabIndex={hidden ? -1 : 0} onClick={() => setOpen(value => !value)}><img src="/assets/golf-flag-marker-v2.png" alt="" /></button></aside>;
+  useEffect(() => {
+    const footer = document.querySelector(".site-footer");
+    if (!footer || !("IntersectionObserver" in window)) return undefined;
+    const observer = new IntersectionObserver(([entry]) => setFooterVisible(entry.isIntersecting), { threshold: 0.08 });
+    observer.observe(footer);
+    return () => observer.disconnect();
+  }, []);
+  const isHidden = hidden || footerVisible;
+  return <aside className={`float ${open ? "float-open" : ""} ${isHidden ? "float-hidden" : ""}`} aria-label="Project contact actions" aria-hidden={isHidden}><div className="float-panel" id="project-contact-menu"><a href="/request-a-quote/" tabIndex={isHidden || !open ? -1 : 0} onClick={() => setOpen(false)}><img src="/assets/quote-brief-icon.png" alt="" aria-hidden="true" /><strong>GET A QUOTE</strong><Arrow /></a><a href={whatsappLink} target="_blank" rel="noopener noreferrer" tabIndex={isHidden || !open ? -1 : 0}><img src="/assets/whatsapp-contact-icon.png" alt="" aria-hidden="true" /><strong>WHATSAPP</strong><Arrow /></a></div><button className="golf-flag-mark" type="button" aria-label={open ? "Hide project contact options" : "Show project contact options"} aria-expanded={open} aria-controls="project-contact-menu" tabIndex={isHidden ? -1 : 0} onClick={() => setOpen(value => !value)}><img src="/assets/golf-flag-marker-v2.png" alt="" /></button></aside>;
 }
 
 function AboutPage() {
@@ -283,7 +296,7 @@ function ProductsHub() {
       <p>Start with a single product or bring together useful pieces, coherent branding and presentation packaging. The appropriate direction depends on who will receive it, where it will be used and what the moment needs to communicate.</p>
       <a href="/our-process/">HOW THE PROJECT PROCESS WORKS <Arrow /></a>
     </section>
-    <footer className="products-footer"><a className="products-brand" href="/"><strong>ZHONI</strong><small>CUSTOM GOLF MERCHANDISE</small></a><p>Custom golf merchandise, coordinated gift sets and packaging for clubs, events and brands.</p><a href="/request-a-quote/">INQUIRE <Arrow /></a></footer>
+    <SiteFooter />
   </main>;
 }
 
@@ -312,6 +325,7 @@ function TournamentGiftsPage() {
     </section>
     <section className="tournament-still"><img src="/assets/images/zhoni-golf-collection-hero-v2.png" alt="ZHONI custom golf player-pack components arranged as a coordinated collection" /><div><p>ONE EVENT. A COORDINATED PROGRAM.</p><h2>Build around the people receiving it.</h2><p>A useful player pack can start with one product—or bring together headcovers, towels, accessories, ball markers and presentation packaging as one considered event experience.</p><a href="/request-a-quote/">START WITH YOUR EVENT BRIEF <Arrow /></a></div></section>
     <section className="tournament-cta"><p>READY TO PLAN THE NEXT EVENT?</p><h2>Tell us the date, audience and direction.</h2><a href="/request-a-quote/">START A TOURNAMENT GIFT PROJECT <Arrow /></a></section>
+    <SiteFooter />
   </main>;
 }
 
@@ -469,7 +483,7 @@ export function App() {
 
     <section className="quote shell" id="quote" ref={quoteRef}><div><p className="eyebrow green">START A CUSTOM PROJECT</p><h2>Tell us what you are building.</h2><p>Whether you need one custom product or a complete gifting solution, share the direction, expected quantity and event date. We will guide the appropriate next step.</p></div><form onSubmit={submitInquiry} onFocus={event => { if (!event.currentTarget.dataset.started) { event.currentTarget.dataset.started = "true"; track("form_start", { form_name: "homepage_custom_project", form_source: inquirySourceForLocation(), page_path: window.location.pathname, page_language: document.documentElement.lang || "en" }); } }}><label>Name<input required name="name" autoComplete="name" /></label><label>Business email<input required type="email" name="email" autoComplete="email" /></label><label>Project type<select name="project_type"><option>Individual custom golf product</option><option>Custom golf headcovers</option><option>Custom golf towels</option><option>Ball markers &amp; divot tools</option><option>Golf accessories</option><option>Golf gift set</option><option>Tournament merchandise</option><option>Corporate golf gifts</option><option>Private label collection</option><option>Custom packaging</option></select></label><label>Tell us about the project<textarea required name="message" rows="3" placeholder="Product, quantity, customization ideas, event date or packaging needs…" /></label><label className="honeypot" aria-hidden="true">Website<input name="company_website" tabIndex="-1" autoComplete="off" /></label><TurnstileField /><button className="button button-primary" type="submit" disabled={formStatus === "submitting"}>{formStatus === "submitting" ? "SENDING PROJECT BRIEF…" : "SEND PROJECT BRIEF"} <Arrow /></button><div className={`form-status ${formStatus}`} role="status" aria-live="polite">{formMessage}{formStatus === "error" && <> <a href={whatsappLink} target="_blank" rel="noopener noreferrer" >OPEN WHATSAPP <Arrow /></a></>}</div><small>Your details are used only to review this project request.</small></form></section>
 
-    <footer><div className="shell footer"><div className="brand"><strong>ZHONI</strong><small>CUSTOM GOLF MERCHANDISE</small></div><p>Custom golf merchandise, coordinated gift sets and packaging for clubs, events and brands.</p><nav><a href="/products/">Products</a><a href="/solutions/">Solutions</a><a href="/our-process/">Process</a><a href="/request-a-quote/">Contact</a></nav></div></footer>
+    <SiteFooter />
     <FloatingContactActions hidden={floatHidden || heroVisible} />
   </main>;
 }
