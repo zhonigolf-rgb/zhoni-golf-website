@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { access, readFile } from "node:fs/promises";
 import test from "node:test";
 import worker from "../worker/index.js";
+import { onRequest as pagesMiddleware } from "../functions/_middleware.js";
 import { findRoute, siteRoutes } from "../src/siteRoutes.js";
 
 test("serves existing static assets without a fallback", async () => {
@@ -59,6 +60,38 @@ test("does not turn sensitive probe paths into the app shell", async () => {
 
     assert.equal(response.status, 404, `Expected ${path} to remain a 404.`);
     assert.deepEqual(calls, [path], `Expected ${path} not to fall back to the app shell.`);
+  }
+});
+
+test("blocks sensitive probes in the Cloudflare Pages request entrypoint", async () => {
+  for (const path of ["/.env", "/.env.production", "/.git/HEAD", "/config/.env", "/cgi-bin/run"]) {
+    let nextCalls = 0;
+    const response = await pagesMiddleware({
+      request: new Request(`https://example.test${path}`),
+      next: async () => {
+        nextCalls += 1;
+        return new Response("app", { status: 200 });
+      },
+    });
+
+    assert.equal(response.status, 404, `Expected ${path} to be blocked at the Pages entrypoint.`);
+    assert.equal(nextCalls, 0, `Expected ${path} not to continue to Pages.`);
+  }
+});
+
+test("keeps regular routes and real validation paths available in the Pages entrypoint", async () => {
+  for (const path of ["/guides/custom-golf-caps-and-visors/", "/.well-known/acme-challenge/valid-token"]) {
+    let nextCalls = 0;
+    const response = await pagesMiddleware({
+      request: new Request(`https://example.test${path}`),
+      next: async () => {
+        nextCalls += 1;
+        return new Response("next", { status: 200 });
+      },
+    });
+
+    assert.equal(response.status, 200, `Expected ${path} to continue through Pages.`);
+    assert.equal(nextCalls, 1, `Expected ${path} to reach the next Pages handler.`);
   }
 });
 
