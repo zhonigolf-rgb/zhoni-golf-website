@@ -22,6 +22,13 @@ const breadcrumbNames = {
   "/guides/golf-tournament-player-packs/": "Golf Tournament Player Packs Guide",
   "/guides/corporate-golf-gifts-procurement-guide/": "Corporate Golf Gifts Procurement Guide",
   "/guides/custom-golf-packaging-procurement-guide/": "Custom Golf Packaging Procurement Guide",
+  "/guides/custom-golf-headcover-materials/": "Custom Golf Headcover Materials",
+  "/guides/custom-golf-headcover-types/": "Custom Golf Headcover Types",
+  "/guides/custom-golf-product-specification-sheet/": "Custom Golf Product Specification",
+  "/guides/custom-golf-sample-approval-checklist/": "Custom Golf Sample Approval Checklist",
+  "/guides/coordinated-golf-accessory-collection/": "Coordinated Golf Accessory Collection",
+  "/guides/headcover-logo-methods-and-placement/": "Headcover Logo Methods and Placement",
+  "/guides/custom-golf-product-development-brief/": "Custom Golf Product Development Brief",
   "/first-order-guide/": "MOQ, Quote & First Order",
   "/quality-packaging-export-readiness/": "Quality, Packaging & Export Readiness",
   "/solutions/golf-tournament-gifts/": "Golf Tournament Gifts",
@@ -69,7 +76,7 @@ function schemaFor(route, canonical) {
   const companyId = `${SITE_ORIGIN}/#company`;
   const brandId = `${SITE_ORIGIN}/#brand`;
   const websiteId = `${SITE_ORIGIN}/#website`;
-  const guideRoutes = [siteRoutes.golfGiftGuide, siteRoutes.audienceGiftGuide, siteRoutes.brandingGuide, siteRoutes.artworkGuide, siteRoutes.headcoversGuide, siteRoutes.towelsGuide, siteRoutes.tournamentGuide, siteRoutes.corporateGuide, siteRoutes.packagingGuide, siteRoutes.firstOrder, siteRoutes.exportReadiness];
+  const guideRoutes = [siteRoutes.golfGiftGuide, siteRoutes.audienceGiftGuide, siteRoutes.brandingGuide, siteRoutes.artworkGuide, siteRoutes.headcoversGuide, siteRoutes.towelsGuide, siteRoutes.tournamentGuide, siteRoutes.corporateGuide, siteRoutes.packagingGuide, siteRoutes.headcoverMaterialsGuide, siteRoutes.headcoverTypesGuide, siteRoutes.productSpecificationGuide, siteRoutes.sampleApprovalGuide, siteRoutes.collectionPlanningGuide, siteRoutes.headcoverLogoGuide, siteRoutes.productDevelopmentBriefGuide, siteRoutes.firstOrder, siteRoutes.exportReadiness];
   const graph = [
     {
       "@type": "Organization", "@id": companyId,

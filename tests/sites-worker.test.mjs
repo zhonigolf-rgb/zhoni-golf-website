@@ -74,6 +74,13 @@ test("indexes every buyer guide route in the guide hub and sitemap", async () =>
     "/guides/golf-tournament-player-packs/",
     "/guides/corporate-golf-gifts-procurement-guide/",
     "/guides/custom-golf-packaging-procurement-guide/",
+    "/guides/custom-golf-headcover-materials/",
+    "/guides/custom-golf-headcover-types/",
+    "/guides/custom-golf-product-specification-sheet/",
+    "/guides/custom-golf-sample-approval-checklist/",
+    "/guides/coordinated-golf-accessory-collection/",
+    "/guides/headcover-logo-methods-and-placement/",
+    "/guides/custom-golf-product-development-brief/",
     "/first-order-guide/",
     "/quality-packaging-export-readiness/",
   ];
