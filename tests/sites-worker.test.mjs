@@ -80,6 +80,9 @@ test("indexes every buyer guide route in the guide hub and sitemap", async () =>
     "/guides/custom-golf-sample-approval-checklist/",
     "/guides/coordinated-golf-accessory-collection/",
     "/guides/headcover-logo-methods-and-placement/",
+    "/guides/custom-golf-caps-and-visors/",
+    "/guides/custom-golf-cap-materials/",
+    "/guides/custom-golf-cap-logo-placement/",
     "/guides/custom-golf-product-development-brief/",
     "/guides/golf-tournament-gift-budget-planning/",
     "/guides/how-to-build-a-golf-player-pack/",
@@ -107,6 +110,15 @@ test("indexes the custom golf caps product route in the sitemap", async () => {
   assert.equal(findRoute("/custom-golf-caps/"), siteRoutes.caps);
   const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
   assert.match(sitemap, /https:\/\/zhonigolf\.com\/custom-golf-caps\//);
+});
+
+test("connects every golf caps buyer guide to the product, solutions, process and inquiry routes", async () => {
+  const app = await readFile(new URL("../src/App.jsx", import.meta.url), "utf8");
+  const requiredLinks = ["/custom-golf-caps/", "/solutions/", "/our-process/", "/request-a-quote/"];
+  for (const topic of ["capsStyle", "capsMaterials", "capsBranding"]) {
+    const section = app.split(`  ${topic}: {`)[1].split("\n  },")[0];
+    for (const href of requiredLinks) assert.match(section, new RegExp(href.replaceAll("/", "\\/")), `Expected ${topic} to link to ${href}.`);
+  }
 });
 
 test("keeps inquiry contact details beneath the form action and prevents compact contact layout", async () => {
