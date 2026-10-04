@@ -81,6 +81,11 @@ test("indexes every buyer guide route in the guide hub and sitemap", async () =>
     "/guides/coordinated-golf-accessory-collection/",
     "/guides/headcover-logo-methods-and-placement/",
     "/guides/custom-golf-product-development-brief/",
+    "/guides/golf-tournament-gift-budget-planning/",
+    "/guides/how-to-build-a-golf-player-pack/",
+    "/guides/tournament-gifts-sponsor-gifts-and-winner-prizes/",
+    "/guides/how-to-build-a-premium-golf-gift-set/",
+    "/guides/what-to-include-in-a-golf-event-brief/",
     "/first-order-guide/",
     "/quality-packaging-export-readiness/",
   ];

@@ -29,6 +29,11 @@ const breadcrumbNames = {
   "/guides/coordinated-golf-accessory-collection/": "Coordinated Golf Accessory Collection",
   "/guides/headcover-logo-methods-and-placement/": "Headcover Logo Methods and Placement",
   "/guides/custom-golf-product-development-brief/": "Custom Golf Product Development Brief",
+  "/guides/golf-tournament-gift-budget-planning/": "Golf Tournament Gift Budget Planning",
+  "/guides/how-to-build-a-golf-player-pack/": "How to Build a Golf Player Pack",
+  "/guides/tournament-gifts-sponsor-gifts-and-winner-prizes/": "Tournament Gifts, Sponsor Gifts and Winner Prizes",
+  "/guides/how-to-build-a-premium-golf-gift-set/": "How to Build a Premium Golf Gift Set",
+  "/guides/what-to-include-in-a-golf-event-brief/": "What to Include in a Golf Event Brief",
   "/first-order-guide/": "MOQ, Quote & First Order",
   "/quality-packaging-export-readiness/": "Quality, Packaging & Export Readiness",
   "/solutions/golf-tournament-gifts/": "Golf Tournament Gifts",
@@ -76,7 +81,7 @@ function schemaFor(route, canonical) {
   const companyId = `${SITE_ORIGIN}/#company`;
   const brandId = `${SITE_ORIGIN}/#brand`;
   const websiteId = `${SITE_ORIGIN}/#website`;
-  const guideRoutes = [siteRoutes.golfGiftGuide, siteRoutes.audienceGiftGuide, siteRoutes.brandingGuide, siteRoutes.artworkGuide, siteRoutes.headcoversGuide, siteRoutes.towelsGuide, siteRoutes.tournamentGuide, siteRoutes.corporateGuide, siteRoutes.packagingGuide, siteRoutes.headcoverMaterialsGuide, siteRoutes.headcoverTypesGuide, siteRoutes.productSpecificationGuide, siteRoutes.sampleApprovalGuide, siteRoutes.collectionPlanningGuide, siteRoutes.headcoverLogoGuide, siteRoutes.productDevelopmentBriefGuide, siteRoutes.firstOrder, siteRoutes.exportReadiness];
+  const guideRoutes = [siteRoutes.golfGiftGuide, siteRoutes.audienceGiftGuide, siteRoutes.brandingGuide, siteRoutes.artworkGuide, siteRoutes.headcoversGuide, siteRoutes.towelsGuide, siteRoutes.tournamentGuide, siteRoutes.corporateGuide, siteRoutes.packagingGuide, siteRoutes.headcoverMaterialsGuide, siteRoutes.headcoverTypesGuide, siteRoutes.productSpecificationGuide, siteRoutes.sampleApprovalGuide, siteRoutes.collectionPlanningGuide, siteRoutes.headcoverLogoGuide, siteRoutes.productDevelopmentBriefGuide, siteRoutes.tournamentGiftBudgetGuide, siteRoutes.playerPackGuide, siteRoutes.recipientRolesGuide, siteRoutes.premiumGiftSetGuide, siteRoutes.eventBriefGuide, siteRoutes.firstOrder, siteRoutes.exportReadiness];
   const graph = [
     {
       "@type": "Organization", "@id": companyId,
