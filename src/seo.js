@@ -12,6 +12,7 @@ const breadcrumbNames = {
   "/custom-golf-packaging/": "Custom Golf Packaging",
   "/solutions/": "Solutions",
   "/custom-golf-gifts/": "Custom Golf Gifts",
+  "/guides/": "Buyer Guides",
   "/guides/how-to-choose-custom-golf-gifts/": "How to Choose Custom Golf Gifts",
   "/guides/how-to-choose-golf-gifts-by-audience/": "Golf Gifts by Audience",
   "/guides/branding-methods-for-premium-golf-merchandise/": "Golf Branding Methods",
@@ -96,10 +97,10 @@ function schemaFor(route, canonical) {
     graph.push({ "@type": "Service", name: route.title, description: route.description, provider: { "@id": companyId }, brand: { "@id": brandId }, url: canonical, areaServed: "International" });
   }
 
-  if (route === siteRoutes.golfGifts) {
+  if ([siteRoutes.golfGifts, siteRoutes.guides].includes(route)) {
     graph.push({
-      "@type": "CollectionPage", name: "Custom Golf Gifts Procurement Guides", url: canonical, isPartOf: { "@id": websiteId }, about: { "@id": brandId },
-      mainEntity: { "@type": "ItemList", name: "Custom Golf Gifts Guide Collection", itemListElement: guideRoutes.map((guide, index) => ({ "@type": "ListItem", position: index + 1, name: guide.title, url: absolute(guide.path) })) },
+      "@type": "CollectionPage", name: route === siteRoutes.guides ? "Golf Merchandise Buyer Guides" : "Custom Golf Gifts Procurement Guides", url: canonical, isPartOf: { "@id": websiteId }, about: { "@id": brandId },
+      mainEntity: { "@type": "ItemList", name: route === siteRoutes.guides ? "Golf Merchandise Buyer Guide Collection" : "Custom Golf Gifts Guide Collection", itemListElement: guideRoutes.map((guide, index) => ({ "@type": "ListItem", position: index + 1, name: guide.title, url: absolute(guide.path) })) },
     });
   }
 

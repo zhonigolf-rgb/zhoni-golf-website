@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
-import { access } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import test from "node:test";
 import worker from "../worker/index.js";
-import { findRoute } from "../src/siteRoutes.js";
+import { findRoute, siteRoutes } from "../src/siteRoutes.js";
 
 test("serves existing static assets without a fallback", async () => {
   const calls = [];
@@ -62,16 +62,27 @@ test("does not turn missing API or write requests into the app shell", async () 
   }
 });
 
-test("resolves each new procurement guide route", () => {
+test("indexes every buyer guide route in the guide hub and sitemap", async () => {
   const routes = [
+    "/guides/",
+    "/guides/how-to-choose-custom-golf-gifts/",
+    "/guides/how-to-choose-golf-gifts-by-audience/",
+    "/guides/branding-methods-for-premium-golf-merchandise/",
+    "/guides/prepare-artwork-for-custom-golf-products/",
     "/guides/custom-golf-headcovers-procurement-guide/",
     "/guides/custom-golf-towels-procurement-guide/",
     "/guides/golf-tournament-player-packs/",
     "/guides/corporate-golf-gifts-procurement-guide/",
     "/guides/custom-golf-packaging-procurement-guide/",
+    "/first-order-guide/",
+    "/quality-packaging-export-readiness/",
   ];
 
   for (const path of routes) assert.ok(findRoute(path), `Expected ${path} to resolve to a site route.`);
+  assert.equal(siteRoutes.guides.path, "/guides/");
+
+  const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
+  for (const path of routes) assert.match(sitemap, new RegExp(`https://zhonigolf\\.com${path}`.replaceAll("/", "\\/")), `Expected ${path} in sitemap.`);
 });
 
 test("emits the files required by Sites packaging", async () => {

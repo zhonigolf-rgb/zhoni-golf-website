@@ -27,6 +27,7 @@ Product-specific MOQ, timing, samples, commercial terms, delivery routes and app
 - [Products](https://zhonigolf.com/products/): Product families including headcovers, towels, accessories, gift sets and packaging.
 - [Solutions](https://zhonigolf.com/solutions/): Project routes for clubs, tournaments, corporate gifting and private-label programs.
 - [Custom Golf Gifts](https://zhonigolf.com/custom-golf-gifts/): Coordinated golf gift-set planning.
+- [Buyer Guides](https://zhonigolf.com/guides/): Procurement guidance for products, gift programs, first orders, packaging, quality and delivery readiness.
 - [Our Process](https://zhonigolf.com/our-process/): How projects progress from brief through delivery coordination.
 - [FAQ](https://zhonigolf.com/faq/): Project-specific guidance on customisation, quantity, timing, packaging and export considerations.
 - [Sitemap](https://zhonigolf.com/sitemap.xml): Complete list of indexable site pages.
