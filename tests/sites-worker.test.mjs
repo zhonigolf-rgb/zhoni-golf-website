@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { access } from "node:fs/promises";
 import test from "node:test";
 import worker from "../worker/index.js";
+import { findRoute } from "../src/siteRoutes.js";
 
 test("serves existing static assets without a fallback", async () => {
   const calls = [];
@@ -59,6 +60,18 @@ test("does not turn missing API or write requests into the app shell", async () 
     assert.equal(response.status, 404);
     assert.equal(calls, 1);
   }
+});
+
+test("resolves each new procurement guide route", () => {
+  const routes = [
+    "/guides/custom-golf-headcovers-procurement-guide/",
+    "/guides/custom-golf-towels-procurement-guide/",
+    "/guides/golf-tournament-player-packs/",
+    "/guides/corporate-golf-gifts-procurement-guide/",
+    "/guides/custom-golf-packaging-procurement-guide/",
+  ];
+
+  for (const path of routes) assert.ok(findRoute(path), `Expected ${path} to resolve to a site route.`);
 });
 
 test("emits the files required by Sites packaging", async () => {

@@ -16,6 +16,11 @@ const breadcrumbNames = {
   "/guides/how-to-choose-golf-gifts-by-audience/": "Golf Gifts by Audience",
   "/guides/branding-methods-for-premium-golf-merchandise/": "Golf Branding Methods",
   "/guides/prepare-artwork-for-custom-golf-products/": "Prepare Golf Product Artwork",
+  "/guides/custom-golf-headcovers-procurement-guide/": "Custom Golf Headcovers Procurement Guide",
+  "/guides/custom-golf-towels-procurement-guide/": "Custom Golf Towels Procurement Guide",
+  "/guides/golf-tournament-player-packs/": "Golf Tournament Player Packs Guide",
+  "/guides/corporate-golf-gifts-procurement-guide/": "Corporate Golf Gifts Procurement Guide",
+  "/guides/custom-golf-packaging-procurement-guide/": "Custom Golf Packaging Procurement Guide",
   "/first-order-guide/": "MOQ, Quote & First Order",
   "/quality-packaging-export-readiness/": "Quality, Packaging & Export Readiness",
   "/solutions/golf-tournament-gifts/": "Golf Tournament Gifts",
@@ -63,7 +68,7 @@ function schemaFor(route, canonical) {
   const companyId = `${SITE_ORIGIN}/#company`;
   const brandId = `${SITE_ORIGIN}/#brand`;
   const websiteId = `${SITE_ORIGIN}/#website`;
-  const guideRoutes = [siteRoutes.golfGiftGuide, siteRoutes.audienceGiftGuide, siteRoutes.brandingGuide, siteRoutes.artworkGuide, siteRoutes.firstOrder, siteRoutes.exportReadiness];
+  const guideRoutes = [siteRoutes.golfGiftGuide, siteRoutes.audienceGiftGuide, siteRoutes.brandingGuide, siteRoutes.artworkGuide, siteRoutes.headcoversGuide, siteRoutes.towelsGuide, siteRoutes.tournamentGuide, siteRoutes.corporateGuide, siteRoutes.packagingGuide, siteRoutes.firstOrder, siteRoutes.exportReadiness];
   const graph = [
     {
       "@type": "Organization", "@id": companyId,
