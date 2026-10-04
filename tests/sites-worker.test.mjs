@@ -42,6 +42,26 @@ test("falls back to index.html for an unknown app route", async () => {
   assert.deepEqual(calls, ["/flow/step-two?source=share", "/index.html"]);
 });
 
+test("does not turn sensitive probe paths into the app shell", async () => {
+  for (const path of ["/.env", "/.env.production", "/.git/HEAD", "/config/.env", "/cgi-bin/run"]) {
+    const calls = [];
+    const response = await worker.fetch(
+      new Request(`https://example.test${path}`, { headers: { accept: "text/html" } }),
+      {
+        ASSETS: {
+          fetch: async (request) => {
+            calls.push(new URL(request.url).pathname);
+            return new Response("missing", { status: 404 });
+          },
+        },
+      },
+    );
+
+    assert.equal(response.status, 404, `Expected ${path} to remain a 404.`);
+    assert.deepEqual(calls, [path], `Expected ${path} not to fall back to the app shell.`);
+  }
+});
+
 test("does not turn missing API or write requests into the app shell", async () => {
   for (const request of [
     new Request("https://example.test/api/missing", { headers: { accept: "application/json" } }),
