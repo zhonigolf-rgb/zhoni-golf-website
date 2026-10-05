@@ -203,6 +203,25 @@ test("keeps inquiry contact details beneath the form action and prevents compact
   assert.match(pageStyles, /\.quote-entity-contact a\{[^}]*white-space:nowrap/);
 });
 
+test("uses distinct product-specific images for every products hub family", async () => {
+  const app = await readFile(new URL("../src/App.jsx", import.meta.url), "utf8");
+  const assets = [
+    "headcovers",
+    "caps",
+    "towels",
+    "accessories",
+    "ball-markers",
+    "gift-sets",
+    "packaging",
+  ];
+
+  for (const asset of assets) {
+    const path = new URL(`../public/assets/images/zhoni-product-${asset}-v3.png`, import.meta.url);
+    await access(path);
+    assert.match(app, new RegExp(`zhoni-product-${asset}-v3\\.png`));
+  }
+});
+
 test("emits the files required by Sites packaging", async () => {
   await access(new URL("../dist/client/index.html", import.meta.url));
   await access(new URL("../dist/server/index.js", import.meta.url));
