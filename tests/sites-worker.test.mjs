@@ -222,6 +222,14 @@ test("uses distinct product-specific images for every products hub family", asyn
   }
 });
 
+test("keeps product-family imagery large in a responsive three-to-one column grid", async () => {
+  const styles = await readFile(new URL("../src/products.css", import.meta.url), "utf8");
+  assert.match(styles, /\.family-grid\s*\{\s*display:\s*grid;\s*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/);
+  assert.match(styles, /\.family-card img\s*\{\s*width:\s*100%;\s*aspect-ratio:\s*4 \/ 5/);
+  assert.match(styles, /@media \(max-width: 1080px\)[\s\S]*?\.family-grid\s*\{\s*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/);
+  assert.match(styles, /@media \(max-width: 560px\)[\s\S]*?\.family-grid\s*\{\s*grid-template-columns:\s*1fr/);
+});
+
 test("emits the files required by Sites packaging", async () => {
   await access(new URL("../dist/client/index.html", import.meta.url));
   await access(new URL("../dist/server/index.js", import.meta.url));
