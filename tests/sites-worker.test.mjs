@@ -206,19 +206,19 @@ test("keeps inquiry contact details beneath the form action and prevents compact
 test("uses distinct product-specific images for every products hub family", async () => {
   const app = await readFile(new URL("../src/App.jsx", import.meta.url), "utf8");
   const assets = [
-    "headcovers",
-    "caps",
-    "towels",
-    "accessories",
-    "ball-markers",
-    "gift-sets",
-    "packaging",
+    "zhoni-product-headcovers-v3.png",
+    "zhoni-product-caps-v3.png",
+    "zhoni-product-magnetic-towel-v4.png",
+    "zhoni-product-accessories-v3.png",
+    "zhoni-product-ball-markers-v3.png",
+    "zhoni-product-gift-sets-v3.png",
+    "zhoni-product-packaging-v3.png",
   ];
 
   for (const asset of assets) {
-    const path = new URL(`../public/assets/images/zhoni-product-${asset}-v3.png`, import.meta.url);
+    const path = new URL(`../public/assets/images/${asset}`, import.meta.url);
     await access(path);
-    assert.match(app, new RegExp(`zhoni-product-${asset}-v3\\.png`));
+    assert.match(app, new RegExp(asset.replaceAll(".", "\\.")));
   }
 });
 
