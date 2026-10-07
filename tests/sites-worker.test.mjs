@@ -3,6 +3,7 @@ import { access, readFile } from "node:fs/promises";
 import test from "node:test";
 import worker from "../worker/index.js";
 import { onRequest as pagesMiddleware } from "../functions/_middleware.js";
+import { renderRouteDocument } from "../scripts/prerender-routes.mjs";
 import { findRoute, siteRoutes } from "../src/siteRoutes.js";
 
 test("serves existing static assets without a fallback", async () => {
@@ -186,6 +187,18 @@ test("keeps golf caps visible in shared SEO paths and prefills the inquiry form"
   assert.match(app, /defaultValue=\{prefilledProduct\}/);
   assert.match(app, /Custom Golf Caps & Headwear/);
   assert.match(robots, /User-agent: \*\s+Allow: \/\s+\s*Sitemap: https:\/\/zhonigolf\.com\/sitemap\.xml/);
+});
+
+test("prerenders a self-canonical document for every public route", async () => {
+  const template = await readFile(new URL("../index.html", import.meta.url), "utf8");
+
+  for (const route of Object.values(siteRoutes)) {
+    const document = renderRouteDocument(template, route);
+    const canonical = `https://zhonigolf.com${route.path}`;
+    assert.match(document, new RegExp(`<link rel="canonical" href="${canonical.replaceAll("/", "\\/")}"`));
+    assert.match(document, new RegExp(`<title>${route.title.replaceAll("&", "&amp;")}<\\/title>`));
+    assert.match(document, /<meta property="og:url" content="https:\/\/zhonigolf\.com/);
+  }
 });
 
 test("keeps inquiry contact details beneath the form action and prevents compact contact layout", async () => {
