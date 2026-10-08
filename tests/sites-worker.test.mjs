@@ -366,6 +366,32 @@ test("publishes the first Canadian French locale round with localized SEO and co
   assert.match(locale, /Français \(Canada\)/);
 });
 
+test("publishes Canadian French product and solution detail pages with reciprocal alternates", async () => {
+  const template = await readFile(new URL("../index.html", import.meta.url), "utf8");
+  const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
+  const expansion = await readFile(new URL("../src/CanadianFrenchExpansion.jsx", import.meta.url), "utf8");
+  const site = await readFile(new URL("../src/CanadianFrenchSite.jsx", import.meta.url), "utf8");
+  const keys = ["frCaHeadcovers", "frCaCaps", "frCaTowels", "frCaAccessories", "frCaPackaging", "frCaTournamentGifts", "frCaCorporateGifts"];
+
+  for (const key of keys) {
+    const route = siteRoutes[key];
+    assert.equal(findRoute(route.path), route);
+    assert.match(sitemap, new RegExp(`https://zhonigolf\\.com${route.path}`.replaceAll("/", "\\/")));
+    const document = renderRouteDocument(template, route);
+    assert.match(document, /<html lang="fr-CA">/);
+    assert.match(document, new RegExp(`hreflang="en" href="https://zhonigolf\\.com${route.alternatePath.replaceAll("/", "\\/")}"`));
+    assert.match(document, new RegExp(`hreflang="fr-CA" href="https://zhonigolf\\.com${route.path.replaceAll("/", "\\/")}"`));
+  }
+
+  for (const path of ["/fr-ca/products/", "/fr-ca/solutions/", "/fr-ca/our-process/", "/fr-ca/request-a-quote/"]) {
+    assert.match(expansion, new RegExp(path.replaceAll("/", "\\/")));
+  }
+  for (const key of keys) assert.match(site + expansion, new RegExp(siteRoutes[key].path.replaceAll("/", "\\/")));
+  assert.match(expansion, /encodeURIComponent\(c\.brief\)/);
+  assert.match(expansion, /Quantité/);
+  assert.match(expansion, /destination/i);
+});
+
 test("keeps inquiry contact details beneath the form action and prevents compact contact layout", async () => {
   const [app, styles, pageStyles] = await Promise.all([
     readFile(new URL("../src/App.jsx", import.meta.url), "utf8"),

@@ -104,6 +104,7 @@ function setLanguageAlternates(route) {
 
 function schemaFor(route, canonical) {
   const language = route.lang ?? "en";
+  const englishPath = route.lang ? route.alternatePath : route.path;
   const companyId = `${SITE_ORIGIN}/#company`;
   const brandId = `${SITE_ORIGIN}/#brand`;
   const websiteId = `${SITE_ORIGIN}/#website`;
@@ -131,7 +132,8 @@ function schemaFor(route, canonical) {
     });
   }
 
-  if ([siteRoutes.headcovers, siteRoutes.caps, siteRoutes.towels, siteRoutes.accessories, siteRoutes.packaging, siteRoutes.corporateGifts, siteRoutes.tournamentGifts].includes(route)) {
+  const servicePaths = [siteRoutes.headcovers, siteRoutes.caps, siteRoutes.towels, siteRoutes.accessories, siteRoutes.packaging, siteRoutes.corporateGifts, siteRoutes.tournamentGifts].map(service => service.path);
+  if (servicePaths.includes(englishPath)) {
     graph.push({ "@type": "Service", name: route.title, description: route.description, provider: { "@id": companyId }, brand: { "@id": brandId }, url: canonical, areaServed: "International" });
   }
 
