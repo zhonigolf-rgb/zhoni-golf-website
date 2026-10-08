@@ -1,0 +1,20 @@
+.fr-ca-page {
+  font-family: "DM Sans", Arial, sans-serif;
+  hyphens: auto;
+}
+
+.fr-ca-page h1,
+.fr-ca-page h2,
+.fr-ca-page h3,
+.fr-ca-page p {
+  text-wrap: pretty;
+}
+
+.fr-ca-header nav { gap: clamp(.75rem, 1.5vw, 1.8rem); }
+.fr-ca-header nav a { letter-spacing: .08em; }
+.fr-ca-header .zhoni-header-cta { white-space: nowrap; }
+
+@media (max-width: 1180px) {
+  .fr-ca-header nav a { font-size: .52rem; }
+  .fr-ca-header .zhoni-header-cta { padding-inline: 1rem; }
+}

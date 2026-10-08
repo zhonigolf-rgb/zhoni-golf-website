@@ -89,10 +89,9 @@ function setCanonical(url) {
 
 function setLanguageAlternates(route) {
   document.head.querySelectorAll('link[data-zhoni-hreflang]').forEach(node => node.remove());
-  const englishPath = route.lang === "ko" ? route.alternatePath : route.path;
-  const koreanRoute = route.lang === "ko" ? route : Object.values(siteRoutes).find(candidate => candidate.lang === "ko" && candidate.alternatePath === route.path);
-  const alternates = [["en", englishPath], ["x-default", englishPath]];
-  if (koreanRoute) alternates.splice(1, 0, ["ko", koreanRoute.path]);
+  const englishPath = route.lang ? route.alternatePath : route.path;
+  const localizedRoutes = Object.values(siteRoutes).filter(candidate => candidate.lang && candidate.alternatePath === englishPath);
+  const alternates = [["en", englishPath], ...localizedRoutes.map(candidate => [candidate.lang, candidate.path]), ["x-default", englishPath]];
   alternates.forEach(([language, path]) => {
     const node = document.createElement("link");
     node.rel = "alternate";
@@ -115,10 +114,10 @@ function schemaFor(route, canonical) {
       name: "Xiamen Jindongyu Trading Co., Ltd.", legalName: "Xiamen Jindongyu Trading Co., Ltd.",
       description: "China-based custom golf merchandise manufacturing and sourcing partner for clubs, tournaments, corporate teams and brands.",
       url: SITE_ORIGIN, email: "sales@zhonigolf.com", telephone: "+8617759190848", areaServed: "International",
-      contactPoint: { "@type": "ContactPoint", contactType: "sales", email: "sales@zhonigolf.com", telephone: "+8617759190848", availableLanguage: ["English", "Korean"] },
+      contactPoint: { "@type": "ContactPoint", contactType: "sales", email: "sales@zhonigolf.com", telephone: "+8617759190848", availableLanguage: ["English", "French", "Korean"] },
     },
     { "@type": "Brand", "@id": brandId, name: "ZHONI", description: "Custom golf merchandise, golf gift sets and custom packaging for clubs, events and brands.", url: SITE_ORIGIN, brandOf: { "@id": companyId } },
-    { "@type": "WebSite", "@id": websiteId, name: "ZHONI", url: SITE_ORIGIN, inLanguage: ["en", "ko"], publisher: { "@id": companyId }, about: { "@id": brandId } },
+    { "@type": "WebSite", "@id": websiteId, name: "ZHONI", url: SITE_ORIGIN, inLanguage: ["en", "fr-CA", "ko"], publisher: { "@id": companyId }, about: { "@id": brandId } },
     { "@type": "WebPage", "@id": `${canonical}#webpage`, url: canonical, name: route.title, description: route.description, inLanguage: language, isPartOf: { "@id": websiteId }, about: { "@id": brandId } },
   ];
 
@@ -187,7 +186,7 @@ export function inquirySourceForLocation() {
 
 export function addInquirySource(href, currentRoute) {
   const url = new URL(href, window.location.origin);
-  if (url.origin !== window.location.origin || !/^\/(?:ko\/)?request-a-quote(?:\/|$)/.test(url.pathname)) return url;
+  if (url.origin !== window.location.origin || !/^\/(?:(?:ko|fr-ca)\/)?request-a-quote(?:\/|$)/.test(url.pathname)) return url;
   const existing = url.searchParams.get("source")?.toLowerCase();
   if (!existing || !SAFE_SOURCE.test(existing)) url.searchParams.set("source", currentRoute.source ?? "direct-quote");
   return url;

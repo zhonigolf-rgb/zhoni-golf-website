@@ -12,8 +12,8 @@ function escapeHtml(value) {
 
 export function renderRouteDocument(template, route) {
   const canonical = `${siteOrigin}${route.path}`;
-  const englishPath = route.lang === "ko" ? route.alternatePath : route.path;
-  const koreanRoute = route.lang === "ko" ? route : Object.values(siteRoutes).find(candidate => candidate.lang === "ko" && candidate.alternatePath === route.path);
+  const englishPath = route.lang ? route.alternatePath : route.path;
+  const localizedRoutes = Object.values(siteRoutes).filter(candidate => candidate.lang && candidate.alternatePath === englishPath);
   const title = escapeHtml(route.title);
   const description = escapeHtml(route.description);
   const cleanTemplate = template
@@ -34,7 +34,7 @@ export function renderRouteDocument(template, route) {
     '<meta property="og:type" content="website" />',
     `<meta property="og:url" content="${canonical}" />`,
     `<link rel="alternate" hreflang="en" href="${siteOrigin}${englishPath}" />`,
-    ...(koreanRoute ? [`<link rel="alternate" hreflang="ko" href="${siteOrigin}${koreanRoute.path}" />`] : []),
+    ...localizedRoutes.map(candidate => `<link rel="alternate" hreflang="${candidate.lang}" href="${siteOrigin}${candidate.path}" />`),
     `<link rel="alternate" hreflang="x-default" href="${siteOrigin}${englishPath}" />`,
   ].join("\n    ");
 

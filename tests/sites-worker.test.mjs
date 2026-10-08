@@ -335,9 +335,35 @@ test("tracks Korean quote CTAs with the same source attribution as English", asy
     readFile(new URL("../src/seo.js", import.meta.url), "utf8"),
     readFile(new URL("../src/KoreanSite.jsx", import.meta.url), "utf8"),
   ]);
-  assert.match(app, /\^\\\/\(\?:ko\\\/\)\?request-a-quote/);
-  assert.match(seo, /\^\\\/\(\?:ko\\\/\)\?request-a-quote/);
+  assert.match(app, /fr-ca.*request-a-quote/);
+  assert.match(seo, /fr-ca.*request-a-quote/);
   assert.match(korean, /data\.set\("source",inquirySourceForLocation\(\)\)/);
+});
+
+test("publishes the first Canadian French locale round with localized SEO and conversion paths", async () => {
+  const template = await readFile(new URL("../index.html", import.meta.url), "utf8");
+  const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
+  const frenchSite = await readFile(new URL("../src/CanadianFrenchSite.jsx", import.meta.url), "utf8");
+  const locale = await readFile(new URL("../src/locale.jsx", import.meta.url), "utf8");
+  const keys = ["frCaHome", "frCaProducts", "frCaSolutions", "frCaProcess", "frCaFaq", "frCaAbout", "frCaQuote"];
+
+  for (const key of keys) {
+    const route = siteRoutes[key];
+    assert.equal(findRoute(route.path), route);
+    assert.equal(route.lang, "fr-CA");
+    assert.match(sitemap, new RegExp(`https://zhonigolf\\.com${route.path}`.replaceAll("/", "\\/")));
+    const document = renderRouteDocument(template, route);
+    assert.match(document, /<html lang="fr-CA">/);
+    assert.match(document, new RegExp(`hreflang="en" href="https://zhonigolf\\.com${route.alternatePath.replaceAll("/", "\\/")}"`));
+    assert.match(document, new RegExp(`hreflang="fr-CA" href="https://zhonigolf\\.com${route.path.replaceAll("/", "\\/")}"`));
+  }
+
+  for (const path of ["/fr-ca/products/", "/fr-ca/solutions/", "/fr-ca/our-process/", "/fr-ca/faq/", "/fr-ca/about/", "/fr-ca/request-a-quote/"]) {
+    assert.match(frenchSite, new RegExp(path.replaceAll("/", "\\/")));
+  }
+  assert.match(frenchSite, /page_language","fr-CA"/);
+  assert.match(frenchSite, /fr_ca_quote_page_project_brief/);
+  assert.match(locale, /Français \(Canada\)/);
 });
 
 test("keeps inquiry contact details beneath the form action and prevents compact contact layout", async () => {
