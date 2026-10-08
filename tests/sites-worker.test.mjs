@@ -418,6 +418,30 @@ test("publishes the first Canadian French buyer-guide collection with filters an
   assert.match(styles, /\.fr-ca-page \.guide-catalog/);
 });
 
+test("publishes Canadian French procurement and conversion guides with complete project paths", async () => {
+  const template = await readFile(new URL("../index.html", import.meta.url), "utf8");
+  const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
+  const hub = await readFile(new URL("../src/CanadianFrenchExpansion.jsx", import.meta.url), "utf8");
+  const procurement = await readFile(new URL("../src/CanadianFrenchProcurement.jsx", import.meta.url), "utf8");
+  const keys = ["frCaGolfGifts", "frCaFirstOrder", "frCaExportReadiness", "frCaBrandingGuide", "frCaArtworkGuide", "frCaMoqGuide", "frCaQuoteFactorsGuide", "frCaQualityChecklistGuide", "frCaDeliveryDateGuide", "frCaPostBriefGuide"];
+
+  for (const key of keys) {
+    const route = siteRoutes[key];
+    assert.equal(findRoute(route.path), route);
+    assert.match(sitemap, new RegExp(`https://zhonigolf\\.com${route.path}`.replaceAll("/", "\\/")));
+    assert.match(hub, new RegExp(route.path.replaceAll("/", "\\/")), `Expected ${route.path} in French guide center.`);
+    const document = renderRouteDocument(template, route);
+    assert.match(document, /<html lang="fr-CA">/);
+    assert.match(document, new RegExp(`hreflang="en" href="https://zhonigolf\\.com${route.alternatePath.replaceAll("/", "\\/")}"`));
+    assert.match(document, new RegExp(`hreflang="fr-CA" href="https://zhonigolf\\.com${route.path.replaceAll("/", "\\/")}"`));
+  }
+
+  for (const path of ["/fr-ca/products/", "/fr-ca/solutions/", "/fr-ca/our-process/", "/fr-ca/request-a-quote/"]) {
+    assert.match(procurement, new RegExp(path.replaceAll("/", "\\/")));
+  }
+  for (const required of ["Quantité", "Échantillon", "Emballage", "Destination", "QUESTIONS FRÉQUENTES"]) assert.match(procurement, new RegExp(required, "i"));
+});
+
 test("keeps inquiry contact details beneath the form action and prevents compact contact layout", async () => {
   const [app, styles, pageStyles] = await Promise.all([
     readFile(new URL("../src/App.jsx", import.meta.url), "utf8"),
