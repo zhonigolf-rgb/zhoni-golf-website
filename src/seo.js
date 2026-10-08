@@ -87,7 +87,24 @@ function setCanonical(url) {
   node.href = url;
 }
 
+function setLanguageAlternates(route) {
+  document.head.querySelectorAll('link[data-zhoni-hreflang]').forEach(node => node.remove());
+  const englishPath = route.lang === "ko" ? route.alternatePath : route.path;
+  const koreanRoute = route.lang === "ko" ? route : Object.values(siteRoutes).find(candidate => candidate.lang === "ko" && candidate.alternatePath === route.path);
+  const alternates = [["en", englishPath], ["x-default", englishPath]];
+  if (koreanRoute) alternates.splice(1, 0, ["ko", koreanRoute.path]);
+  alternates.forEach(([language, path]) => {
+    const node = document.createElement("link");
+    node.rel = "alternate";
+    node.hreflang = language;
+    node.href = absolute(path);
+    node.dataset.zhoniHreflang = "true";
+    document.head.appendChild(node);
+  });
+}
+
 function schemaFor(route, canonical) {
+  const language = route.lang ?? "en";
   const companyId = `${SITE_ORIGIN}/#company`;
   const brandId = `${SITE_ORIGIN}/#brand`;
   const websiteId = `${SITE_ORIGIN}/#website`;
@@ -98,11 +115,11 @@ function schemaFor(route, canonical) {
       name: "Xiamen Jindongyu Trading Co., Ltd.", legalName: "Xiamen Jindongyu Trading Co., Ltd.",
       description: "China-based custom golf merchandise manufacturing and sourcing partner for clubs, tournaments, corporate teams and brands.",
       url: SITE_ORIGIN, email: "sales@zhonigolf.com", telephone: "+8617759190848", areaServed: "International",
-      contactPoint: { "@type": "ContactPoint", contactType: "sales", email: "sales@zhonigolf.com", telephone: "+8617759190848", availableLanguage: "English" },
+      contactPoint: { "@type": "ContactPoint", contactType: "sales", email: "sales@zhonigolf.com", telephone: "+8617759190848", availableLanguage: ["English", "Korean"] },
     },
     { "@type": "Brand", "@id": brandId, name: "ZHONI", description: "Custom golf merchandise, golf gift sets and custom packaging for clubs, events and brands.", url: SITE_ORIGIN, brandOf: { "@id": companyId } },
-    { "@type": "WebSite", "@id": websiteId, name: "ZHONI", url: SITE_ORIGIN, inLanguage: "en", publisher: { "@id": companyId }, about: { "@id": brandId } },
-    { "@type": "WebPage", "@id": `${canonical}#webpage`, url: canonical, name: route.title, description: route.description, inLanguage: "en", isPartOf: { "@id": websiteId }, about: { "@id": brandId } },
+    { "@type": "WebSite", "@id": websiteId, name: "ZHONI", url: SITE_ORIGIN, inLanguage: ["en", "ko"], publisher: { "@id": companyId }, about: { "@id": brandId } },
+    { "@type": "WebPage", "@id": `${canonical}#webpage`, url: canonical, name: route.title, description: route.description, inLanguage: language, isPartOf: { "@id": websiteId }, about: { "@id": brandId } },
   ];
 
   if (route.path !== "/") {
@@ -135,7 +152,7 @@ function schemaFor(route, canonical) {
 
 export function applySeo(route) {
   const canonical = absolute(route.path);
-  document.documentElement.lang = "en";
+  document.documentElement.lang = route.lang ?? "en";
   document.title = route.title;
   setMeta("name", "description", route.description);
   setMeta("name", "robots", "index,follow");
@@ -144,6 +161,7 @@ export function applySeo(route) {
   setMeta("property", "og:type", "website");
   setMeta("property", "og:url", canonical);
   setCanonical(canonical);
+  setLanguageAlternates(route);
 
   let schema = document.getElementById("zhoni-page-schema");
   if (!schema) {

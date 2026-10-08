@@ -48,6 +48,13 @@ export const siteRoutes = {
   capabilities: { path: "/capabilities/", source: "golf-merchandise-capabilities", title: "Custom Golf Merchandise Capabilities & FAQ | ZHONI", description: "Product direction, branding, gift set planning, custom packaging and procurement answers for golf projects." },
   faq: { path: "/faq/", source: "custom-golf-faq", title: "Custom Golf Merchandise FAQ | ZHONI", description: "Answers to common questions about custom golf products, gift sets, MOQ, timing and brand application." },
   quote: { path: "/request-a-quote/", source: "direct-quote", title: "Request a Custom Golf Project Quote", description: "Share your custom golf merchandise project brief." },
+  koHome: { path: "/ko/", source: "ko-homepage", lang: "ko", alternatePath: "/", title: "맞춤 골프용품·기업 및 대회 골프 기프트 | ZHONI", description: "골프 클럽, 대회, 기업과 브랜드를 위한 맞춤 골프용품, 기프트 세트와 패키징을 프로젝트별로 준비합니다." },
+  koProducts: { path: "/ko/products/", source: "ko-products-hub", lang: "ko", alternatePath: "/products/", title: "맞춤 골프용품 제품군 | ZHONI", description: "맞춤 골프 헤드커버, 모자와 바이저, 마그네틱 타월, 액세서리, 기프트 세트 및 패키징을 살펴보세요." },
+  koSolutions: { path: "/ko/solutions/", source: "ko-solutions-hub", lang: "ko", alternatePath: "/solutions/", title: "골프대회·기업·클럽 맞춤 골프 기프트 솔루션 | ZHONI", description: "골프대회 플레이어 팩, 기업 골프 선물, 클럽 프로그램과 프라이빗 라벨 컬렉션을 위한 맞춤 솔루션입니다." },
+  koAbout: { path: "/ko/about/", source: "ko-about-zhoni", lang: "ko", alternatePath: "/about/", title: "ZHONI 소개 | 맞춤 골프용품 프로젝트 파트너", description: "ZHONI의 맞춤 골프용품, 브랜딩, 기프트 패키징 및 프로젝트 운영 방식을 소개합니다." },
+  koProcess: { path: "/ko/our-process/", source: "ko-custom-golf-process", lang: "ko", alternatePath: "/our-process/", title: "맞춤 골프용품 제작 과정 | ZHONI", description: "브리프, 제품 방향, 사양 확인, 생산 준비, 포장과 출고까지 맞춤 골프용품 프로젝트의 진행 과정을 확인하세요." },
+  koFaq: { path: "/ko/faq/", source: "ko-custom-golf-faq", lang: "ko", alternatePath: "/faq/", title: "맞춤 골프용품 MOQ·샘플·견적 FAQ | ZHONI", description: "맞춤 골프용품의 MOQ, 샘플, 로고 적용, 기프트 세트, 견적, 생산 일정과 배송에 관한 주요 답변입니다." },
+  koQuote: { path: "/ko/request-a-quote/", source: "ko-direct-quote", lang: "ko", alternatePath: "/request-a-quote/", title: "맞춤 골프용품 프로젝트 견적 문의 | ZHONI", description: "제품, 예상 수량, 목표 일정, 배송 국가와 패키징 요구사항을 포함한 맞춤 골프 프로젝트 브리프를 보내주세요." },
 };
 
 export function normalizePath(pathname) {

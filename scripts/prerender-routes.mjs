@@ -12,6 +12,8 @@ function escapeHtml(value) {
 
 export function renderRouteDocument(template, route) {
   const canonical = `${siteOrigin}${route.path}`;
+  const englishPath = route.lang === "ko" ? route.alternatePath : route.path;
+  const koreanRoute = route.lang === "ko" ? route : Object.values(siteRoutes).find(candidate => candidate.lang === "ko" && candidate.alternatePath === route.path);
   const title = escapeHtml(route.title);
   const description = escapeHtml(route.description);
   const cleanTemplate = template
@@ -21,6 +23,8 @@ export function renderRouteDocument(template, route) {
     .replace(/\s*<meta property="og:description"[^>]*>/i, "")
     .replace(/\s*<meta property="og:type"[^>]*>/i, "")
     .replace(/\s*<meta property="og:url"[^>]*>/i, "")
+    .replace(/\s*<link rel="alternate"[^>]*>/gi, "")
+    .replace(/<html lang="[^"]*">/i, `<html lang="${route.lang ?? "en"}">`)
     .replace(/<title>[\s\S]*?<\/title>/i, `<title>${title}</title>`);
   const metadata = [
     `<meta name="description" content="${description}" />`,
@@ -29,6 +33,9 @@ export function renderRouteDocument(template, route) {
     `<meta property="og:description" content="${description}" />`,
     '<meta property="og:type" content="website" />',
     `<meta property="og:url" content="${canonical}" />`,
+    `<link rel="alternate" hreflang="en" href="${siteOrigin}${englishPath}" />`,
+    ...(koreanRoute ? [`<link rel="alternate" hreflang="ko" href="${siteOrigin}${koreanRoute.path}" />`] : []),
+    `<link rel="alternate" hreflang="x-default" href="${siteOrigin}${englishPath}" />`,
   ].join("\n    ");
 
   return cleanTemplate.replace("</head>", `    ${metadata}\n  </head>`);

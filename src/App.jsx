@@ -3,9 +3,13 @@ import { findRoute, siteRoutes } from "./siteRoutes";
 import { trackAnalytics } from "./analytics.jsx";
 import { TurnstileField } from "./turnstile.jsx";
 import { addInquirySource, applySeo, inquirySourceForLocation } from "./seo.js";
+import { KoreanSite } from "./KoreanSite.jsx";
+import { LanguageSwitcher } from "./locale.jsx";
 import "./showcase.css";
 import "./products.css";
 import "./zhoni-pages.css";
+import "./locale.css";
+import "./korean.css";
 
 const WHATSAPP_URL = import.meta.env.VITE_WHATSAPP_URL ?? "https://wa.me/8617759190848";
 const slides = [
@@ -63,6 +67,7 @@ function ZhoniPageHeader({ active }) {
     <a className="zhoni-wordmark" href="/"><strong>ZHONI</strong><small>CUSTOM GOLF MERCHANDISE</small></a>
     <button className="zhoni-menu" onClick={() => setMenu(value => !value)} aria-expanded={menu}>{menu ? "CLOSE" : "MENU"}</button>
     <nav><a className={active === "products" ? "active" : ""} href="/products/">PRODUCTS</a><a className={active === "solutions" ? "active" : ""} href="/solutions/">SOLUTIONS</a><a className={active === "guides" ? "active" : ""} href="/guides/">BUYER GUIDES</a><a className={active === "process" ? "active" : ""} href="/our-process/">OUR PROCESS</a><a className={active === "faq" ? "active" : ""} href="/faq/">FAQ</a><a className={active === "about" ? "active" : ""} href="/about/">ABOUT</a></nav>
+    <LanguageSwitcher />
     <a className="zhoni-header-cta" href="/request-a-quote/">SHARE YOUR BRIEF <Arrow /></a>
   </header>;
 }
@@ -205,6 +210,8 @@ function FloatingContactActions({ hidden = false }) {
   const [open, setOpen] = useState(true);
   const [footerVisible, setFooterVisible] = useState(false);
   const whatsappLink = typeof window === "undefined" ? WHATSAPP_URL : createWhatsAppLink();
+  const korean = typeof window !== "undefined" && window.location.pathname.startsWith("/ko/");
+  const quotePath = korean ? "/ko/request-a-quote/" : "/request-a-quote/";
   useEffect(() => {
     const footer = document.querySelector(".site-footer");
     if (!footer || !("IntersectionObserver" in window)) return undefined;
@@ -213,7 +220,7 @@ function FloatingContactActions({ hidden = false }) {
     return () => observer.disconnect();
   }, []);
   const isHidden = hidden || footerVisible;
-  return <aside className={`float ${open ? "float-open" : ""} ${isHidden ? "float-hidden" : ""}`} aria-label="Project contact actions" aria-hidden={isHidden}><div className="float-panel" id="project-contact-menu"><a href="/request-a-quote/" tabIndex={isHidden || !open ? -1 : 0} onClick={() => setOpen(false)}><img src="/assets/quote-brief-icon.png" alt="" aria-hidden="true" /><strong>GET A QUOTE</strong><Arrow /></a><a href={whatsappLink} target="_blank" rel="noopener noreferrer" tabIndex={isHidden || !open ? -1 : 0}><img src="/assets/whatsapp-contact-icon.png" alt="" aria-hidden="true" /><strong>WHATSAPP</strong><Arrow /></a></div><button className="golf-flag-mark" type="button" aria-label={open ? "Hide project contact options" : "Show project contact options"} aria-expanded={open} aria-controls="project-contact-menu" tabIndex={isHidden ? -1 : 0} onClick={() => setOpen(value => !value)}><img src="/assets/golf-flag-marker-v2.png" alt="" /></button></aside>;
+  return <aside className={`float ${open ? "float-open" : ""} ${isHidden ? "float-hidden" : ""}`} aria-label={korean ? "프로젝트 문의" : "Project contact actions"} aria-hidden={isHidden}><div className="float-panel" id="project-contact-menu"><a href={quotePath} tabIndex={isHidden || !open ? -1 : 0} onClick={() => setOpen(false)}><img src="/assets/quote-brief-icon.png" alt="" aria-hidden="true" /><strong>{korean ? "프로젝트 문의" : "GET A QUOTE"}</strong><Arrow /></a><a href={whatsappLink} target="_blank" rel="noopener noreferrer" tabIndex={isHidden || !open ? -1 : 0}><img src="/assets/whatsapp-contact-icon.png" alt="" aria-hidden="true" /><strong>WHATSAPP</strong><Arrow /></a></div><button className="golf-flag-mark" type="button" aria-label={korean ? (open ? "문의 메뉴 숨기기" : "문의 메뉴 보기") : (open ? "Hide project contact options" : "Show project contact options")} aria-expanded={open} aria-controls="project-contact-menu" tabIndex={isHidden ? -1 : 0} onClick={() => setOpen(value => !value)}><img src="/assets/golf-flag-marker-v2.png" alt="" /></button></aside>;
 }
 
 function AboutPage() {
@@ -496,6 +503,7 @@ function ProductsHub() {
       <nav className={menu ? "products-nav products-nav-open" : "products-nav"}>
         <a aria-current="page" href="/products/">Products</a><a href="/solutions/">Solutions</a><a href="/guides/">Buyer Guides</a><a href="/our-process/">Our Approach</a><a href="/faq/">FAQ</a><a href="/request-a-quote/">Contact</a>
       </nav>
+      <LanguageSwitcher />
       <a className="products-quote" href="/request-a-quote/">REQUEST A QUOTE <Arrow /></a>
     </header>
 
@@ -543,6 +551,7 @@ function TournamentGiftsPage() {
       <a className="solution-brand" href="/"><strong>ZHONI</strong><small>CUSTOM GOLF MERCHANDISE</small></a>
       <button className="solution-menu" onClick={() => setMenu(open => !open)} aria-expanded={menu}>{menu ? "CLOSE" : "MENU"}</button>
       <nav className="solution-nav"><a href="/products/">Products</a><a href="/solutions/">Solutions</a><a href="/guides/">Buyer Guides</a><a href="/our-process/">Our Process</a><a href="/custom-golf-packaging/">Craft &amp; Packaging</a><a href="/faq/">FAQ</a></nav>
+      <LanguageSwitcher />
       <a className="solution-quote" href="/request-a-quote/">GET A QUOTE <Arrow /></a>
     </header>
     <section className="tournament-hero">
@@ -623,6 +632,7 @@ export function App() {
   useEffect(() => {
     applySeo(route);
   }, [route]);
+  if (route.lang === "ko") return <><KoreanSite routeKey={Object.keys(siteRoutes).find(key => siteRoutes[key] === route)} /><FloatingContactActions /></>;
   if (route === siteRoutes.products) return <><ProductsHub /><FloatingContactActions /></>;
   if (route === siteRoutes.headcovers) return <><ProductCategoryPage type="headcovers" /><FloatingContactActions /></>;
   if (route === siteRoutes.caps) return <><ProductCategoryPage type="caps" /><FloatingContactActions /></>;
@@ -714,6 +724,7 @@ export function App() {
       <a className="brand" href="/"><strong>ZHONI</strong><small>CUSTOM GOLF MERCHANDISE</small></a>
       <button className="menu" onClick={() => setMenu(!menu)} aria-expanded={menu}>{menu ? "CLOSE" : "MENU"}</button>
       <nav className={menu ? "nav nav-open" : "nav"}><a href="/products/">Products</a><a href="/solutions/">Solutions</a><a href="/guides/">Buyer Guides</a><a href="/our-process/">Our Process</a><a href="/custom-golf-packaging/">Craft &amp; Packaging</a><a href="/faq/">FAQ</a></nav>
+      <LanguageSwitcher variant="dark" />
       <Button>GET A QUOTE</Button>
     </header>
 

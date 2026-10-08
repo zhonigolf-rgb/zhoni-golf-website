@@ -1,0 +1,29 @@
+.ko-page {
+  font-family: "Noto Sans KR", "DM Sans", Arial, sans-serif;
+  word-break: keep-all;
+}
+
+.ko-page h1,
+.ko-page h2,
+.ko-page h3,
+.ko-page p {
+  font-family: "Noto Serif KR", "Playfair Display", Georgia, serif;
+}
+
+.ko-page .zhoni-header nav a,
+.ko-page .zhoni-header-cta,
+.ko-page label,
+.ko-page button,
+.ko-page select,
+.ko-page input,
+.ko-page textarea {
+  font-family: "Noto Sans KR", "DM Sans", Arial, sans-serif;
+}
+
+@media (max-width: 900px) {
+  .zhoni-header .language-switcher,
+  .products-header .language-switcher,
+  .solution-header .language-switcher {
+    margin-left: 0;
+  }
+}

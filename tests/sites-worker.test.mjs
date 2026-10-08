@@ -201,6 +201,36 @@ test("prerenders a self-canonical document for every public route", async () => 
   }
 });
 
+test("publishes a complete first-round Korean locale with reciprocal SEO alternates", async () => {
+  const template = await readFile(new URL("../index.html", import.meta.url), "utf8");
+  const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
+  const koreanRoutes = [siteRoutes.koHome, siteRoutes.koProducts, siteRoutes.koSolutions, siteRoutes.koProcess, siteRoutes.koFaq, siteRoutes.koAbout, siteRoutes.koQuote];
+
+  for (const route of koreanRoutes) {
+    assert.equal(findRoute(route.path), route);
+    assert.equal(route.lang, "ko");
+    assert.match(sitemap, new RegExp(`https://zhonigolf\\.com${route.path}`.replaceAll("/", "\\/")));
+    const document = renderRouteDocument(template, route);
+    assert.match(document, /<html lang="ko">/);
+    assert.match(document, new RegExp(`<link rel="canonical" href="https://zhonigolf\\.com${route.path.replaceAll("/", "\\/")}"`));
+    assert.match(document, new RegExp(`<link rel="alternate" hreflang="en" href="https://zhonigolf\\.com${route.alternatePath.replaceAll("/", "\\/")}"`));
+    assert.match(document, new RegExp(`<link rel="alternate" hreflang="ko" href="https://zhonigolf\\.com${route.path.replaceAll("/", "\\/")}"`));
+  }
+});
+
+test("keeps Korean navigation and inquiry conversion paths localized", async () => {
+  const [site, locale] = await Promise.all([
+    readFile(new URL("../src/KoreanSite.jsx", import.meta.url), "utf8"),
+    readFile(new URL("../src/locale.jsx", import.meta.url), "utf8"),
+  ]);
+  for (const path of ["/ko/", "/ko/products/", "/ko/solutions/", "/ko/our-process/", "/ko/faq/", "/ko/about/", "/ko/request-a-quote/"]) {
+    assert.match(site + locale, new RegExp(path.replaceAll("/", "\\/")));
+  }
+  assert.match(site, /<TurnstileField \/>/);
+  assert.match(site, /VITE_INQUIRY_ENDPOINT/);
+  assert.match(site, /page_language","ko"/);
+});
+
 test("keeps inquiry contact details beneath the form action and prevents compact contact layout", async () => {
   const [app, styles, pageStyles] = await Promise.all([
     readFile(new URL("../src/App.jsx", import.meta.url), "utf8"),
