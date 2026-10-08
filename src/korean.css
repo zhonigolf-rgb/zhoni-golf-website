@@ -3,6 +3,8 @@
   word-break: keep-all;
 }
 
+.locale-loading { min-height: 100vh; display: grid; place-items: center; background: #f7f3eb; color: #102b25; font: 500 2rem/1 "Playfair Display", serif; letter-spacing: .08em; }
+
 .ko-page h1,
 .ko-page h2,
 .ko-page h3,

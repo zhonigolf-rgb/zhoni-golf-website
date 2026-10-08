@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { findRoute, siteRoutes } from "./siteRoutes";
 import { trackAnalytics } from "./analytics.jsx";
 import { TurnstileField } from "./turnstile.jsx";
 import { addInquirySource, applySeo, inquirySourceForLocation } from "./seo.js";
-import { KoreanSite } from "./KoreanSite.jsx";
 import { LanguageSwitcher } from "./locale.jsx";
 import "./showcase.css";
 import "./products.css";
@@ -12,6 +11,7 @@ import "./locale.css";
 import "./korean.css";
 
 const WHATSAPP_URL = import.meta.env.VITE_WHATSAPP_URL ?? "https://wa.me/8617759190848";
+const KoreanSite = lazy(() => import("./KoreanSite.jsx").then(module => ({ default: module.KoreanSite })));
 const slides = [
   ["CUSTOM GOLF MERCHANDISE FOR CLUBS, EVENTS & BRANDS", "One project. A complete golf collection.", "Custom golf merchandise, tournament gift sets and branded packaging developed for clubs, corporate programs, events and growing golf brands.", "/assets/videos/zhoni-custom-golf-collection-showcase.mp4"],
   ["CUSTOM GOLF PRODUCT DEVELOPMENT", "Where materials become a branded collection.", "Begin with the product direction, materials and brand details that help every selected piece feel considered together.", "/assets/videos/zhoni-custom-golf-product-development.mp4"],
@@ -620,7 +620,7 @@ export function App() {
       let url = new URL(link.href, window.location.origin);
       const details = { page_path: window.location.pathname, page_location: window.location.href, page_language: document.documentElement.lang || "en", form_source: inquirySourceForLocation(), placement: link.dataset.analyticsPlacement || "site_link" };
       if (url.hostname === "wa.me") track("whatsapp_click", details);
-      if (url.origin === window.location.origin && url.pathname.startsWith("/request-a-quote")) {
+      if (url.origin === window.location.origin && /^\/(?:ko\/)?request-a-quote(?:\/|$)/.test(url.pathname)) {
         url = addInquirySource(url.href, route);
         link.href = url.href;
         track("quote_cta_click", { ...details, form_source: url.searchParams.get("source") });
@@ -632,7 +632,7 @@ export function App() {
   useEffect(() => {
     applySeo(route);
   }, [route]);
-  if (route.lang === "ko") return <><KoreanSite routeKey={Object.keys(siteRoutes).find(key => siteRoutes[key] === route)} /><FloatingContactActions /></>;
+  if (route.lang === "ko") return <Suspense fallback={<div className="locale-loading" role="status">ZHONI</div>}><KoreanSite routeKey={Object.keys(siteRoutes).find(key => siteRoutes[key] === route)} /><FloatingContactActions /></Suspense>;
   if (route === siteRoutes.products) return <><ProductsHub /><FloatingContactActions /></>;
   if (route === siteRoutes.headcovers) return <><ProductCategoryPage type="headcovers" /><FloatingContactActions /></>;
   if (route === siteRoutes.caps) return <><ProductCategoryPage type="caps" /><FloatingContactActions /></>;

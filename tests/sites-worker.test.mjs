@@ -295,6 +295,51 @@ test("lists every published Korean procurement page in the Korean guide hub", as
   for (const required of ["/ko/products/", "/ko/solutions/", "/ko/our-process/", "/ko/request-a-quote/"]) assert.match(procurement, new RegExp(required.replaceAll("/", "\\/")));
 });
 
+test("keeps the completed Korean site in exact route parity with English", async () => {
+  const template = await readFile(new URL("../index.html", import.meta.url), "utf8");
+  const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
+  const englishRoutes = Object.values(siteRoutes).filter(route => !route.lang);
+  const koreanRoutes = Object.values(siteRoutes).filter(route => route.lang === "ko");
+  assert.equal(englishRoutes.length, 49);
+  assert.equal(koreanRoutes.length, englishRoutes.length);
+
+  const koreanByEnglishPath = new Map(koreanRoutes.map(route => [route.alternatePath, route]));
+  for (const englishRoute of englishRoutes) {
+    const koreanRoute = koreanByEnglishPath.get(englishRoute.path);
+    assert.ok(koreanRoute, `Missing Korean alternate for ${englishRoute.path}`);
+    assert.equal(findRoute(koreanRoute.path), koreanRoute);
+    assert.match(sitemap, new RegExp(`https://zhonigolf\\.com${koreanRoute.path}`.replaceAll("/", "\\/")));
+    const englishDocument = renderRouteDocument(template, englishRoute);
+    const koreanDocument = renderRouteDocument(template, koreanRoute);
+    assert.match(englishDocument, new RegExp(`hreflang="ko" href="https://zhonigolf\\.com${koreanRoute.path.replaceAll("/", "\\/")}"`));
+    assert.match(koreanDocument, new RegExp(`hreflang="en" href="https://zhonigolf\\.com${englishRoute.path.replaceAll("/", "\\/")}"`));
+  }
+});
+
+test("lists every Korean buyer-guide article in the localized guide center", async () => {
+  const guideHub = await readFile(new URL("../src/KoreanExpansion.jsx", import.meta.url), "utf8");
+  const koreanGuides = Object.values(siteRoutes).filter(route => route.lang === "ko" && route.path.startsWith("/ko/guides/") && route.path !== "/ko/guides/");
+  assert.ok(koreanGuides.length > 20);
+  for (const route of koreanGuides) assert.match(guideHub, new RegExp(route.path.replaceAll("/", "\\/")), `Missing ${route.path} from Korean guide center.`);
+});
+
+test("loads the completed Korean content separately from the English entry bundle", async () => {
+  const app = await readFile(new URL("../src/App.jsx", import.meta.url), "utf8");
+  assert.match(app, /lazy\(\(\) => import\("\.\/KoreanSite\.jsx"\)/);
+  assert.match(app, /<Suspense fallback=/);
+});
+
+test("tracks Korean quote CTAs with the same source attribution as English", async () => {
+  const [app, seo, korean] = await Promise.all([
+    readFile(new URL("../src/App.jsx", import.meta.url), "utf8"),
+    readFile(new URL("../src/seo.js", import.meta.url), "utf8"),
+    readFile(new URL("../src/KoreanSite.jsx", import.meta.url), "utf8"),
+  ]);
+  assert.match(app, /\^\\\/\(\?:ko\\\/\)\?request-a-quote/);
+  assert.match(seo, /\^\\\/\(\?:ko\\\/\)\?request-a-quote/);
+  assert.match(korean, /data\.set\("source",inquirySourceForLocation\(\)\)/);
+});
+
 test("keeps inquiry contact details beneath the form action and prevents compact contact layout", async () => {
   const [app, styles, pageStyles] = await Promise.all([
     readFile(new URL("../src/App.jsx", import.meta.url), "utf8"),

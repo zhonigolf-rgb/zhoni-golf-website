@@ -187,7 +187,7 @@ export function inquirySourceForLocation() {
 
 export function addInquirySource(href, currentRoute) {
   const url = new URL(href, window.location.origin);
-  if (url.origin !== window.location.origin || !url.pathname.startsWith("/request-a-quote")) return url;
+  if (url.origin !== window.location.origin || !/^\/(?:ko\/)?request-a-quote(?:\/|$)/.test(url.pathname)) return url;
   const existing = url.searchParams.get("source")?.toLowerCase();
   if (!existing || !SAFE_SOURCE.test(existing)) url.searchParams.set("source", currentRoute.source ?? "direct-quote");
   return url;
