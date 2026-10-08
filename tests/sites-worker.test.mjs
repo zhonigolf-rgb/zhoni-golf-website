@@ -473,6 +473,44 @@ test("publishes Canadian French product-development and event-planning guide clu
   for (const required of ["rows.map", "checklist.map", "questions.map", "POINT À DÉFINIR", "LISTE DE CONTRÔLE"]) assert.match(articles, new RegExp(required.replaceAll(".", "\\.")));
 });
 
+test("completes Canadian French route parity, guide discovery, and reciprocal locale SEO", async () => {
+  const template = await readFile(new URL("../index.html", import.meta.url), "utf8");
+  const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
+  const hub = await readFile(new URL("../src/CanadianFrenchExpansion.jsx", import.meta.url), "utf8");
+  const finalPages = await readFile(new URL("../src/CanadianFrenchFinalGuides.jsx", import.meta.url), "utf8");
+  const englishRoutes = Object.values(siteRoutes).filter((route) => !route.lang);
+  const frenchRoutes = Object.values(siteRoutes).filter((route) => route.lang === "fr-CA");
+  const frenchByEnglishPath = new Map(frenchRoutes.map((route) => [route.alternatePath, route]));
+
+  assert.equal(englishRoutes.length, 49);
+  assert.equal(frenchRoutes.length, englishRoutes.length);
+
+  for (const englishRoute of englishRoutes) {
+    const frenchRoute = frenchByEnglishPath.get(englishRoute.path);
+    assert.ok(frenchRoute, `Expected a Canadian French route for ${englishRoute.path}.`);
+    assert.equal(findRoute(frenchRoute.path), frenchRoute);
+    assert.match(sitemap, new RegExp(`https://zhonigolf\\.com${frenchRoute.path}`.replaceAll("/", "\\/")));
+
+    const englishDocument = renderRouteDocument(template, englishRoute);
+    const frenchDocument = renderRouteDocument(template, frenchRoute);
+    assert.match(englishDocument, new RegExp(`hreflang="fr-CA" href="https://zhonigolf\\.com${frenchRoute.path.replaceAll("/", "\\/")}"`));
+    assert.match(frenchDocument, new RegExp(`hreflang="en" href="https://zhonigolf\\.com${englishRoute.path.replaceAll("/", "\\/")}"`));
+    assert.match(frenchDocument, /<html lang="fr-CA">/);
+  }
+
+  const frenchGuideArticles = frenchRoutes.filter((route) => route.path.startsWith("/fr-ca/guides/") && route.path !== "/fr-ca/guides/");
+  for (const route of frenchGuideArticles) {
+    assert.match(hub, new RegExp(route.path.replaceAll("/", "\\/")), `Expected ${route.path} in the French guide center.`);
+  }
+
+  for (const path of ["/fr-ca/products/", "/fr-ca/solutions/", "/fr-ca/our-process/", "/fr-ca/request-a-quote/"]) {
+    assert.match(finalPages, new RegExp(path.replaceAll("/", "\\/")));
+  }
+  for (const required of ["Orientation produit", "Application de la marque", "Contrôle de la qualité", "Préparation à l'exportation"]) {
+    assert.match(finalPages, new RegExp(required));
+  }
+});
+
 test("keeps inquiry contact details beneath the form action and prevents compact contact layout", async () => {
   const [app, styles, pageStyles] = await Promise.all([
     readFile(new URL("../src/App.jsx", import.meta.url), "utf8"),
