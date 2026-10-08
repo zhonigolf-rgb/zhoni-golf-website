@@ -20,6 +20,16 @@ const koreanPathByEnglish = {
   "/guides/custom-golf-towels-procurement-guide/": "/ko/guides/custom-golf-towels-procurement-guide/",
   "/guides/custom-golf-caps-and-visors/": "/ko/guides/custom-golf-caps-and-visors/",
   "/guides/custom-golf-packaging-procurement-guide/": "/ko/guides/custom-golf-packaging-procurement-guide/",
+  "/custom-golf-gifts/": "/ko/custom-golf-gifts/",
+  "/first-order-guide/": "/ko/first-order-guide/",
+  "/quality-packaging-export-readiness/": "/ko/quality-packaging-export-readiness/",
+  "/guides/branding-methods-for-premium-golf-merchandise/": "/ko/guides/branding-methods-for-premium-golf-merchandise/",
+  "/guides/prepare-artwork-for-custom-golf-products/": "/ko/guides/prepare-artwork-for-custom-golf-products/",
+  "/guides/custom-golf-merchandise-moq-explained/": "/ko/guides/custom-golf-merchandise-moq-explained/",
+  "/guides/what-affects-a-custom-golf-merchandise-quote/": "/ko/guides/what-affects-a-custom-golf-merchandise-quote/",
+  "/guides/custom-golf-merchandise-quality-checklist/": "/ko/guides/custom-golf-merchandise-quality-checklist/",
+  "/guides/how-to-plan-a-golf-merchandise-delivery-date/": "/ko/guides/how-to-plan-a-golf-merchandise-delivery-date/",
+  "/guides/what-happens-after-a-custom-golf-project-brief/": "/ko/guides/what-happens-after-a-custom-golf-project-brief/",
 };
 
 const englishPathByKorean = Object.fromEntries(Object.entries(koreanPathByEnglish).map(([english, korean]) => [korean, english]));

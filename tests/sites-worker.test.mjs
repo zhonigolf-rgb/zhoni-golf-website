@@ -264,6 +264,37 @@ test("connects every first Korean guide to product, solutions, process and inqui
   assert.match(expansion, /배송지/);
 });
 
+test("publishes Korean conversion and procurement routes with complete SEO alternates", async () => {
+  const template = await readFile(new URL("../index.html", import.meta.url), "utf8");
+  const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
+  const keys = ["koGolfGifts", "koFirstOrder", "koExportReadiness", "koBrandingGuide", "koArtworkGuide", "koMoqGuide", "koQuoteFactorsGuide", "koQualityChecklistGuide", "koDeliveryDateGuide", "koPostBriefGuide"];
+  for (const key of keys) {
+    const route = siteRoutes[key];
+    assert.equal(findRoute(route.path), route);
+    assert.match(sitemap, new RegExp(`https://zhonigolf\\.com${route.path}`.replaceAll("/", "\\/")));
+    const document = renderRouteDocument(template, route);
+    assert.match(document, /<html lang="ko">/);
+    assert.match(document, new RegExp(`hreflang="en" href="https://zhonigolf\\.com${route.alternatePath.replaceAll("/", "\\/")}"`));
+    assert.match(document, new RegExp(`hreflang="ko" href="https://zhonigolf\\.com${route.path.replaceAll("/", "\\/")}"`));
+  }
+});
+
+test("lists every published Korean procurement page in the Korean guide hub", async () => {
+  const [hub, procurement] = await Promise.all([
+    readFile(new URL("../src/KoreanExpansion.jsx", import.meta.url), "utf8"),
+    readFile(new URL("../src/KoreanProcurement.jsx", import.meta.url), "utf8"),
+  ]);
+  const paths = [
+    "/ko/custom-golf-gifts/", "/ko/first-order-guide/", "/ko/quality-packaging-export-readiness/",
+    "/ko/guides/branding-methods-for-premium-golf-merchandise/", "/ko/guides/prepare-artwork-for-custom-golf-products/",
+    "/ko/guides/custom-golf-merchandise-moq-explained/", "/ko/guides/what-affects-a-custom-golf-merchandise-quote/",
+    "/ko/guides/custom-golf-merchandise-quality-checklist/", "/ko/guides/how-to-plan-a-golf-merchandise-delivery-date/",
+    "/ko/guides/what-happens-after-a-custom-golf-project-brief/",
+  ];
+  for (const path of paths) assert.match(hub, new RegExp(path.replaceAll("/", "\\/")), `Expected ${path} in Korean guide hub.`);
+  for (const required of ["/ko/products/", "/ko/solutions/", "/ko/our-process/", "/ko/request-a-quote/"]) assert.match(procurement, new RegExp(required.replaceAll("/", "\\/")));
+});
+
 test("keeps inquiry contact details beneath the form action and prevents compact contact layout", async () => {
   const [app, styles, pageStyles] = await Promise.all([
     readFile(new URL("../src/App.jsx", import.meta.url), "utf8"),
