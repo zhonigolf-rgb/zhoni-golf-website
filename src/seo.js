@@ -137,11 +137,18 @@ function schemaFor(route, canonical) {
     graph.push({ "@type": "Service", name: route.title, description: route.description, provider: { "@id": companyId }, brand: { "@id": brandId }, url: canonical, areaServed: "International" });
   }
 
-  if ([siteRoutes.golfGifts, siteRoutes.guides].includes(route)) {
+  if ([siteRoutes.golfGifts.path, siteRoutes.guides.path].includes(englishPath)) {
+    const localizedGuides = route.lang
+      ? guideRoutes.map(guide => Object.values(siteRoutes).find(candidate => candidate.lang === route.lang && candidate.alternatePath === guide.path)).filter(Boolean)
+      : guideRoutes;
     graph.push({
-      "@type": "CollectionPage", name: route === siteRoutes.guides ? "Golf Merchandise Buyer Guides" : "Custom Golf Gifts Procurement Guides", url: canonical, isPartOf: { "@id": websiteId }, about: { "@id": brandId },
-      mainEntity: { "@type": "ItemList", name: route === siteRoutes.guides ? "Golf Merchandise Buyer Guide Collection" : "Custom Golf Gifts Guide Collection", itemListElement: guideRoutes.map((guide, index) => ({ "@type": "ListItem", position: index + 1, name: guide.title, url: absolute(guide.path) })) },
+      "@type": "CollectionPage", name: route.title, url: canonical, inLanguage: language, isPartOf: { "@id": websiteId }, about: { "@id": brandId },
+      mainEntity: { "@type": "ItemList", name: route.title, itemListElement: localizedGuides.map((guide, index) => ({ "@type": "ListItem", position: index + 1, name: guide.title, url: absolute(guide.path) })) },
     });
+  }
+
+  if (englishPath.startsWith("/guides/") && englishPath !== "/guides/") {
+    graph.push({ "@type": "Article", headline: route.title, description: route.description, url: canonical, inLanguage: language, publisher: { "@id": companyId }, about: { "@id": brandId } });
   }
 
   if (route === siteRoutes.faq) {

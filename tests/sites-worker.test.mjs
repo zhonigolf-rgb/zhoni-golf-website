@@ -392,6 +392,32 @@ test("publishes Canadian French product and solution detail pages with reciproca
   assert.match(expansion, /destination/i);
 });
 
+test("publishes the first Canadian French buyer-guide collection with filters and complete project links", async () => {
+  const template = await readFile(new URL("../index.html", import.meta.url), "utf8");
+  const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
+  const expansion = await readFile(new URL("../src/CanadianFrenchExpansion.jsx", import.meta.url), "utf8");
+  const styles = await readFile(new URL("../src/canadian-french.css", import.meta.url), "utf8");
+  const keys = ["frCaGuides", "frCaHeadcoversGuide", "frCaTowelsGuide", "frCaCapsStyleGuide", "frCaPackagingGuide"];
+
+  for (const key of keys) {
+    const route = siteRoutes[key];
+    assert.equal(findRoute(route.path), route);
+    assert.match(sitemap, new RegExp(`https://zhonigolf\\.com${route.path}`.replaceAll("/", "\\/")));
+    assert.match(expansion, new RegExp(route.path.replaceAll("/", "\\/")));
+    const document = renderRouteDocument(template, route);
+    assert.match(document, /<html lang="fr-CA">/);
+    assert.match(document, new RegExp(`hreflang="en" href="https://zhonigolf\\.com${route.alternatePath.replaceAll("/", "\\/")}"`));
+    assert.match(document, new RegExp(`hreflang="fr-CA" href="https://zhonigolf\\.com${route.path.replaceAll("/", "\\/")}"`));
+  }
+
+  for (const path of ["/fr-ca/products/", "/fr-ca/solutions/", "/fr-ca/our-process/", "/fr-ca/request-a-quote/"]) {
+    assert.match(expansion, new RegExp(path.replaceAll("/", "\\/")));
+  }
+  for (const label of ["TOUS LES GUIDES", "PRODUITS ET MARQUAGE", "CADEAUX ET ÉVÉNEMENTS", "MOQ ET PREMIÈRE COMMANDE", "QUALITÉ ET LIVRAISON"]) assert.match(expansion, new RegExp(label));
+  assert.match(expansion, /guide\.group===filter/);
+  assert.match(styles, /\.fr-ca-page \.guide-catalog/);
+});
+
 test("keeps inquiry contact details beneath the form action and prevents compact contact layout", async () => {
   const [app, styles, pageStyles] = await Promise.all([
     readFile(new URL("../src/App.jsx", import.meta.url), "utf8"),

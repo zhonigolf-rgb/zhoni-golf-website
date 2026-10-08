@@ -14,7 +14,41 @@
 .fr-ca-header nav a { letter-spacing: .08em; }
 .fr-ca-header .zhoni-header-cta { white-space: nowrap; }
 
+.fr-ca-page .guides-hero {
+  min-height: 520px;
+  padding: 5.5rem 7vw;
+  display: grid;
+  grid-template-columns: 1.25fr .75fr;
+  gap: 8vw;
+  align-items: center;
+  background: var(--forest);
+  color: var(--paper);
+}
+.fr-ca-page .guides-hero h1 { font-size: clamp(3.4rem, 5.4vw, 6.4rem); }
+.fr-ca-page .guides-hero > div > p:last-child { max-width: 42rem; }
+.fr-ca-page .guides-hero aside { padding: 2rem; border: 1px solid rgba(247,243,235,.28); }
+.fr-ca-page .guides-hero aside b { font: 600 .63rem/1.4 "DM Sans", Arial, sans-serif; letter-spacing: .12em; }
+.fr-ca-page .guides-hero aside a { padding-bottom: .5rem; border-bottom: 1px solid currentColor; }
+.fr-ca-page .guide-filter { display: flex; gap: .7rem; flex-wrap: wrap; padding: 4rem 7vw 1rem; }
+.fr-ca-page .guide-filter button { padding: .78rem 1rem; border: 1px solid var(--line); background: transparent; color: var(--forest); cursor: pointer; }
+.fr-ca-page .guide-filter button.active { color: var(--paper); background: var(--forest); border-color: var(--forest); }
+.fr-ca-page .guide-catalog { padding: 1rem 7vw 6rem; display: grid; grid-template-columns: repeat(2, 1fr); }
+.fr-ca-page .guide-catalog > a { min-height: 300px; padding: 2rem; display: flex!important; flex-direction: column; border: 1px solid var(--line); margin: -1px 0 0 -1px; }
+.fr-ca-page .guide-catalog > a > b { color: var(--gold); font: 400 2.2rem/1 "Playfair Display", serif; }
+.fr-ca-page .guide-catalog > a > span,.fr-ca-page .guide-catalog > a > em { margin-top: 1.6rem; font: 600 .56rem/1.4 "DM Sans", Arial, sans-serif; letter-spacing: .1em; font-style: normal; }
+.fr-ca-page .guide-catalog h2 { margin: .7rem 0; font-size: clamp(1.8rem, 2.5vw, 2.6rem); }
+.fr-ca-page .guide-catalog p { margin: 0; font-size: .9rem; }
+.fr-ca-page .guide-catalog > a > em { margin-top: auto; padding-top: 1.4rem; }
+
 @media (max-width: 1180px) {
   .fr-ca-header nav a { font-size: .52rem; }
   .fr-ca-header .zhoni-header-cta { padding-inline: 1rem; }
+}
+
+@media (max-width: 750px) {
+  .fr-ca-page .guides-hero { grid-template-columns: 1fr; padding: 4rem 1.25rem; gap: 2rem; }
+  .fr-ca-page .guide-filter { padding: 3rem 1.25rem 1rem; }
+  .fr-ca-page .guide-filter button { flex: 1 1 auto; }
+  .fr-ca-page .guide-catalog { padding: 1rem 1.25rem 4rem; grid-template-columns: 1fr; }
+  .fr-ca-page .guide-catalog > a { min-height: 0; }
 }
