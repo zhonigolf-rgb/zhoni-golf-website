@@ -231,6 +231,39 @@ test("keeps Korean navigation and inquiry conversion paths localized", async () 
   assert.match(site, /page_language","ko"/);
 });
 
+test("publishes Korean product, solution and buyer-guide routes with reciprocal alternates", async () => {
+  const template = await readFile(new URL("../index.html", import.meta.url), "utf8");
+  const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
+  const routeKeys = [
+    "koHeadcovers", "koCaps", "koTowels", "koAccessories", "koPackaging",
+    "koTournamentGifts", "koCorporateGifts", "koGuides",
+    "koHeadcoversGuide", "koTowelsGuide", "koCapsStyleGuide", "koPackagingGuide",
+  ];
+
+  for (const key of routeKeys) {
+    const route = siteRoutes[key];
+    assert.equal(findRoute(route.path), route);
+    assert.match(sitemap, new RegExp(`https://zhonigolf\\.com${route.path}`.replaceAll("/", "\\/")));
+    const document = renderRouteDocument(template, route);
+    assert.match(document, /<html lang="ko">/);
+    assert.match(document, new RegExp(`<link rel="alternate" hreflang="en" href="https://zhonigolf\\.com${route.alternatePath.replaceAll("/", "\\/")}"`));
+    assert.match(document, new RegExp(`<link rel="alternate" hreflang="ko" href="https://zhonigolf\\.com${route.path.replaceAll("/", "\\/")}"`));
+  }
+});
+
+test("connects every first Korean guide to product, solutions, process and inquiry paths", async () => {
+  const expansion = await readFile(new URL("../src/KoreanExpansion.jsx", import.meta.url), "utf8");
+  for (const path of ["/ko/solutions/", "/ko/our-process/", "/ko/request-a-quote/"]) {
+    assert.match(expansion, new RegExp(path.replaceAll("/", "\\/")));
+  }
+  for (const path of ["/ko/custom-golf-headcovers/", "/ko/custom-golf-caps/", "/ko/custom-golf-towels/", "/ko/custom-golf-packaging/"]) {
+    assert.match(expansion, new RegExp(path.replaceAll("/", "\\/")));
+  }
+  assert.match(expansion, /MOQ/);
+  assert.match(expansion, /샘플/);
+  assert.match(expansion, /배송지/);
+});
+
 test("keeps inquiry contact details beneath the form action and prevents compact contact layout", async () => {
   const [app, styles, pageStyles] = await Promise.all([
     readFile(new URL("../src/App.jsx", import.meta.url), "utf8"),

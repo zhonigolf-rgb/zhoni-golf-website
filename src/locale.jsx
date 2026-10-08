@@ -8,6 +8,18 @@ const koreanPathByEnglish = {
   "/our-process/": "/ko/our-process/",
   "/faq/": "/ko/faq/",
   "/request-a-quote/": "/ko/request-a-quote/",
+  "/custom-golf-headcovers/": "/ko/custom-golf-headcovers/",
+  "/custom-golf-caps/": "/ko/custom-golf-caps/",
+  "/custom-golf-towels/": "/ko/custom-golf-towels/",
+  "/custom-golf-accessories/": "/ko/custom-golf-accessories/",
+  "/custom-golf-packaging/": "/ko/custom-golf-packaging/",
+  "/solutions/golf-tournament-gifts/": "/ko/solutions/golf-tournament-gifts/",
+  "/solutions/corporate-golf-gifts/": "/ko/solutions/corporate-golf-gifts/",
+  "/guides/": "/ko/guides/",
+  "/guides/custom-golf-headcovers-procurement-guide/": "/ko/guides/custom-golf-headcovers-procurement-guide/",
+  "/guides/custom-golf-towels-procurement-guide/": "/ko/guides/custom-golf-towels-procurement-guide/",
+  "/guides/custom-golf-caps-and-visors/": "/ko/guides/custom-golf-caps-and-visors/",
+  "/guides/custom-golf-packaging-procurement-guide/": "/ko/guides/custom-golf-packaging-procurement-guide/",
 };
 
 const englishPathByKorean = Object.fromEntries(Object.entries(koreanPathByEnglish).map(([english, korean]) => [korean, english]));

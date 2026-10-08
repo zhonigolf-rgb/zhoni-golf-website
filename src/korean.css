@@ -27,3 +27,38 @@
     margin-left: 0;
   }
 }
+
+.ko-page .guides-hero {
+  min-height: 520px;
+  padding: 5.5rem 7vw;
+  display: grid;
+  grid-template-columns: 1.25fr .75fr;
+  gap: 8vw;
+  align-items: center;
+  background: var(--forest);
+  color: var(--paper);
+}
+
+.ko-page .guides-hero h1 { font-size: clamp(3.6rem, 5.7vw, 6.7rem); }
+.ko-page .guides-hero > div > p:last-child { max-width: 38rem; }
+.ko-page .guides-hero aside { padding: 2rem; border: 1px solid rgba(247,243,235,.28); }
+.ko-page .guides-hero aside b { font: 600 .63rem/1.4 "Noto Sans KR", sans-serif; letter-spacing: .12em; }
+.ko-page .guides-hero aside a { padding-bottom: .5rem; border-bottom: 1px solid currentColor; }
+.ko-page .guide-filter { display: flex; gap: .7rem; flex-wrap: wrap; padding: 4rem 7vw 1rem; }
+.ko-page .guide-filter button { padding: .78rem 1rem; border: 1px solid var(--line); background: transparent; color: var(--forest); cursor: pointer; }
+.ko-page .guide-filter button.active { color: var(--paper); background: var(--forest); border-color: var(--forest); }
+.ko-page .guide-catalog { padding: 1rem 7vw 6rem; display: grid; grid-template-columns: repeat(2, 1fr); }
+.ko-page .guide-catalog > a { min-height: 300px; padding: 2rem; display: flex!important; flex-direction: column; border: 1px solid var(--line); margin: -1px 0 0 -1px; }
+.ko-page .guide-catalog > a > b { color: var(--gold); font: 400 2.2rem/1 "Playfair Display", serif; }
+.ko-page .guide-catalog > a > span,.ko-page .guide-catalog > a > em { margin-top: 1.6rem; font: 600 .56rem/1.4 "Noto Sans KR", sans-serif; letter-spacing: .1em; font-style: normal; }
+.ko-page .guide-catalog h2 { margin: .7rem 0; font-size: clamp(1.8rem, 2.5vw, 2.6rem); }
+.ko-page .guide-catalog p { margin: 0; font-size: .9rem; }
+.ko-page .guide-catalog > a > em { margin-top: auto; padding-top: 1.4rem; }
+
+@media (max-width: 750px) {
+  .ko-page .guides-hero { grid-template-columns: 1fr; padding: 4rem 1.25rem; gap: 2rem; }
+  .ko-page .guide-filter { padding: 3rem 1.25rem 1rem; }
+  .ko-page .guide-filter button { flex: 1 1 auto; }
+  .ko-page .guide-catalog { padding: 1rem 1.25rem 4rem; grid-template-columns: 1fr; }
+  .ko-page .guide-catalog > a { min-height: 0; }
+}
