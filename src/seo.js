@@ -48,6 +48,8 @@ const breadcrumbNames = {
   "/quality-packaging-export-readiness/": "Quality, Packaging & Export Readiness",
   "/solutions/golf-tournament-gifts/": "Golf Tournament Gifts",
   "/solutions/corporate-golf-gifts/": "Corporate Golf Gifts",
+  "/solutions/golf-club-member-programs/": "Golf Club Member Programs",
+  "/solutions/private-label-golf-collections/": "Private-Label Golf Collections",
   "/about/": "About ZHONI",
   "/our-process/": "Our Process",
   "/capabilities/": "Capabilities",
@@ -188,7 +190,7 @@ export function schemaForRoute(route, faqItems = []) {
       "fr-CA": { home: "Accueil", products: "Produits", solutions: "Solutions", guides: "Guides d'achat" },
     }[language] ?? { home: "Home", products: "Products", solutions: "Solutions", guides: "Buyer Guides" };
     const productPaths = [siteRoutes.headcovers.path, siteRoutes.caps.path, siteRoutes.towels.path, siteRoutes.accessories.path, siteRoutes.packaging.path];
-    const solutionPaths = [siteRoutes.corporateGifts.path, siteRoutes.tournamentGifts.path];
+    const solutionPaths = [siteRoutes.corporateGifts.path, siteRoutes.tournamentGifts.path, siteRoutes.clubMemberPrograms.path, siteRoutes.privateLabelCollections.path];
     const isGuide = guideRoutes.some(guide => guide.path === englishPath);
     const parentEnglishPath = isGuide ? siteRoutes.guides.path : productPaths.includes(englishPath) ? siteRoutes.products.path : solutionPaths.includes(englishPath) ? siteRoutes.solutions.path : null;
     const parentRoute = parentEnglishPath
@@ -203,7 +205,7 @@ export function schemaForRoute(route, faqItems = []) {
     });
   }
 
-  const servicePaths = [siteRoutes.headcovers, siteRoutes.caps, siteRoutes.towels, siteRoutes.accessories, siteRoutes.packaging, siteRoutes.corporateGifts, siteRoutes.tournamentGifts].map(service => service.path);
+  const servicePaths = [siteRoutes.headcovers, siteRoutes.caps, siteRoutes.towels, siteRoutes.accessories, siteRoutes.packaging, siteRoutes.corporateGifts, siteRoutes.tournamentGifts, siteRoutes.clubMemberPrograms, siteRoutes.privateLabelCollections].map(service => service.path);
   if (servicePaths.includes(englishPath)) {
     graph.push({ "@type": "Service", name: route.title, description: route.description, provider: { "@id": companyId }, brand: { "@id": brandId }, url: canonical, areaServed: "International" });
   }

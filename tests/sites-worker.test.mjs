@@ -295,10 +295,11 @@ test("lists every published Korean procurement page in the Korean guide hub", as
   for (const required of ["/ko/products/", "/ko/solutions/", "/ko/our-process/", "/ko/request-a-quote/"]) assert.match(procurement, new RegExp(required.replaceAll("/", "\\/")));
 });
 
-test("keeps the completed Korean site in exact route parity with English", async () => {
+test("keeps the completed Korean routes in parity while new English solutions await translation", async () => {
   const template = await readFile(new URL("../index.html", import.meta.url), "utf8");
   const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
-  const englishRoutes = Object.values(siteRoutes).filter(route => !route.lang);
+  const englishOnlySolutions = new Set([siteRoutes.clubMemberPrograms.path, siteRoutes.privateLabelCollections.path]);
+  const englishRoutes = Object.values(siteRoutes).filter(route => !route.lang && !englishOnlySolutions.has(route.path));
   const koreanRoutes = Object.values(siteRoutes).filter(route => route.lang === "ko");
   assert.equal(englishRoutes.length, 49);
   assert.equal(koreanRoutes.length, englishRoutes.length);
@@ -473,12 +474,13 @@ test("publishes Canadian French product-development and event-planning guide clu
   for (const required of ["rows.map", "checklist.map", "questions.map", "POINT À DÉFINIR", "LISTE DE CONTRÔLE"]) assert.match(articles, new RegExp(required.replaceAll(".", "\\.")));
 });
 
-test("completes Canadian French route parity, guide discovery, and reciprocal locale SEO", async () => {
+test("keeps completed Canadian French routes in parity while new English solutions await translation", async () => {
   const template = await readFile(new URL("../index.html", import.meta.url), "utf8");
   const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
   const hub = await readFile(new URL("../src/CanadianFrenchExpansion.jsx", import.meta.url), "utf8");
   const finalPages = await readFile(new URL("../src/CanadianFrenchFinalGuides.jsx", import.meta.url), "utf8");
-  const englishRoutes = Object.values(siteRoutes).filter((route) => !route.lang);
+  const englishOnlySolutions = new Set([siteRoutes.clubMemberPrograms.path, siteRoutes.privateLabelCollections.path]);
+  const englishRoutes = Object.values(siteRoutes).filter((route) => !route.lang && !englishOnlySolutions.has(route.path));
   const frenchRoutes = Object.values(siteRoutes).filter((route) => route.lang === "fr-CA");
   const frenchByEnglishPath = new Map(frenchRoutes.map((route) => [route.alternatePath, route]));
 
@@ -639,6 +641,8 @@ test("adds a transparent buyer evidence layer to English procurement routes", as
     ["/custom-golf-gifts/", "custom-golf-gifts"],
     ["/solutions/corporate-golf-gifts/", "corporate-gifts"],
     ["/solutions/golf-tournament-gifts/", "tournament-gifts"],
+    ["/solutions/golf-club-member-programs/", "club-member-programs"],
+    ["/solutions/private-label-golf-collections/", "private-label-collections"],
     ["/our-process/", "process"],
     ["/request-a-quote/", "inquiry"],
   ]);
@@ -660,6 +664,62 @@ test("adds a transparent buyer evidence layer to English procurement routes", as
   const styles = await readFile(new URL("../src/zhoni-pages.css", import.meta.url), "utf8");
   assert.match(styles, /\.buyer-evidence-grid\{display:grid;grid-template-columns:repeat\(4,minmax\(0,1fr\)\)/);
   assert.match(styles, /@media\(max-width:560px\)[\s\S]*?\.buyer-evidence-grid\{grid-template-columns:1fr/);
+});
+
+test("publishes complete club-member and private-label solution pages", async () => {
+  const [sitemap, app, llms] = await Promise.all([
+    readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8"),
+    readFile(new URL("../src/App.jsx", import.meta.url), "utf8"),
+    readFile(new URL("../public/llms.txt", import.meta.url), "utf8"),
+  ]);
+  const cases = [
+    {
+      route: siteRoutes.clubMemberPrograms,
+      heading: "Custom golf merchandise",
+      marker: "club-member-programs",
+      question: "Can one merchandise program support several member moments?",
+    },
+    {
+      route: siteRoutes.privateLabelCollections,
+      heading: "A private-label golf",
+      marker: "private-label-collections",
+      question: "Can a private-label range start with one hero product?",
+    },
+  ];
+
+  for (const { route, heading, marker, question } of cases) {
+    assert.equal(findRoute(route.path), route);
+    assert.match(sitemap, new RegExp(`https://zhonigolf\\.com${route.path}`.replaceAll("/", "\\/")));
+    assert.match(app, new RegExp(route.path.replaceAll("/", "\\/")));
+    assert.match(llms, new RegExp(`https://zhonigolf\\.com${route.path}`.replaceAll("/", "\\/")));
+
+    const document = await readFile(new URL(`../dist/client/${route.path.slice(1)}index.html`, import.meta.url), "utf8");
+    assert.match(document, /<h1(?:\s|>)/);
+    assert.match(document, new RegExp(heading));
+    assert.match(document, new RegExp(question.replaceAll("?", "\\?")));
+    assert.match(document, new RegExp(`data-buyer-evidence="${marker}"`));
+    assert.match(document, new RegExp(`solution=${marker}&amp;source=${marker}`));
+    for (const path of ["/custom-golf-headcovers/", "/custom-golf-caps/", "/custom-golf-towels/", "/custom-golf-accessories/", "/custom-golf-packaging/", "/our-process/", "/request-a-quote/", "/guides/"]) {
+      assert.match(document, new RegExp(path.replaceAll("/", "\\/")), `Expected ${path} on ${route.path}.`);
+    }
+
+    const schemaMatch = document.match(/<script id="zhoni-page-schema" type="application\/ld\+json">([\s\S]*?)<\/script>/);
+    const graph = JSON.parse(schemaMatch[1])["@graph"];
+    assert.ok(graph.some((entity) => entity["@type"] === "Service"));
+    assert.ok(graph.some((entity) => entity["@type"] === "FAQPage"));
+    const breadcrumb = graph.find((entity) => entity["@type"] === "BreadcrumbList");
+    assert.equal(breadcrumb.itemListElement[1].name, "Solutions");
+  }
+
+  assert.match(app, /"club-member-programs": "Club member program"/);
+  assert.match(app, /"private-label-collections": "Private label collection"/);
+
+  const [collectionGuide, briefGuide] = await Promise.all([
+    readFile(new URL("../dist/client/guides/coordinated-golf-accessory-collection/index.html", import.meta.url), "utf8"),
+    readFile(new URL("../dist/client/guides/custom-golf-product-development-brief/index.html", import.meta.url), "utf8"),
+  ]);
+  assert.match(collectionGuide, /\/solutions\/golf-club-member-programs\//);
+  assert.match(briefGuide, /\/solutions\/private-label-golf-collections\//);
 });
 
 test("emits the files required by Sites packaging", async () => {
