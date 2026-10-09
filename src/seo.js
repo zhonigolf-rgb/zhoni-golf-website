@@ -96,7 +96,7 @@ export function faqEntitiesFromMarkup(markup = "") {
   };
 
   extract(
-    sectionsWithClass("guide-faq"),
+    [sectionsWithClass("guide-faq"), sectionsWithClass("headcover-faq")].filter(Boolean).join("\n"),
     /<article[^>]*>[\s\S]*?<h3[^>]*>([\s\S]*?)<\/h3>[\s\S]*?<p[^>]*>([\s\S]*?)<\/p>[\s\S]*?<\/article>/gi,
   );
   extract(
@@ -117,7 +117,7 @@ function faqEntitiesFromDocument() {
     const text = answer?.textContent?.trim();
     if (name && text && !entries.some(([existing]) => existing === name)) entries.push([name, text]);
   };
-  document.querySelectorAll(".guide-faq article").forEach(node => add(node.querySelector("h3"), node.querySelector("p")));
+  document.querySelectorAll(".guide-faq article, .headcover-faq article").forEach(node => add(node.querySelector("h3"), node.querySelector("p")));
   document.querySelectorAll(".capability-faq article, .faq-list article").forEach(node => add(node.querySelector("button span"), node.querySelector("p")));
   document.querySelectorAll(".faq-ledger-questions details").forEach(node => {
     const summary = node.querySelector("summary")?.cloneNode(true);
@@ -179,7 +179,7 @@ export function schemaForRoute(route, faqItems = []) {
       contactPoint: { "@type": "ContactPoint", contactType: "sales", email: "sales@zhonigolf.com", telephone: "+8617759190848", availableLanguage: ["English", "French", "Korean", "Japanese", "German"] },
     },
     { "@type": "Brand", "@id": brandId, name: "ZHONI", description: "Custom golf merchandise, golf gift sets and custom packaging for clubs, events and brands.", url: SITE_ORIGIN, brandOf: { "@id": companyId } },
-    { "@type": "WebSite", "@id": websiteId, name: "ZHONI", url: SITE_ORIGIN, inLanguage: ["en", "fr-CA", "ko", "ja"], publisher: { "@id": companyId }, about: { "@id": brandId } },
+    { "@type": "WebSite", "@id": websiteId, name: "ZHONI", url: SITE_ORIGIN, inLanguage: ["en", "fr-CA", "ko", "ja", "de"], publisher: { "@id": companyId }, about: { "@id": brandId } },
     { "@type": "WebPage", "@id": `${canonical}#webpage`, url: canonical, name: route.title, description: route.description, inLanguage: language, isPartOf: { "@id": websiteId }, about: { "@id": brandId } },
   ];
 

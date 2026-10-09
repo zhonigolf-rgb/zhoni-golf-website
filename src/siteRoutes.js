@@ -1,7 +1,7 @@
 export const siteRoutes = {
   home: { path: "/", source: "homepage", title: "Custom Golf Merchandise for Clubs, Events & Brands", description: "Custom golf merchandise, coordinated gift sets and packaging for clubs, events and brands." },
   products: { path: "/products/", source: "products-hub", title: "Custom Golf Products Designed as a Collection", description: "Explore custom golf headcovers, caps and visors, towels, accessories, gift sets and packaging." },
-  headcovers: { path: "/custom-golf-headcovers/", source: "custom-golf-headcovers", title: "Custom Golf Headcovers for Clubs, Events & Brands", description: "Custom golf headcovers planned around your club, tournament or brand project." },
+  headcovers: { path: "/custom-golf-headcovers/", source: "custom-golf-headcovers", title: "Custom Golf Headcovers: Driver, Putter, Knit & Plush", description: "Plan custom driver, fairway, hybrid, putter, knit and plush golf headcovers by fit, material, lining, logo method, closure, packaging and project requirements." },
   caps: { path: "/custom-golf-caps/", source: "custom-golf-caps", title: "Custom Golf Caps & Headwear for Clubs, Events & Brands", description: "Custom golf caps, visors and headwear planned around fit, branding and the project hand-off." },
   towels: { path: "/custom-golf-towels/", source: "custom-golf-towels", title: "Custom Golf Towels with Considered Branding Details", description: "Custom golf towels for player packs, club collections and branded gifting." },
   accessories: { path: "/custom-golf-accessories/", source: "custom-golf-accessories", title: "Custom Golf Accessories for Player Gifting", description: "Pouches, bag tags, ball markers and divot tools for considered golf projects." },

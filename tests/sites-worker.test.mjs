@@ -1158,3 +1158,33 @@ test("emits the files required by Sites packaging", async () => {
   await access(new URL("../dist/server/index.js", import.meta.url));
   await access(new URL("../dist/.openai/hosting.json", import.meta.url));
 });
+
+test("publishes a decision-ready headcover product page and specialized brief", async () => {
+  const [document, app, routes] = await Promise.all([
+    readFile(new URL("../dist/client/custom-golf-headcovers/index.html", import.meta.url), "utf8"),
+    readFile(new URL("../src/App.jsx", import.meta.url), "utf8"),
+    readFile(new URL("../src/siteRoutes.js", import.meta.url), "utf8"),
+  ]);
+
+  for (const phrase of [
+    "Driver, fairway &amp; hybrid",
+    "Blade &amp; mallet putter",
+    "Plush &amp; novelty characters",
+    "Logo &amp; surface craft",
+    "Opening &amp; closure",
+    "FROM REFERENCE TO PRODUCTION",
+  ]) assert.match(document, new RegExp(phrase));
+
+  assert.match(document, /headcover_type=Plush%20%2F%20novelty%20character/);
+  assert.match(app, /name="headcover_material"/);
+  assert.match(app, /name="headcover_branding"/);
+  assert.match(app, /name="headcover_closure"/);
+  assert.match(app, /name="headcover_packaging"/);
+  assert.match(routes, /Driver, Putter, Knit & Plush/);
+
+  const schemaMatch = document.match(/<script id="zhoni-page-schema" type="application\/ld\+json">([\s\S]*?)<\/script>/);
+  const graph = JSON.parse(schemaMatch[1])["@graph"];
+  const faq = graph.find((entity) => entity["@type"] === "FAQPage");
+  assert.equal(faq.mainEntity.length, 6);
+  assert.ok(faq.mainEntity.some((entry) => entry.name.includes("plush character")));
+});
