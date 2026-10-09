@@ -55,7 +55,7 @@ const breadcrumbNames = {
   "/request-a-quote/": "Request a Quote",
 };
 
-const faqEntities = [
+const defaultFaqEntities = [
   ["What custom golf products can be discussed?", "ZHONI can discuss coordinated golf merchandise including headcovers, caps and visors, towels, accessories, ball markers, divot tools, golf balls, gift sets and presentation packaging. The appropriate route depends on the purpose, product direction and project brief."],
   ["What should we include in a project brief?", "A useful starting point is the product or occasion, approximate quantity, target date, destination, brand assets and any packaging expectations. Reference images are useful when you have them."],
   ["What is the MOQ for custom golf merchandise?", "MOQ varies by product, material, construction, decoration method, colour, packaging and customisation depth. Share the product direction and estimated quantity so the applicable requirements can be reviewed."],
@@ -65,6 +65,64 @@ const faqEntities = [
 
 function absolute(path) {
   return `${SITE_ORIGIN}${path}`;
+}
+
+function cleanStructuredText(value = "") {
+  return value
+    .replace(/<!--[\s\S]*?-->/g, "")
+    .replace(/<[^>]+>/g, " ")
+    .replaceAll("&amp;", "&")
+    .replaceAll("&quot;", '"')
+    .replaceAll("&#x27;", "'")
+    .replaceAll("&#39;", "'")
+    .replaceAll("&lt;", "<")
+    .replaceAll("&gt;", ">")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+export function faqEntitiesFromMarkup(markup = "") {
+  const entries = [];
+  const add = (question, answer) => {
+    const name = cleanStructuredText(question);
+    const text = cleanStructuredText(answer);
+    if (name && text && !entries.some(([existing]) => existing === name)) entries.push([name, text]);
+  };
+  const sectionsWithClass = className => [...markup.matchAll(new RegExp(`<section[^>]*class="[^"]*\\b${className}\\b[^"]*"[^>]*>[\\s\\S]*?<\\/section>`, "gi"))].map(match => match[0]).join("\n");
+  const extract = (source, pattern) => {
+    for (const match of source.matchAll(pattern)) add(match[1], match[2]);
+  };
+
+  extract(
+    sectionsWithClass("guide-faq"),
+    /<article[^>]*>[\s\S]*?<h3[^>]*>([\s\S]*?)<\/h3>[\s\S]*?<p[^>]*>([\s\S]*?)<\/p>[\s\S]*?<\/article>/gi,
+  );
+  extract(
+    [sectionsWithClass("capability-faq"), sectionsWithClass("faq-list")].filter(Boolean).join("\n"),
+    /<article[^>]*>[\s\S]*?<button[^>]*>[\s\S]*?<span[^>]*>([\s\S]*?)<\/span>[\s\S]*?<\/button>[\s\S]*?<p[^>]*>([\s\S]*?)<\/p>[\s\S]*?<\/article>/gi,
+  );
+  extract(
+    sectionsWithClass("faq-ledger"),
+    /<details[^>]*>[\s\S]*?<summary[^>]*>(?:<span[^>]*>[\s\S]*?<\/span>)?([\s\S]*?)(?:<b[^>]*>[\s\S]*?<\/b>)?<\/summary>[\s\S]*?<p[^>]*>([\s\S]*?)<\/p>[\s\S]*?<\/details>/gi,
+  );
+  return entries;
+}
+
+function faqEntitiesFromDocument() {
+  const entries = [];
+  const add = (question, answer) => {
+    const name = question?.textContent?.trim();
+    const text = answer?.textContent?.trim();
+    if (name && text && !entries.some(([existing]) => existing === name)) entries.push([name, text]);
+  };
+  document.querySelectorAll(".guide-faq article").forEach(node => add(node.querySelector("h3"), node.querySelector("p")));
+  document.querySelectorAll(".capability-faq article, .faq-list article").forEach(node => add(node.querySelector("button span"), node.querySelector("p")));
+  document.querySelectorAll(".faq-ledger-questions details").forEach(node => {
+    const summary = node.querySelector("summary")?.cloneNode(true);
+    summary?.querySelectorAll("span, b").forEach(child => child.remove());
+    add(summary, node.querySelector("p"));
+  });
+  return entries;
 }
 
 function setMeta(attribute, key, content) {
@@ -102,7 +160,8 @@ function setLanguageAlternates(route) {
   });
 }
 
-function schemaFor(route, canonical) {
+export function schemaForRoute(route, faqItems = []) {
+  const canonical = absolute(route.path);
   const language = route.lang ?? "en";
   const englishPath = route.lang ? route.alternatePath : route.path;
   const companyId = `${SITE_ORIGIN}/#company`;
@@ -123,12 +182,24 @@ function schemaFor(route, canonical) {
   ];
 
   if (route.path !== "/") {
+    const languageNames = {
+      en: { home: "Home", products: "Products", solutions: "Solutions", guides: "Buyer Guides" },
+      ko: { home: "홈", products: "제품", solutions: "솔루션", guides: "구매 가이드" },
+      "fr-CA": { home: "Accueil", products: "Produits", solutions: "Solutions", guides: "Guides d'achat" },
+    }[language] ?? { home: "Home", products: "Products", solutions: "Solutions", guides: "Buyer Guides" };
+    const productPaths = [siteRoutes.headcovers.path, siteRoutes.caps.path, siteRoutes.towels.path, siteRoutes.accessories.path, siteRoutes.packaging.path];
+    const solutionPaths = [siteRoutes.corporateGifts.path, siteRoutes.tournamentGifts.path];
+    const isGuide = guideRoutes.some(guide => guide.path === englishPath);
+    const parentEnglishPath = isGuide ? siteRoutes.guides.path : productPaths.includes(englishPath) ? siteRoutes.products.path : solutionPaths.includes(englishPath) ? siteRoutes.solutions.path : null;
+    const parentRoute = parentEnglishPath
+      ? (route.lang ? Object.values(siteRoutes).find(candidate => candidate.lang === route.lang && candidate.alternatePath === parentEnglishPath) : Object.values(siteRoutes).find(candidate => !candidate.lang && candidate.path === parentEnglishPath))
+      : null;
+    const parentName = parentEnglishPath === siteRoutes.guides.path ? languageNames.guides : parentEnglishPath === siteRoutes.products.path ? languageNames.products : languageNames.solutions;
+    const items = [{ "@type": "ListItem", position: 1, name: languageNames.home, item: absolute(route.lang === "ko" ? "/ko/" : route.lang === "fr-CA" ? "/fr-ca/" : "/") }];
+    if (parentRoute && parentRoute.path !== route.path) items.push({ "@type": "ListItem", position: 2, name: parentName, item: absolute(parentRoute.path) });
+    items.push({ "@type": "ListItem", position: items.length + 1, name: route.lang ? route.title : (breadcrumbNames[englishPath] ?? route.title), item: canonical });
     graph.push({
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: absolute("/") },
-        { "@type": "ListItem", position: 2, name: breadcrumbNames[route.path] ?? route.title, item: canonical },
-      ],
+      "@type": "BreadcrumbList", "@id": `${canonical}#breadcrumb`, itemListElement: items,
     });
   }
 
@@ -147,12 +218,13 @@ function schemaFor(route, canonical) {
     });
   }
 
-  if (englishPath.startsWith("/guides/") && englishPath !== "/guides/") {
-    graph.push({ "@type": "Article", headline: route.title, description: route.description, url: canonical, inLanguage: language, publisher: { "@id": companyId }, about: { "@id": brandId } });
+  if (guideRoutes.some(guide => guide.path === englishPath)) {
+    graph.push({ "@type": "Article", "@id": `${canonical}#article`, headline: route.title, description: route.description, url: canonical, inLanguage: language, mainEntityOfPage: { "@id": `${canonical}#webpage` }, author: { "@id": companyId }, publisher: { "@id": companyId }, about: { "@id": brandId } });
   }
 
-  if (route === siteRoutes.faq) {
-    graph.push({ "@type": "FAQPage", mainEntity: faqEntities.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) });
+  const resolvedFaqItems = faqItems.length ? faqItems : (englishPath === siteRoutes.faq.path ? defaultFaqEntities : []);
+  if (resolvedFaqItems.length) {
+    graph.push({ "@type": "FAQPage", "@id": `${canonical}#faq`, url: canonical, inLanguage: language, mainEntity: resolvedFaqItems.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) });
   }
 
   return { "@context": "https://schema.org", "@graph": graph };
@@ -178,7 +250,7 @@ export function applySeo(route) {
     schema.type = "application/ld+json";
     document.head.appendChild(schema);
   }
-  schema.textContent = JSON.stringify(schemaFor(route, canonical)).replace(/</g, "\\u003c");
+  schema.textContent = JSON.stringify(schemaForRoute(route, faqEntitiesFromDocument())).replace(/</g, "\\u003c");
 }
 
 export function inquirySourceForLocation() {

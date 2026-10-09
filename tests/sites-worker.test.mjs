@@ -573,6 +573,60 @@ test("prerenders complete semantic page content for every locale route", async (
   assert.match(frenchFaq, /Pouvez-vous créer un ensemble-cadeau complet\?/);
 });
 
+test("prerenders valid localized structured data for every route", async () => {
+  const schemas = new Map();
+  const englishArticlePaths = new Set(
+    Object.values(siteRoutes)
+      .filter((route) => !route.lang && ((route.path.startsWith("/guides/") && route.path !== "/guides/") || ["/first-order-guide/", "/quality-packaging-export-readiness/"].includes(route.path)))
+      .map((route) => route.path),
+  );
+
+  for (const route of Object.values(siteRoutes)) {
+    const relativePath = route.path === "/" ? "../dist/client/index.html" : `../dist/client/${route.path.slice(1)}index.html`;
+    const document = await readFile(new URL(relativePath, import.meta.url), "utf8");
+    const matches = [...document.matchAll(/<script id="zhoni-page-schema" type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
+    assert.equal(matches.length, 1, `Expected exactly one JSON-LD graph for ${route.path}.`);
+    assert.ok(matches[0].index < document.indexOf("</head>"), `Expected JSON-LD in the document head for ${route.path}.`);
+    const schema = JSON.parse(matches[0][1]);
+    const graph = schema["@graph"];
+    const types = graph.map((entity) => entity["@type"]);
+    for (const requiredType of ["Organization", "Brand", "WebSite", "WebPage"]) {
+      assert.ok(types.includes(requiredType), `Expected ${requiredType} schema for ${route.path}.`);
+    }
+    assert.equal(graph.find((entity) => entity["@type"] === "WebPage").inLanguage, route.lang ?? "en");
+    assert.equal(types.includes("BreadcrumbList"), route.path !== "/", `Unexpected breadcrumb state for ${route.path}.`);
+
+    const englishPath = route.lang ? route.alternatePath : route.path;
+    assert.equal(types.includes("Article"), englishArticlePaths.has(englishPath), `Unexpected Article schema state for ${route.path}.`);
+    schemas.set(route.path, { document, graph });
+  }
+
+  for (const [path, expectedCount, firstQuestion] of [
+    ["/faq/", 15, "What custom golf products can be discussed?"],
+    ["/ko/faq/", 6, "어떤 골프용품을 맞춤 제작할 수 있나요?"],
+    ["/fr-ca/faq/", 6, "Quels produits de golf peuvent être personnalisés?"],
+    ["/guides/custom-golf-headcover-materials/", 3, "Is one material always more premium?"],
+  ]) {
+    const { document, graph } = schemas.get(path);
+    const faq = graph.find((entity) => entity["@type"] === "FAQPage");
+    assert.equal(faq.mainEntity.length, expectedCount, `Unexpected FAQ question count for ${path}.`);
+    assert.equal(faq.mainEntity[0].name, firstQuestion);
+    for (const entity of faq.mainEntity) {
+      assert.ok(document.includes(entity.name), `FAQ question is not visible in ${path}: ${entity.name}`);
+      assert.ok(document.includes(entity.acceptedAnswer.text), `FAQ answer is not visible in ${path}: ${entity.name}`);
+    }
+  }
+
+  const koreanBreadcrumb = schemas.get("/ko/guides/custom-golf-headcover-materials/").graph.find((entity) => entity["@type"] === "BreadcrumbList");
+  assert.deepEqual(koreanBreadcrumb.itemListElement.slice(0, 2).map((item) => item.name), ["홈", "구매 가이드"]);
+  const frenchBreadcrumb = schemas.get("/fr-ca/guides/custom-golf-headcover-materials/").graph.find((entity) => entity["@type"] === "BreadcrumbList");
+  assert.deepEqual(frenchBreadcrumb.itemListElement.slice(0, 2).map((item) => item.name), ["Accueil", "Guides d'achat"]);
+
+  for (const path of ["/guides/", "/ko/guides/", "/fr-ca/guides/", "/custom-golf-gifts/", "/ko/custom-golf-gifts/", "/fr-ca/custom-golf-gifts/"]) {
+    assert.ok(schemas.get(path).graph.some((entity) => entity["@type"] === "CollectionPage"), `Expected CollectionPage schema for ${path}.`);
+  }
+});
+
 test("emits the files required by Sites packaging", async () => {
   await access(new URL("../dist/client/index.html", import.meta.url));
   await access(new URL("../dist/server/index.js", import.meta.url));

@@ -10,7 +10,7 @@ function escapeHtml(value) {
   return value.replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 }
 
-export function renderRouteDocument(template, route, appMarkup = "") {
+export function renderRouteDocument(template, route, appMarkup = "", structuredData = null) {
   const canonical = `${siteOrigin}${route.path}`;
   const englishPath = route.lang ? route.alternatePath : route.path;
   const localizedRoutes = Object.values(siteRoutes).filter(candidate => candidate.lang && candidate.alternatePath === englishPath);
@@ -24,6 +24,7 @@ export function renderRouteDocument(template, route, appMarkup = "") {
     .replace(/\s*<meta property="og:type"[^>]*>/i, "")
     .replace(/\s*<meta property="og:url"[^>]*>/i, "")
     .replace(/\s*<link rel="alternate"[^>]*>/gi, "")
+    .replace(/\s*<script id="zhoni-page-schema"[^>]*>[\s\S]*?<\/script>/i, "")
     .replace(/<html lang="[^"]*">/i, `<html lang="${route.lang ?? "en"}">`)
     .replace(/<title>[\s\S]*?<\/title>/i, `<title>${title}</title>`);
   const metadata = [
@@ -36,6 +37,7 @@ export function renderRouteDocument(template, route, appMarkup = "") {
     `<link rel="alternate" hreflang="en" href="${siteOrigin}${englishPath}" />`,
     ...localizedRoutes.map(candidate => `<link rel="alternate" hreflang="${candidate.lang}" href="${siteOrigin}${candidate.path}" />`),
     `<link rel="alternate" hreflang="x-default" href="${siteOrigin}${englishPath}" />`,
+    ...(structuredData ? [`<script id="zhoni-page-schema" type="application/ld+json">${JSON.stringify(structuredData).replace(/</g, "\\u003c")}</script>`] : []),
   ].join("\n    ");
 
   return cleanTemplate
@@ -47,10 +49,11 @@ async function prerenderRoutes() {
   const outputDirectory = path.join(root, "dist", "client");
   const template = await readFile(path.join(outputDirectory, "index.html"), "utf8");
   const serverEntry = path.join(root, "dist", "ssr", "entry-server.js");
-  const { render } = await import(pathToFileURL(serverEntry).href);
+  const { renderPage } = await import(pathToFileURL(serverEntry).href);
 
   for (const route of Object.values(siteRoutes)) {
-    const document = renderRouteDocument(template, route, render(route.path));
+    const { markup, structuredData } = renderPage(route.path);
+    const document = renderRouteDocument(template, route, markup, structuredData);
     const routeDirectory = route.path === "/"
       ? outputDirectory
       : path.join(outputDirectory, route.path.replace(/^\//, ""));

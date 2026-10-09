@@ -5,13 +5,14 @@ import { AnalyticsConsent } from "./analytics.jsx";
 import { CanadianFrenchSite } from "./CanadianFrenchSite.jsx";
 import { KoreanSite } from "./KoreanSite.jsx";
 import { setServerPathname } from "./locale.jsx";
+import { faqEntitiesFromMarkup, schemaForRoute } from "./seo.js";
 import { findRoute, siteRoutes } from "./siteRoutes.js";
 
-export function render(pathname) {
+export function renderPage(pathname) {
   const route = findRoute(pathname) ?? siteRoutes.home;
   setServerPathname(route.path);
 
-  return renderToString(
+  const markup = renderToString(
     <React.StrictMode>
       <App
         initialRoute={route}
@@ -21,4 +22,5 @@ export function render(pathname) {
       <AnalyticsConsent />
     </React.StrictMode>,
   );
+  return { markup, structuredData: schemaForRoute(route, faqEntitiesFromMarkup(markup)) };
 }
