@@ -55,6 +55,15 @@ const guides = [
   { key:"quality", group:"readiness", label:"品質・納品", title:"カスタムゴルフ用品品質チェックリスト", copy:"素材、寸法、ロゴ、機能、包装、カートンを承認仕様に基づいて確認します。", href:"/ja/guides/custom-golf-merchandise-quality-checklist/" },
   { key:"delivery", group:"readiness", label:"品質・納品", title:"納期とイベント日を計画する", copy:"アートワーク、サンプル、生産、包装、国際配送を希望受取日から逆算します。", href:"/ja/guides/how-to-plan-a-golf-merchandise-delivery-date/" },
   { key:"postbrief", group:"procurement", label:"MOQ・初回注文", title:"プロジェクト相談後の進行", copy:"ブリーフ受付、適合性確認、追加質問、次の段階までをご案内します。", href:"/ja/guides/what-happens-after-a-custom-golf-project-brief/" },
+  { key:"headcovermaterials", group:"product", label:"製品開発", title:"ヘッドカバー素材の選び方", copy:"PU、織物、ニット、複合素材を触感、構造、ロゴ、使用条件から比較します。", href:"/ja/guides/custom-golf-headcover-materials/" },
+  { key:"headcovertypes", group:"product", label:"製品開発", title:"ヘッドカバーの種類と構造", copy:"ドライバーからパターまで、クラブ別の形状、フィット、番手表示を確認します。", href:"/ja/guides/custom-golf-headcover-types/" },
+  { key:"specification", group:"product", label:"製品開発", title:"カスタム製品仕様書の作り方", copy:"寸法、素材、部品、ロゴ、包装、許容範囲を製造可能な基準へ整理します。", href:"/ja/guides/custom-golf-product-specification-sheet/" },
+  { key:"sample", group:"product", label:"製品開発", title:"サンプル承認チェックリスト", copy:"量産前に形状、寸法、機能、素材、ロゴ、包装を具体的に確認します。", href:"/ja/guides/custom-golf-sample-approval-checklist/" },
+  { key:"collection", group:"product", label:"製品開発", title:"ゴルフアクセサリー・コレクション設計", copy:"主力製品、補助製品、共通デザイン、パッケージを一つの体系として構成します。", href:"/ja/guides/coordinated-golf-accessory-collection/" },
+  { key:"headcoverlogo", group:"product", label:"製品開発", title:"ヘッドカバーのロゴ方法と位置", copy:"曲面、パネル、縫い目、素材に合わせて刺繍、型押し、パッチを選びます。", href:"/ja/guides/headcover-logo-methods-and-placement/" },
+  { key:"capsmaterials", group:"product", label:"製品開発", title:"ゴルフ帽子の生地選び", copy:"コットンツイル、機能素材、メッシュを気候、着用感、ブランド表現から比較します。", href:"/ja/guides/custom-golf-cap-materials/" },
+  { key:"capsbranding", group:"product", label:"製品開発", title:"ゴルフ帽子のロゴ位置と刺繍", copy:"前面、側面、背面の配置と平面・3D刺繍、パッチの再現性を確認します。", href:"/ja/guides/custom-golf-cap-logo-placement/" },
+  { key:"devbrief", group:"product", label:"製品開発", title:"製品開発ブリーフの作り方", copy:"目的、構造、必須仕様、数量、日程、パッケージ、納品先を一つにまとめます。", href:"/ja/guides/custom-golf-product-development-brief/" },
 ];
 
 const guideGroups = [

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { LanguageSwitcher } from "./locale.jsx";
 import { LocalizedBuyerEvidence } from "./LocalizedBuyerEvidence.jsx";
+import { JapaneseFinalGuides } from "./JapaneseFinalGuides.jsx";
 
 const WHATSAPP_URL = import.meta.env.VITE_WHATSAPP_URL ?? "https://wa.me/8617759190848";
 const Arrow = () => <span aria-hidden="true">↗</span>;
@@ -44,5 +45,5 @@ function GuidePage({ pageKey }) {
 export function JapaneseProcurement({ routeKey }) {
   if (hubContent[routeKey]) return <HubPage pageKey={routeKey} />;
   if (guideContent[routeKey]) return <GuidePage pageKey={routeKey} />;
-  return null;
+  return <JapaneseFinalGuides routeKey={routeKey} />;
 }
