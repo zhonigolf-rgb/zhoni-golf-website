@@ -12,6 +12,7 @@ const localeOptions = [
   { code: "fr-CA", label: "Français (Canada)", short: "FR", home: "/fr-ca/" },
   { code: "ko", label: "한국어", short: "KO", home: "/ko/" },
   { code: "ja", label: "日本語", short: "JA", home: "/ja/" },
+  { code: "de", label: "Deutsch", short: "DE", home: "/de/" },
 ];
 
 function englishPathFor(path) {

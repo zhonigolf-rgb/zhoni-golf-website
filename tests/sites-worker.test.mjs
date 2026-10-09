@@ -467,6 +467,46 @@ test("keeps completed Japanese routes in full parity with English", async () => 
   }
 });
 
+test("publishes the first German locale round with localized SEO and conversion paths", async () => {
+  const [sitemap, germanSite, app, locale, serverEntry] = await Promise.all([
+    readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8"),
+    readFile(new URL("../src/GermanSite.jsx", import.meta.url), "utf8"),
+    readFile(new URL("../src/App.jsx", import.meta.url), "utf8"),
+    readFile(new URL("../src/locale.jsx", import.meta.url), "utf8"),
+    readFile(new URL("../src/entry-server.jsx", import.meta.url), "utf8"),
+  ]);
+  const keys = ["deHome", "deProducts", "deSolutions", "deProcess", "deFaq", "deAbout", "deQuote"];
+
+  for (const key of keys) {
+    const route = siteRoutes[key];
+    assert.equal(findRoute(route.path), route);
+    assert.equal(route.lang, "de");
+    assert.match(sitemap, new RegExp(`https://zhonigolf\\.com${route.path}`.replaceAll("/", "\\/")));
+    const document = await readFile(new URL(`../dist/client/${route.path.slice(1)}index.html`, import.meta.url), "utf8");
+    assert.match(document, /<html lang="de">/);
+    assert.match(document, /<h1(?:\s|>)/);
+    assert.match(document, new RegExp(`hreflang="en" href="https://zhonigolf\\.com${route.alternatePath.replaceAll("/", "\\/")}"`));
+    assert.match(document, new RegExp(`hreflang="de" href="https://zhonigolf\\.com${route.path.replaceAll("/", "\\/")}"`));
+    assert.match(document, /data-buyer-evidence="de-/);
+    for (const path of ["/de/products/", "/de/solutions/", "/de/our-process/", "/de/request-a-quote/"]) {
+      assert.match(document, new RegExp(path.replaceAll("/", "\\/")), `Expected ${path} on ${route.path}.`);
+    }
+  }
+
+  const faqDocument = await readFile(new URL("../dist/client/de/faq/index.html", import.meta.url), "utf8");
+  const faqSchemaMatch = faqDocument.match(/<script id="zhoni-page-schema" type="application\/ld\+json">([\s\S]*?)<\/script>/);
+  const faqGraph = JSON.parse(faqSchemaMatch[1])["@graph"];
+  assert.ok(faqGraph.some((entity) => entity["@type"] === "FAQPage"));
+  assert.match(germanSite, /data\.set\("page_language", "de"\)/);
+  assert.match(germanSite, /form_name:"de_quote_page_project_brief"/);
+  assert.match(germanSite, /sales@zhonigolf\.com/);
+  assert.match(germanSite, /\+86 177 5919 0848/);
+  assert.match(app, /lazy\(\(\) => import\("\.\/GermanSite\.jsx"\)/);
+  assert.match(app, /route\.lang === "de"/);
+  assert.match(locale, /code: "de", label: "Deutsch"/);
+  assert.match(serverEntry, /GermanSiteComponent=\{GermanSite\}/);
+});
+
 test("publishes a complete first-round Korean locale with reciprocal SEO alternates", async () => {
   const template = await readFile(new URL("../index.html", import.meta.url), "utf8");
   const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");

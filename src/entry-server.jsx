@@ -5,6 +5,7 @@ import { AnalyticsConsent } from "./analytics.jsx";
 import { CanadianFrenchSite } from "./CanadianFrenchSite.jsx";
 import { KoreanSite } from "./KoreanSite.jsx";
 import { JapaneseSite } from "./JapaneseSite.jsx";
+import { GermanSite } from "./GermanSite.jsx";
 import { setServerPathname } from "./locale.jsx";
 import { faqEntitiesFromMarkup, schemaForRoute } from "./seo.js";
 import { findRoute, siteRoutes } from "./siteRoutes.js";
@@ -20,6 +21,7 @@ export function renderPage(pathname) {
         KoreanSiteComponent={KoreanSite}
         CanadianFrenchSiteComponent={CanadianFrenchSite}
         JapaneseSiteComponent={JapaneseSite}
+        GermanSiteComponent={GermanSite}
       />
       <AnalyticsConsent />
     </React.StrictMode>,

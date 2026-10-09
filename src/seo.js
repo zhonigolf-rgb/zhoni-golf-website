@@ -176,7 +176,7 @@ export function schemaForRoute(route, faqItems = []) {
       name: "Xiamen Jindongyu Trading Co., Ltd.", legalName: "Xiamen Jindongyu Trading Co., Ltd.",
       description: "China-based custom golf merchandise manufacturing and sourcing partner for clubs, tournaments, corporate teams and brands.",
       url: SITE_ORIGIN, email: "sales@zhonigolf.com", telephone: "+8617759190848", areaServed: "International",
-      contactPoint: { "@type": "ContactPoint", contactType: "sales", email: "sales@zhonigolf.com", telephone: "+8617759190848", availableLanguage: ["English", "French", "Korean", "Japanese"] },
+      contactPoint: { "@type": "ContactPoint", contactType: "sales", email: "sales@zhonigolf.com", telephone: "+8617759190848", availableLanguage: ["English", "French", "Korean", "Japanese", "German"] },
     },
     { "@type": "Brand", "@id": brandId, name: "ZHONI", description: "Custom golf merchandise, golf gift sets and custom packaging for clubs, events and brands.", url: SITE_ORIGIN, brandOf: { "@id": companyId } },
     { "@type": "WebSite", "@id": websiteId, name: "ZHONI", url: SITE_ORIGIN, inLanguage: ["en", "fr-CA", "ko", "ja"], publisher: { "@id": companyId }, about: { "@id": brandId } },
@@ -189,6 +189,7 @@ export function schemaForRoute(route, faqItems = []) {
       ko: { home: "홈", products: "제품", solutions: "솔루션", guides: "구매 가이드" },
       "fr-CA": { home: "Accueil", products: "Produits", solutions: "Solutions", guides: "Guides d'achat" },
       ja: { home: "ホーム", products: "製品", solutions: "ソリューション", guides: "購入ガイド" },
+      de: { home: "Startseite", products: "Produkte", solutions: "Lösungen", guides: "Ratgeber" },
     }[language] ?? { home: "Home", products: "Products", solutions: "Solutions", guides: "Buyer Guides" };
     const productPaths = [siteRoutes.headcovers.path, siteRoutes.caps.path, siteRoutes.towels.path, siteRoutes.accessories.path, siteRoutes.packaging.path];
     const solutionPaths = [siteRoutes.corporateGifts.path, siteRoutes.tournamentGifts.path, siteRoutes.clubMemberPrograms.path, siteRoutes.privateLabelCollections.path];
@@ -198,7 +199,7 @@ export function schemaForRoute(route, faqItems = []) {
       ? (route.lang ? Object.values(siteRoutes).find(candidate => candidate.lang === route.lang && candidate.alternatePath === parentEnglishPath) : Object.values(siteRoutes).find(candidate => !candidate.lang && candidate.path === parentEnglishPath))
       : null;
     const parentName = parentEnglishPath === siteRoutes.guides.path ? languageNames.guides : parentEnglishPath === siteRoutes.products.path ? languageNames.products : languageNames.solutions;
-    const items = [{ "@type": "ListItem", position: 1, name: languageNames.home, item: absolute(route.lang === "ko" ? "/ko/" : route.lang === "fr-CA" ? "/fr-ca/" : route.lang === "ja" ? "/ja/" : "/") }];
+    const items = [{ "@type": "ListItem", position: 1, name: languageNames.home, item: absolute(route.lang === "ko" ? "/ko/" : route.lang === "fr-CA" ? "/fr-ca/" : route.lang === "ja" ? "/ja/" : route.lang === "de" ? "/de/" : "/") }];
     if (parentRoute && parentRoute.path !== route.path) items.push({ "@type": "ListItem", position: 2, name: parentName, item: absolute(parentRoute.path) });
     items.push({ "@type": "ListItem", position: items.length + 1, name: route.lang ? route.title : (breadcrumbNames[englishPath] ?? route.title), item: canonical });
     graph.push({
@@ -270,7 +271,7 @@ export function inquirySourceForLocation() {
 
 export function addInquirySource(href, currentRoute) {
   const url = new URL(href, window.location.origin);
-  if (url.origin !== window.location.origin || !/^\/(?:(?:ko|fr-ca)\/)?request-a-quote(?:\/|$)/.test(url.pathname)) return url;
+  if (url.origin !== window.location.origin || !/^\/(?:(?:ko|fr-ca|ja|de)\/)?request-a-quote(?:\/|$)/.test(url.pathname)) return url;
   const existing = url.searchParams.get("source")?.toLowerCase();
   if (!existing || !SAFE_SOURCE.test(existing)) url.searchParams.set("source", currentRoute.source ?? "direct-quote");
   return url;

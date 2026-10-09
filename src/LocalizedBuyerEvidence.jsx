@@ -1,4 +1,19 @@
 const evidenceCopy = {
+  de: {
+    eyebrow: "NACHWEISE FÜR EINKÄUFER",
+    title: "Klar erkennen, was geprüft wird und worauf Freigaben beruhen.",
+    intro: "Ein belastbares Individualprojekt basiert auf nachvollziehbaren Entscheidungen. Die konkreten Unterlagen hängen vom Produkt und vereinbarten Leistungsumfang ab; die grundlegenden Prüfpunkte bleiben jedoch gleich.",
+    items: [
+      ["01", "Schriftlicher Projektumfang", "Produkt, Material, Konstruktion, Veredelung, Verpackung und offene Entscheidungen werden in einer gemeinsamen Projektreferenz festgehalten."],
+      ["02", "Freigabeverlauf", "Rückmeldungen zu Daten, Entwürfen und Mustern werden vor der Produktionsvorbereitung auf dem letzten vereinbarten Stand zusammengeführt."],
+      ["03", "Produktspezifische Qualitätsprüfung", "Optik, Funktion, Logo und Verpackung werden anhand der freigegebenen Spezifikation statt einer allgemeinen Prüfliste bewertet."],
+      ["04", "Verpackung und Übergabe", "Einzelverpackung, Umkartons, Zielort und vereinbarte Lieferverantwortung werden vor der finalen Übergabe bestätigt."],
+    ],
+    boundary: "GELTUNGSBEREICH DER UNTERLAGEN",
+    boundaryCopy: "Form und Verfügbarkeit richten sich nach Produkt, Produktionsweg und Projektphase. Benötigte Prüf-, Test-, Compliance- oder Versandunterlagen müssen vor der Beauftragung benannt und vereinbart werden. Dieser Abschnitt stellt keine pauschale Zertifizierungszusage dar.",
+    link: "UNSEREN ABLAUF ANSEHEN",
+    href: "/de/our-process/",
+  },
   ja: {
     eyebrow: "バイヤー向け確認情報",
     title: "何を確認し、どの記録を承認の根拠にするかを明確に。",
