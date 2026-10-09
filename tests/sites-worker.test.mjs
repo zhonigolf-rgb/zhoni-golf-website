@@ -236,7 +236,7 @@ test("publishes Korean product, solution and buyer-guide routes with reciprocal 
   const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
   const routeKeys = [
     "koHeadcovers", "koCaps", "koTowels", "koAccessories", "koPackaging",
-    "koTournamentGifts", "koCorporateGifts", "koGuides",
+    "koTournamentGifts", "koCorporateGifts", "koClubMemberPrograms", "koPrivateLabelCollections", "koGuides",
     "koHeadcoversGuide", "koTowelsGuide", "koCapsStyleGuide", "koPackagingGuide",
   ];
 
@@ -295,13 +295,12 @@ test("lists every published Korean procurement page in the Korean guide hub", as
   for (const required of ["/ko/products/", "/ko/solutions/", "/ko/our-process/", "/ko/request-a-quote/"]) assert.match(procurement, new RegExp(required.replaceAll("/", "\\/")));
 });
 
-test("keeps the completed Korean routes in parity while new English solutions await translation", async () => {
+test("keeps the completed Korean routes in full parity with English", async () => {
   const template = await readFile(new URL("../index.html", import.meta.url), "utf8");
   const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
-  const englishOnlySolutions = new Set([siteRoutes.clubMemberPrograms.path, siteRoutes.privateLabelCollections.path]);
-  const englishRoutes = Object.values(siteRoutes).filter(route => !route.lang && !englishOnlySolutions.has(route.path));
+  const englishRoutes = Object.values(siteRoutes).filter(route => !route.lang);
   const koreanRoutes = Object.values(siteRoutes).filter(route => route.lang === "ko");
-  assert.equal(englishRoutes.length, 49);
+  assert.equal(englishRoutes.length, 51);
   assert.equal(koreanRoutes.length, englishRoutes.length);
 
   const koreanByEnglishPath = new Map(koreanRoutes.map(route => [route.alternatePath, route]));
@@ -372,7 +371,7 @@ test("publishes Canadian French product and solution detail pages with reciproca
   const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
   const expansion = await readFile(new URL("../src/CanadianFrenchExpansion.jsx", import.meta.url), "utf8");
   const site = await readFile(new URL("../src/CanadianFrenchSite.jsx", import.meta.url), "utf8");
-  const keys = ["frCaHeadcovers", "frCaCaps", "frCaTowels", "frCaAccessories", "frCaPackaging", "frCaTournamentGifts", "frCaCorporateGifts"];
+  const keys = ["frCaHeadcovers", "frCaCaps", "frCaTowels", "frCaAccessories", "frCaPackaging", "frCaTournamentGifts", "frCaCorporateGifts", "frCaClubMemberPrograms", "frCaPrivateLabelCollections"];
 
   for (const key of keys) {
     const route = siteRoutes[key];
@@ -474,17 +473,16 @@ test("publishes Canadian French product-development and event-planning guide clu
   for (const required of ["rows.map", "checklist.map", "questions.map", "POINT À DÉFINIR", "LISTE DE CONTRÔLE"]) assert.match(articles, new RegExp(required.replaceAll(".", "\\.")));
 });
 
-test("keeps completed Canadian French routes in parity while new English solutions await translation", async () => {
+test("keeps completed Canadian French routes in full parity with English", async () => {
   const template = await readFile(new URL("../index.html", import.meta.url), "utf8");
   const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
   const hub = await readFile(new URL("../src/CanadianFrenchExpansion.jsx", import.meta.url), "utf8");
   const finalPages = await readFile(new URL("../src/CanadianFrenchFinalGuides.jsx", import.meta.url), "utf8");
-  const englishOnlySolutions = new Set([siteRoutes.clubMemberPrograms.path, siteRoutes.privateLabelCollections.path]);
-  const englishRoutes = Object.values(siteRoutes).filter((route) => !route.lang && !englishOnlySolutions.has(route.path));
+  const englishRoutes = Object.values(siteRoutes).filter((route) => !route.lang);
   const frenchRoutes = Object.values(siteRoutes).filter((route) => route.lang === "fr-CA");
   const frenchByEnglishPath = new Map(frenchRoutes.map((route) => [route.alternatePath, route]));
 
-  assert.equal(englishRoutes.length, 49);
+  assert.equal(englishRoutes.length, 51);
   assert.equal(frenchRoutes.length, englishRoutes.length);
 
   for (const englishRoute of englishRoutes) {
@@ -720,6 +718,40 @@ test("publishes complete club-member and private-label solution pages", async ()
   ]);
   assert.match(collectionGuide, /\/solutions\/golf-club-member-programs\//);
   assert.match(briefGuide, /\/solutions\/private-label-golf-collections\//);
+});
+
+test("localizes the new solution programs in Korean and Canadian French", async () => {
+  const cases = [
+    [siteRoutes.koClubMemberPrograms, "ko", "ko-club-member-programs", "하나의 프로그램으로 여러 회원 순간을 지원할 수 있나요"],
+    [siteRoutes.koPrivateLabelCollections, "ko", "ko-private-label-collections", "하나의 핵심 제품으로 시작할 수 있나요"],
+    [siteRoutes.frCaClubMemberPrograms, "fr-CA", "fr-ca-club-member-programs", "Un même programme peut-il couvrir plusieurs moments membres"],
+    [siteRoutes.frCaPrivateLabelCollections, "fr-CA", "fr-ca-private-label-collections", "Peut-on commencer par un seul produit phare"],
+  ];
+
+  for (const [route, language, evidence, question] of cases) {
+    const document = await readFile(new URL(`../dist/client/${route.path.slice(1)}index.html`, import.meta.url), "utf8");
+    assert.match(document, new RegExp(`<html lang="${language}">`));
+    assert.match(document, new RegExp(`data-buyer-evidence="${evidence}"`));
+    assert.match(document, new RegExp(question));
+    assert.match(document, /solution=(?:club-member-programs|private-label-collections)&amp;source=/);
+    for (const hreflang of ["en", "ko", "fr-CA", "x-default"]) assert.match(document, new RegExp(`hreflang="${hreflang}"`));
+    const schemaMatch = document.match(/<script id="zhoni-page-schema" type="application\/ld\+json">([\s\S]*?)<\/script>/);
+    const graph = JSON.parse(schemaMatch[1])["@graph"];
+    assert.ok(graph.some((entity) => entity["@type"] === "Service"));
+    assert.ok(graph.some((entity) => entity["@type"] === "FAQPage"));
+    assert.equal(graph.find((entity) => entity["@type"] === "BreadcrumbList").itemListElement[1].name, language === "ko" ? "솔루션" : "Solutions");
+  }
+
+  const localizedGuides = await Promise.all([
+    "ko/guides/coordinated-golf-accessory-collection",
+    "ko/guides/custom-golf-product-development-brief",
+    "fr-ca/guides/coordinated-golf-accessory-collection",
+    "fr-ca/guides/custom-golf-product-development-brief",
+  ].map((path) => readFile(new URL(`../dist/client/${path}/index.html`, import.meta.url), "utf8")));
+  assert.match(localizedGuides[0], /\/ko\/solutions\/golf-club-member-programs\//);
+  assert.match(localizedGuides[1], /\/ko\/solutions\/private-label-golf-collections\//);
+  assert.match(localizedGuides[2], /\/fr-ca\/solutions\/golf-club-member-programs\//);
+  assert.match(localizedGuides[3], /\/fr-ca\/solutions\/private-label-golf-collections\//);
 });
 
 test("emits the files required by Sites packaging", async () => {
