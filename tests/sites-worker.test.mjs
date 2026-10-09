@@ -627,6 +627,41 @@ test("prerenders valid localized structured data for every route", async () => {
   }
 });
 
+test("adds a transparent buyer evidence layer to English procurement routes", async () => {
+  const evidenceRoutes = new Map([
+    ["/products/", "products"],
+    ["/custom-golf-headcovers/", "product-headcovers"],
+    ["/custom-golf-caps/", "product-caps"],
+    ["/custom-golf-towels/", "product-towels"],
+    ["/custom-golf-accessories/", "product-accessories"],
+    ["/custom-golf-packaging/", "product-packaging"],
+    ["/solutions/", "solutions"],
+    ["/custom-golf-gifts/", "custom-golf-gifts"],
+    ["/solutions/corporate-golf-gifts/", "corporate-gifts"],
+    ["/solutions/golf-tournament-gifts/", "tournament-gifts"],
+    ["/our-process/", "process"],
+    ["/request-a-quote/", "inquiry"],
+  ]);
+
+  for (const [path, context] of evidenceRoutes) {
+    const document = await readFile(new URL(`../dist/client/${path.slice(1)}index.html`, import.meta.url), "utf8");
+    assert.match(document, new RegExp(`data-buyer-evidence="${context}"`), `Expected buyer evidence on ${path}.`);
+    for (const required of ["Written scope", "Approval trail", "Quality checkpoints", "Packing &amp; hand-off", "DOCUMENTATION BOUNDARY"]) {
+      assert.match(document, new RegExp(required), `Expected ${required} on ${path}.`);
+    }
+    assert.match(document, /this section is not a claim of universal certification/i);
+  }
+
+  const home = await readFile(new URL("../dist/client/index.html", import.meta.url), "utf8");
+  assert.match(home, /PROJECT DIRECTION IN PRACTICE/);
+  assert.match(home, /These representative visuals illustrate/);
+  assert.doesNotMatch(home, /PROJECT EVIDENCE|Delivered in the real world/);
+
+  const styles = await readFile(new URL("../src/zhoni-pages.css", import.meta.url), "utf8");
+  assert.match(styles, /\.buyer-evidence-grid\{display:grid;grid-template-columns:repeat\(4,minmax\(0,1fr\)\)/);
+  assert.match(styles, /@media\(max-width:560px\)[\s\S]*?\.buyer-evidence-grid\{grid-template-columns:1fr/);
+});
+
 test("emits the files required by Sites packaging", async () => {
   await access(new URL("../dist/client/index.html", import.meta.url));
   await access(new URL("../dist/server/index.js", import.meta.url));
