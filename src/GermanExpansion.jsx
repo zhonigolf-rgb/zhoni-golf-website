@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { LanguageSwitcher } from "./locale.jsx";
 import { LocalizedBuyerEvidence } from "./LocalizedBuyerEvidence.jsx";
+import { GermanGuides } from "./GermanGuides.jsx";
 
 const WHATSAPP_URL = import.meta.env.VITE_WHATSAPP_URL ?? "https://wa.me/8617759190848";
 const Arrow = () => <span aria-hidden="true">↗</span>;
@@ -42,5 +43,5 @@ function SolutionPage({ pageKey }) {
 export function GermanExpansion({ routeKey }) {
   if (categoryContent[routeKey]) return <CategoryPage pageKey={routeKey} />;
   if (solutionContent[routeKey]) return <SolutionPage pageKey={routeKey} />;
-  return null;
+  return <GermanGuides routeKey={routeKey} />;
 }
