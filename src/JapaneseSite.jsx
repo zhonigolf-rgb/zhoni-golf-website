@@ -14,14 +14,14 @@ function Header({ active }) {
   return <header className={`zhoni-header ja-header ${menu ? "zhoni-header-open" : ""}`}>
     <a className="zhoni-wordmark" href="/ja/"><strong>ZHONI</strong><small>CUSTOM GOLF MERCHANDISE</small></a>
     <button className="zhoni-menu" onClick={() => setMenu(value => !value)} aria-expanded={menu}>{menu ? "閉じる" : "メニュー"}</button>
-    <nav aria-label="メインナビゲーション"><a className={active === "products" ? "active" : ""} href="/ja/products/">製品</a><a className={active === "solutions" ? "active" : ""} href="/ja/solutions/">ソリューション</a><a className={active === "process" ? "active" : ""} href="/ja/our-process/">進め方</a><a className={active === "faq" ? "active" : ""} href="/ja/faq/">FAQ</a><a className={active === "about" ? "active" : ""} href="/ja/about/">会社情報</a></nav>
+    <nav aria-label="メインナビゲーション"><a className={active === "products" ? "active" : ""} href="/ja/products/">製品</a><a className={active === "solutions" ? "active" : ""} href="/ja/solutions/">ソリューション</a><a className={active === "guides" ? "active" : ""} href="/ja/guides/">購入ガイド</a><a className={active === "process" ? "active" : ""} href="/ja/our-process/">進め方</a><a className={active === "faq" ? "active" : ""} href="/ja/faq/">FAQ</a><a className={active === "about" ? "active" : ""} href="/ja/about/">会社情報</a></nav>
     <LanguageSwitcher />
     <a className="zhoni-header-cta" href="/ja/request-a-quote/">プロジェクト相談 <Arrow /></a>
   </header>;
 }
 
 function Footer() {
-  return <footer className="site-footer"><div className="site-footer-main"><a className="zhoni-wordmark" href="/ja/"><strong>ZHONI</strong><small>CUSTOM GOLF MERCHANDISE</small></a><div className="site-footer-copy"><p>クラブ、大会、企業、ブランド向けのカスタムゴルフ用品とパッケージ。</p><span>ギフトセット · ヘッドカバー · キャップ · タオル · アクセサリー · パッケージ</span><div className="site-footer-contact"><b>直接のお問い合わせ</b><a href="mailto:sales@zhonigolf.com">sales@zhonigolf.com</a><a href={WHATSAPP_URL}>WhatsApp +86 177 5919 0848 <Arrow /></a></div></div><nav aria-label="フッターナビゲーション"><a href="/ja/products/">製品</a><a href="/ja/solutions/">ソリューション</a><a href="/ja/our-process/">進め方</a><a href="/ja/faq/">FAQ</a><a href="/ja/about/">会社情報</a><a href="/ja/request-a-quote/">お問い合わせ <Arrow /></a></nav></div><div className="site-footer-base"><span>ZHONI · CUSTOM GOLF MERCHANDISE</span><span>運営法人: Xiamen Jindongyu Trading Co., Ltd.</span></div></footer>;
+  return <footer className="site-footer"><div className="site-footer-main"><a className="zhoni-wordmark" href="/ja/"><strong>ZHONI</strong><small>CUSTOM GOLF MERCHANDISE</small></a><div className="site-footer-copy"><p>クラブ、大会、企業、ブランド向けのカスタムゴルフ用品とパッケージ。</p><span>ギフトセット · ヘッドカバー · キャップ · タオル · アクセサリー · パッケージ</span><div className="site-footer-contact"><b>直接のお問い合わせ</b><a href="mailto:sales@zhonigolf.com">sales@zhonigolf.com</a><a href={WHATSAPP_URL}>WhatsApp +86 177 5919 0848 <Arrow /></a></div></div><nav aria-label="フッターナビゲーション"><a href="/ja/products/">製品</a><a href="/ja/solutions/">ソリューション</a><a href="/ja/guides/">購入ガイド</a><a href="/ja/our-process/">進め方</a><a href="/ja/faq/">FAQ</a><a href="/ja/about/">会社情報</a><a href="/ja/request-a-quote/">お問い合わせ <Arrow /></a></nav></div><div className="site-footer-base"><span>ZHONI · CUSTOM GOLF MERCHANDISE</span><span>運営法人: Xiamen Jindongyu Trading Co., Ltd.</span></div></footer>;
 }
 
 const productFamilies = [

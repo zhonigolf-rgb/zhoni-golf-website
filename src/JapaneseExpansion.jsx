@@ -7,11 +7,11 @@ const Arrow = () => <span aria-hidden="true">↗</span>;
 
 function Header({ active }) {
   const [menu, setMenu] = useState(false);
-  return <header className={`zhoni-header ja-header ${menu ? "zhoni-header-open" : ""}`}><a className="zhoni-wordmark" href="/ja/"><strong>ZHONI</strong><small>CUSTOM GOLF MERCHANDISE</small></a><button className="zhoni-menu" onClick={() => setMenu(value => !value)} aria-expanded={menu}>{menu ? "閉じる" : "メニュー"}</button><nav aria-label="メインナビゲーション"><a className={active === "products" ? "active" : ""} href="/ja/products/">製品</a><a className={active === "solutions" ? "active" : ""} href="/ja/solutions/">ソリューション</a><a href="/ja/our-process/">進め方</a><a href="/ja/faq/">FAQ</a><a href="/ja/about/">会社情報</a></nav><LanguageSwitcher /><a className="zhoni-header-cta" href="/ja/request-a-quote/">プロジェクト相談 <Arrow /></a></header>;
+  return <header className={`zhoni-header ja-header ${menu ? "zhoni-header-open" : ""}`}><a className="zhoni-wordmark" href="/ja/"><strong>ZHONI</strong><small>CUSTOM GOLF MERCHANDISE</small></a><button className="zhoni-menu" onClick={() => setMenu(value => !value)} aria-expanded={menu}>{menu ? "閉じる" : "メニュー"}</button><nav aria-label="メインナビゲーション"><a className={active === "products" ? "active" : ""} href="/ja/products/">製品</a><a className={active === "solutions" ? "active" : ""} href="/ja/solutions/">ソリューション</a><a className={active === "guides" ? "active" : ""} href="/ja/guides/">購入ガイド</a><a href="/ja/our-process/">進め方</a><a href="/ja/faq/">FAQ</a><a href="/ja/about/">会社情報</a></nav><LanguageSwitcher /><a className="zhoni-header-cta" href="/ja/request-a-quote/">プロジェクト相談 <Arrow /></a></header>;
 }
 
 function Footer() {
-  return <footer className="site-footer"><div className="site-footer-main"><a className="zhoni-wordmark" href="/ja/"><strong>ZHONI</strong><small>CUSTOM GOLF MERCHANDISE</small></a><div className="site-footer-copy"><p>クラブ、大会、企業、ブランド向けのカスタムゴルフ用品。</p><span>製品 · ロゴ · サンプル · 品質 · パッケージ · 納品</span><div className="site-footer-contact"><b>直接のお問い合わせ</b><a href="mailto:sales@zhonigolf.com">sales@zhonigolf.com</a><a href={WHATSAPP_URL}>WhatsApp +86 177 5919 0848 <Arrow /></a></div></div><nav><a href="/ja/products/">製品</a><a href="/ja/solutions/">ソリューション</a><a href="/ja/our-process/">進め方</a><a href="/ja/faq/">FAQ</a><a href="/ja/request-a-quote/">お問い合わせ <Arrow /></a></nav></div><div className="site-footer-base"><span>ZHONI · CUSTOM GOLF MERCHANDISE</span><span>運営法人: Xiamen Jindongyu Trading Co., Ltd.</span></div></footer>;
+  return <footer className="site-footer"><div className="site-footer-main"><a className="zhoni-wordmark" href="/ja/"><strong>ZHONI</strong><small>CUSTOM GOLF MERCHANDISE</small></a><div className="site-footer-copy"><p>クラブ、大会、企業、ブランド向けのカスタムゴルフ用品。</p><span>製品 · ロゴ · サンプル · 品質 · パッケージ · 納品</span><div className="site-footer-contact"><b>直接のお問い合わせ</b><a href="mailto:sales@zhonigolf.com">sales@zhonigolf.com</a><a href={WHATSAPP_URL}>WhatsApp +86 177 5919 0848 <Arrow /></a></div></div><nav><a href="/ja/products/">製品</a><a href="/ja/solutions/">ソリューション</a><a href="/ja/guides/">購入ガイド</a><a href="/ja/our-process/">進め方</a><a href="/ja/faq/">FAQ</a><a href="/ja/request-a-quote/">お問い合わせ <Arrow /></a></nav></div><div className="site-footer-base"><span>ZHONI · CUSTOM GOLF MERCHANDISE</span><span>運営法人: Xiamen Jindongyu Trading Co., Ltd.</span></div></footer>;
 }
 
 const categoryContent = {
@@ -39,8 +39,63 @@ function SolutionPage({ pageKey }) {
   return <main className="zhoni-page corporate-page ja-page"><Header active="solutions" /><section className="corporate-hero"><aside className="corporate-rail" aria-hidden="true"><strong>Z</strong><span>GOLF GIFT SOLUTIONS</span></aside><div><p>{content.label}</p><h1>{content.title}</h1><p>{content.intro}</p><a href={`/ja/request-a-quote/?solution=${content.solution}&source=${content.solution}`}>プロジェクト相談 <Arrow /></a></div><img src={content.image} alt={content.label} /></section><section className="corporate-ledger"><div><p>企画の進め方</p>{content.steps.map(([number,title,copy]) => <article key={number}><b>{number}</b><h2>{title}</h2><p>{copy}</p><span>→</span></article>)}</div><aside><p>最初に必要な情報</p><ul><li><b>対象</b><span>誰が、何人受け取るか</span></li><li><b>希望日</b><span>イベント日または受取希望日</span></li><li><b>納品先</b><span>国、都市、配布拠点</span></li><li><b>ブランド資料</b><span>ロゴ、色、参考画像</span></li><li><b>パッケージ</b><span>個装またはセット構成</span></li></ul></aside></section><LocalizedBuyerEvidence locale="ja" context={content.solution} /><section className="corporate-closing"><img src="/assets/images/zhoni-golf-product-development-v2.png" alt="カスタムゴルフ用品のブランド確認" /><div><p>COORDINATED GOLF MERCHANDISE</p><h2>製品を選ぶ前に、役割を定める。</h2><p>{content.products}</p><a href="/ja/products/">製品を見る <Arrow /></a></div></section><section className="guide-faq"><p>購入担当者からのよくある質問</p><h2>次の判断を具体的にする回答。</h2><div>{content.faqs.map(([question,answer],index) => <article key={question}><b>{String(index + 1).padStart(2,"0")}</b><h3>{question}</h3><p>{answer}</p></article>)}</div></section><section className="guide-products"><p>関連ページ</p><h2>具体的なプロジェクトへ進む。</h2><div><a href="/ja/products/">カスタム製品<Arrow /></a><a href="/ja/custom-golf-packaging/">パッケージ<Arrow /></a><a href="/ja/our-process/">進め方<Arrow /></a><a href={`/ja/request-a-quote/?solution=${content.solution}&source=${content.solution}`}>見積もり相談<Arrow /></a></div></section><Footer /></main>;
 }
 
+const guides = [
+  { key:"headcovers", group:"product", label:"製品・カスタマイズ", title:"カスタムゴルフヘッドカバー購入ガイド", copy:"クラブタイプ、フィット、素材、ロゴ、サンプル、パッケージの確認事項を整理します。", href:"/ja/guides/custom-golf-headcovers-procurement-guide/" },
+  { key:"caps", group:"product", label:"製品・カスタマイズ", title:"カスタムゴルフキャップ＆バイザー購入ガイド", copy:"形状、生地、フィット、アジャスター、刺繍位置を使用環境から比較します。", href:"/ja/guides/custom-golf-caps-and-visors/" },
+  { key:"towels", group:"product", label:"製品・カスタマイズ", title:"カスタム・マグネットゴルフタオル購入ガイド", copy:"ワッフル生地、サイズ、マグネット構造、刺繍、セット構成を検討します。", href:"/ja/guides/custom-golf-towels-procurement-guide/" },
+  { key:"packaging", group:"readiness", label:"品質・納品", title:"カスタムゴルフパッケージ購入ガイド", copy:"箱、インサート、印刷、輸送保護、外装カートンまで一つの条件で確認します。", href:"/ja/guides/custom-golf-packaging-procurement-guide/" },
+];
+
+const guideGroups = [
+  ["all", "すべて"],
+  ["product", "製品・カスタマイズ"],
+  ["event", "ギフト・イベント"],
+  ["procurement", "MOQ・初回注文"],
+  ["readiness", "品質・納品"],
+];
+
+function GuidesHub() {
+  const [filter, setFilter] = useState("all");
+  const visibleGroups = guideGroups.filter(([key]) => key === "all" || guides.some(guide => guide.group === key));
+  return <main className="zhoni-page guides-page ja-page"><Header active="guides" /><section className="guides-hero"><div><p>GOLF MERCHANDISE BUYER GUIDES</p><h1>カスタムゴルフ用品の<br />購入判断を、より明確に。</h1><p>製品選びから仕様、MOQ、サンプル、パッケージ、納品準備まで、実際のプロジェクトで必要な判断材料を整理します。</p></div><aside><b>最初に確認すること</b><p>何を作るかだけでなく、誰が、いつ、どの場面で受け取るかを定めると、製品と仕様を選びやすくなります。</p><a href="/ja/request-a-quote/">プロジェクトを相談する <Arrow /></a></aside></section><section className="guide-filter" aria-label="購入ガイドの絞り込み">{visibleGroups.map(([key,label]) => <button key={key} className={filter === key ? "active" : ""} onClick={() => setFilter(key)}>{label}</button>)}</section><section className="guide-catalog">{guides.filter(guide => filter === "all" || guide.group === filter).map((guide,index) => <a href={guide.href} key={guide.key}><b>{String(index + 1).padStart(2,"0")}</b><span>{guide.label}</span><h2>{guide.title}</h2><p>{guide.copy}</p><em>ガイドを読む <Arrow /></em></a>)}</section><LocalizedBuyerEvidence locale="ja" context="guides" /><section className="guide-decision"><div><p>購入準備</p><h2>一般的な情報を、案件固有の条件につなげる。</h2><p>製品方向、予定数量、ブランド資料、希望受取日、納品先が揃うと、MOQ、サンプル、見積もりの前提をより現実的に確認できます。</p></div><aside><p>共通ブリーフ項目</p><ul>{["受取人と使用目的","製品または参考画像","予定数量","希望受取日と納品先","ロゴとパッケージ要件"].map(item => <li key={item}>{item}</li>)}</ul></aside></section><Footer /></main>;
+}
+
+const articleContent = {
+  jaHeadcoversGuide: {
+    label:"カスタムゴルフヘッドカバー", brief:"カスタムゴルフヘッドカバー", title:"購入前に決めておきたい6つの項目", intro:"外観だけでなく、クラブタイプ、フィット、素材、ロゴ、番手表示、パッケージを一つの仕様として整理します。", image:"/assets/images/zhoni-product-headcovers-v3.png", product:"/ja/custom-golf-headcovers/",
+    rows:[["クラブ構成","ドライバー、フェアウェイ、ハイブリッド、ブレード／マレットパターの数量内訳"],["形状とフィット","クラブ寸法、開口部、全長、伸縮またはマグネットによる保持"],["素材","PU、織物、ニットの触感、耐久性、ロゴ方法との相性"],["ブランド表現","刺繍、アップリケ、型押し、パッチとロゴ位置"],["内部と仕上げ","裏地、縫製、縁処理、番手表示、着脱性"],["パッケージ","個装、セット箱、ラベル、他製品との組み合わせ"]],
+    checklist:["クラブタイプ別の予定数量","正面・側面・背面の参考画像","ベクターロゴと色指定","希望する素材または触感の参考","希望受取日と納品国"],
+    faqs:[["ヘッドカバーのMOQはすべて同じですか？","いいえ。形状、素材、色数、ロゴ方法、タイプ別の数量配分によって適用条件が変わります。"],["実物サンプルは必要ですか？","新しい構造や正確なフィットが重要な場合は有効です。案件に応じて校正、既存サンプル、新規サンプルの経路を選びます。"],["ドライバーとパターで同じデザインを使えますか？","統一したデザインは可能ですが、パネル構造と使用できる面積が異なるため、単純縮小ではなく形状ごとの調整が必要です。"]],
+  },
+  jaTowelsGuide: {
+    label:"カスタムゴルフタオル", brief:"カスタムゴルフタオル", title:"生地、サイズ、取り付け方法を一緒に選ぶ", intro:"ゴルフタオルはラウンド中に繰り返し使う道具です。吸水性、乾きやすさ、取り付け方法、ロゴの見え方を同じ基準で確認します。", image:"/assets/images/zhoni-product-magnetic-towel-v4.png", product:"/ja/custom-golf-towels/",
+    rows:[["使用場面","ゴルフバッグ、カート、プレーヤーパック、ギフトセット"],["生地","ワッフル構造、目付、触感、吸水性、乾燥特性"],["サイズ","折りたたんだときの体積と実際に使える面積"],["取り付け","マグネット、カラビナ、ハトメ、独立クリップ"],["ロゴ","刺繍サイズ、位置、糸色、裏面への影響"],["パッケージ","帯、保護袋、カード、ギフトボックス"]],
+    checklist:["希望する縦横サイズ","生地色と参考タオル","マグネットまたは金具の仕様","刺繍用ロゴの元データ","セットに含める他の製品"],
+    faqs:[["マグネットタオルでは何を確認すべきですか？","マグネットの位置と固定方法、金属接点、タオル重量、カートやクラブ周辺での実際の使い方を確認します。"],["刺繍は大きいほど良いですか？","必ずしもそうではありません。大きな刺繍は柔軟性や乾燥に影響するため、視認性と実用性のバランスが必要です。"],["一つの注文を複数色に分けられますか？","生地、染色または既製色、総数量、色別配分によって条件が変わるため、見積もり前に内訳を共有してください。"]],
+  },
+  jaCapsStyleGuide: {
+    label:"カスタムゴルフキャップ＆バイザー", brief:"カスタムゴルフキャップ＆バイザー", title:"スタイルより先に、着用環境を決める", intro:"クラウン構造、生地、通気性、アジャスター、ロゴ位置が、着用感と仕上がりを一緒に決定します。", image:"/assets/images/zhoni-product-caps-v3.png", product:"/ja/custom-golf-caps/",
+    rows:[["着用者","成人／ジュニア、グループ構成、必要なサイズ範囲"],["形状","構造／非構造、ロー／ミッドプロファイル、キャップ／バイザー"],["使用環境","暑い気候、長時間のラウンド、イベント、日常使用"],["生地","コットンツイル、ポリエステル、機能素材、メッシュ"],["アジャスター","スナップ、バックル、面ファスナー、ストレッチフィット"],["ブランド表現","正面刺繍、パッチ、側面・背面ロゴ"]],
+    checklist:["キャップまたはバイザーの参考形状","使用地域とシーズン","必要なサイズ範囲","各ロゴ位置のデータ","イベント日と予定数量"],
+    faqs:[["ゴルフ用には必ず機能素材が必要ですか？","暑い地域や長時間着用では軽さ、速乾性、通気性を優先できます。ギフトとしての触感や外観を重視する場合はツイルも適します。"],["3D刺繍はすべてのロゴに適していますか？","いいえ。細い線、小さな文字、複雑なディテールは平面刺繍やパッチの方が明瞭になる場合があります。"],["フリーサイズだけで十分ですか？","受取人の構成とアジャスターによります。表記だけでなく、実際の調整範囲とクラウンの深さを確認してください。"]],
+  },
+  jaPackagingGuide: {
+    label:"カスタムゴルフパッケージ", brief:"カスタムゴルフパッケージ", title:"箱を設計する前に、製品と渡し方を確定する", intro:"良いパッケージは製品を見せるだけでなく、固定し、輸送中に保護し、現場で配布しやすいことが必要です。", image:"/assets/images/zhoni-product-packaging-v3.png", product:"/ja/custom-golf-packaging/",
+    rows:[["製品一覧","最終構成、数量、実寸、重量、接触しやすい部品"],["箱の構造","貼り箱、折り箱、スリーブ、開封方法"],["インサート","製品固定、取り出す順番、素材、交換可能性"],["ブランド表現","印刷、箔押し、エンボス／デボス、ラベル、カード"],["輸送保護","擦れ、圧縮、湿気、金属部品同士の接触への対策"],["出荷条件","外装カートン、入数、納品先、引き渡し条件"]],
+    checklist:["最終製品と実際の寸法","希望する開封体験","箱とインサートの参考画像","印刷データとブランドカラー","納品国と現地での配布方法"],
+    faqs:[["製品完成前に箱を確定できますか？","推奨しません。製品寸法や配置が変わると、インサートと箱全体の構造を変更する必要があります。"],["高級な貼り箱は常に必要ですか？","いいえ。イベント配布、国際輸送、保管スペース、予算によっては折り箱やスリーブの方が適切です。"],["パッケージのMOQは製品と同じですか？","必ずしも同じではありません。箱の構造、印刷、インサート、素材には別の生産条件が適用される場合があります。"]],
+  },
+};
+
+function GuideArticle({ pageKey }) {
+  const content = articleContent[pageKey];
+  return <main className="zhoni-page guide-page ja-page"><Header active="guides" /><section className="guide-hero"><div><p>{content.label} · 購入ガイド</p><h1>{content.title}</h1><p>{content.intro}</p><small>製品選定 · 仕様準備 · サンプル確認 · 見積もり</small></div><img src={content.image} alt={content.label} /></section><section className="guide-intro"><p>PRACTICAL BUYER REVIEW</p><h2>価格を依頼する前に決めておきたい実務項目。</h2><p>最初からすべてを確定する必要はありません。現在分かっている条件と参考資料を整理することで、適切な製品、MOQ、サンプル方法、スケジュールをより正確に検討できます。</p></section><section className="guide-table"><table><thead><tr><th>確認項目</th><th>購入担当者が準備する情報</th></tr></thead><tbody>{content.rows.map(row => <tr key={row[0]}><td>{row[0]}</td><td>{row[1]}</td></tr>)}</tbody></table></section><LocalizedBuyerEvidence locale="ja" context={`guide-${pageKey.replace("ja", "").replace("Guide", "").toLowerCase()}`} /><section className="guide-decision"><div><p>ブリーフ準備</p><h2>同じ条件で提案と見積もりを比較する。</h2><p>製品仕様、ロゴ、数量、希望日、パッケージ、納品先を一緒に伝えることで、単価だけでなく実際のプロジェクト範囲を比較できます。</p></div><aside><p>チェックリスト</p><h3>お問い合わせ前に準備する資料</h3><ul>{content.checklist.map(item => <li key={item}>{item}</li>)}</ul></aside></section><section className="guide-faq"><p>購入担当者からのよくある質問</p><h2>次の判断に使える具体的な回答。</h2><div>{content.faqs.map(([question,answer],index) => <article key={question}><b>{String(index + 1).padStart(2,"0")}</b><h3>{question}</h3><p>{answer}</p></article>)}</div></section><section className="guide-products"><p>関連ページ</p><h2>ガイドから具体的なプロジェクトへ。</h2><div><a href={content.product}>関連製品ページ<Arrow /></a><a href="/ja/solutions/">Solutions<Arrow /></a><a href="/ja/our-process/">進め方<Arrow /></a><a href={`/ja/request-a-quote/?product=${encodeURIComponent(content.brief)}`}>見積もり相談<Arrow /></a></div></section><section className="guide-close"><div><p>READY TO PREPARE THE BRIEF?</p><h2>製品、数量、希望受取日を共有してください。</h2><a href={`/ja/request-a-quote/?product=${encodeURIComponent(content.brief)}`}>プロジェクト概要を送る <Arrow /></a></div><img src={content.image} alt={content.label} /></section><Footer /></main>;
+}
+
 export function JapaneseExpansion({ routeKey }) {
   if (categoryContent[routeKey]) return <CategoryPage pageKey={routeKey} />;
   if (solutionContent[routeKey]) return <SolutionPage pageKey={routeKey} />;
+  if (articleContent[routeKey]) return <GuideArticle pageKey={routeKey} />;
+  if (routeKey === "jaGuides") return <GuidesHub />;
   return null;
 }
