@@ -12,7 +12,7 @@ function Header({ active }) {
 }
 
 function Footer() {
-  return <footer className="site-footer"><div className="site-footer-main"><a className="zhoni-wordmark" href="/ja/"><strong>ZHONI</strong><small>CUSTOM GOLF MERCHANDISE</small></a><div className="site-footer-copy"><p>クラブ、大会、企業、ブランド向けのカスタムゴルフ用品。</p><span>製品 · ロゴ · サンプル · 品質 · パッケージ · 納品</span><div className="site-footer-contact"><b>直接のお問い合わせ</b><a href="mailto:sales@zhonigolf.com">sales@zhonigolf.com</a><a href={WHATSAPP_URL}>WhatsApp +86 177 5919 0848 <Arrow /></a></div></div><nav><a href="/ja/products/">製品</a><a href="/ja/solutions/">ソリューション</a><a href="/ja/guides/">購入ガイド</a><a href="/ja/our-process/">進め方</a><a href="/ja/faq/">FAQ</a><a href="/ja/request-a-quote/">お問い合わせ <Arrow /></a></nav></div><div className="site-footer-base"><span>ZHONI · CUSTOM GOLF MERCHANDISE</span><span>運営法人: Xiamen Jindongyu Trading Co., Ltd.</span></div></footer>;
+  return <footer className="site-footer"><div className="site-footer-main"><a className="zhoni-wordmark" href="/ja/"><strong>ZHONI</strong><small>CUSTOM GOLF MERCHANDISE</small></a><div className="site-footer-copy"><p>クラブ、大会、企業、ブランド向けのカスタムゴルフ用品。</p><span>製品 · ロゴ · サンプル · 品質 · パッケージ · 納品</span><div className="site-footer-contact"><b>直接のお問い合わせ</b><a href="mailto:sales@zhonigolf.com">sales@zhonigolf.com</a><a href={WHATSAPP_URL}>WhatsApp +86 177 5919 0848 <Arrow /></a></div></div><nav><a href="/ja/products/">製品</a><a href="/ja/solutions/">ソリューション</a><a href="/ja/guides/">購入ガイド</a><a href="/ja/capabilities/">対応範囲</a><a href="/ja/our-process/">進め方</a><a href="/ja/faq/">FAQ</a><a href="/ja/request-a-quote/">お問い合わせ <Arrow /></a></nav></div><div className="site-footer-base"><span>ZHONI · CUSTOM GOLF MERCHANDISE</span><span>運営法人: Xiamen Jindongyu Trading Co., Ltd.</span></div></footer>;
 }
 
 const categoryContent = {
@@ -64,6 +64,16 @@ const guides = [
   { key:"capsmaterials", group:"product", label:"製品開発", title:"ゴルフ帽子の生地選び", copy:"コットンツイル、機能素材、メッシュを気候、着用感、ブランド表現から比較します。", href:"/ja/guides/custom-golf-cap-materials/" },
   { key:"capsbranding", group:"product", label:"製品開発", title:"ゴルフ帽子のロゴ位置と刺繍", copy:"前面、側面、背面の配置と平面・3D刺繍、パッチの再現性を確認します。", href:"/ja/guides/custom-golf-cap-logo-placement/" },
   { key:"devbrief", group:"product", label:"製品開発", title:"製品開発ブリーフの作り方", copy:"目的、構造、必須仕様、数量、日程、パッケージ、納品先を一つにまとめます。", href:"/ja/guides/custom-golf-product-development-brief/" },
+  { key:"giftchoice", group:"event", label:"ギフト・イベント", title:"カスタムゴルフギフトの選び方", copy:"受取人、目的、製品水準、ブランド表現、渡し方を基準に選びます。", href:"/ja/guides/how-to-choose-custom-golf-gifts/" },
+  { key:"audience", group:"event", label:"ギフト・イベント", title:"受取人別のゴルフギフト", copy:"顧客、参加者、会員、VIP、運営チームで異なる役割と期待を比較します。", href:"/ja/guides/how-to-choose-golf-gifts-by-audience/" },
+  { key:"tournamentpacks", group:"event", label:"ギフト・イベント", title:"ゴルフ大会Player Pack", copy:"受付からラウンド、表彰までの参加者体験と現地配布から構成します。", href:"/ja/guides/golf-tournament-player-packs/" },
+  { key:"corporategifts", group:"event", label:"ギフト・イベント", title:"企業向けゴルフギフト購入ガイド", copy:"関係性、製品水準、Logo、パッケージ、配送方法を計画します。", href:"/ja/guides/corporate-golf-gifts-procurement-guide/" },
+  { key:"eventbudget", group:"event", label:"ギフト・イベント", title:"ゴルフ大会ギフト予算", copy:"製品、Logo、サンプル、包装、輸送、現地配布まで全体費用を計画します。", href:"/ja/guides/golf-tournament-gift-budget-planning/" },
+  { key:"playerpack", group:"event", label:"ギフト・イベント", title:"実用的なPlayer Packの作り方", copy:"現場ですぐ使える主力製品、アクセサリー、情報要素、包装を選びます。", href:"/ja/guides/how-to-build-a-golf-player-pack/" },
+  { key:"recipientroles", group:"event", label:"ギフト・イベント", title:"参加者・スポンサー・受賞者のギフト", copy:"役割別に製品水準、ブランド露出、渡す時点、包装を分けます。", href:"/ja/guides/tournament-gifts-sponsor-gifts-and-winner-prizes/" },
+  { key:"premiumset", group:"event", label:"ギフト・イベント", title:"Premium Golf Gift Setの作り方", copy:"主力製品、補助製品、素材、ブランド表現、開封体験の階層を作ります。", href:"/ja/guides/how-to-build-a-premium-golf-gift-set/" },
+  { key:"eventbrief", group:"event", label:"ギフト・イベント", title:"ゴルフイベント・ブリーフ", copy:"イベント、受取人、製品、Logo、日程、納品情報を一つにまとめます。", href:"/ja/guides/what-to-include-in-a-golf-event-brief/" },
+  { key:"quotecompare", group:"procurement", label:"MOQ・初回注文", title:"カスタム製品見積もりの比較", copy:"同じ仕様、含有範囲、サンプル、包装、引き渡し条件で比較します。", href:"/ja/guides/how-to-compare-custom-golf-product-quotes/" },
 ];
 
 const guideGroups = [

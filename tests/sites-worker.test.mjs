@@ -377,7 +377,7 @@ test("publishes the Japanese product-development guide cluster", async () => {
     assert.match(document, /<h1(?:\s|>)/);
     assert.match(document, new RegExp(`hreflang="en" href="https://zhonigolf\\.com${route.alternatePath.replaceAll("/", "\\/")}"`));
     assert.match(document, new RegExp(`hreflang="ja" href="https://zhonigolf\\.com${route.path.replaceAll("/", "\\/")}"`));
-    assert.match(document, /data-buyer-evidence="ja-development-/);
+    assert.match(document, /data-buyer-evidence="ja-guide-/);
     assert.match(document, /よくある質問/);
     for (const path of ["/ja/products/", "/ja/solutions/", "/ja/our-process/", "/ja/request-a-quote/"]) {
       assert.match(document, new RegExp(path.replaceAll("/", "\\/")), `Expected ${path} on ${route.path}.`);
@@ -391,6 +391,80 @@ test("publishes the Japanese product-development guide cluster", async () => {
   assert.match(procurement, /<JapaneseFinalGuides routeKey=\{routeKey\}/);
   assert.match(finalGuides, /製品開発ブリーフには/);
   assert.match(finalGuides, /サンプル承認は/);
+});
+
+test("completes the Japanese gift, event, quote, and capabilities round", async () => {
+  const [sitemap, hub] = await Promise.all([
+    readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8"),
+    readFile(new URL("../dist/client/ja/guides/index.html", import.meta.url), "utf8"),
+  ]);
+  const guideKeys = [
+    "jaGolfGiftGuide", "jaAudienceGiftGuide", "jaTournamentGuide", "jaCorporateGuide",
+    "jaTournamentGiftBudgetGuide", "jaPlayerPackGuide", "jaRecipientRolesGuide",
+    "jaPremiumGiftSetGuide", "jaEventBriefGuide", "jaQuoteComparisonGuide",
+  ];
+
+  for (const key of guideKeys) {
+    const route = siteRoutes[key];
+    assert.equal(findRoute(route.path), route);
+    assert.equal(route.lang, "ja");
+    assert.match(sitemap, new RegExp(`https://zhonigolf\\.com${route.path}`.replaceAll("/", "\\/")));
+    assert.match(hub, new RegExp(route.path.replaceAll("/", "\\/")), `Missing ${route.path} from Japanese guide center.`);
+    const document = await readFile(new URL(`../dist/client/${route.path.slice(1)}index.html`, import.meta.url), "utf8");
+    assert.match(document, /<html lang="ja">/);
+    assert.match(document, /<h1(?:\s|>)/);
+    assert.match(document, new RegExp(`hreflang="en" href="https://zhonigolf\\.com${route.alternatePath.replaceAll("/", "\\/")}"`));
+    assert.match(document, new RegExp(`hreflang="ja" href="https://zhonigolf\\.com${route.path.replaceAll("/", "\\/")}"`));
+    assert.match(document, /data-buyer-evidence="ja-guide-/);
+    assert.match(document, /よくある質問/);
+    for (const path of ["/ja/products/", "/ja/solutions/", "/ja/our-process/", "/ja/request-a-quote/"]) {
+      assert.match(document, new RegExp(path.replaceAll("/", "\\/")), `Expected ${path} on ${route.path}.`);
+    }
+    const schemaMatch = document.match(/<script id="zhoni-page-schema" type="application\/ld\+json">([\s\S]*?)<\/script>/);
+    const graph = JSON.parse(schemaMatch[1])["@graph"];
+    assert.ok(graph.some((entity) => entity["@type"] === "Article"));
+    assert.ok(graph.some((entity) => entity["@type"] === "FAQPage"));
+  }
+
+  const capabilityRoute = siteRoutes.jaCapabilities;
+  assert.equal(findRoute(capabilityRoute.path), capabilityRoute);
+  assert.match(sitemap, /https:\/\/zhonigolf\.com\/ja\/capabilities\//);
+  const capabilityDocument = await readFile(new URL("../dist/client/ja/capabilities/index.html", import.meta.url), "utf8");
+  assert.match(capabilityDocument, /<html lang="ja">/);
+  assert.match(capabilityDocument, /data-buyer-evidence="ja-capabilities"/);
+  assert.match(capabilityDocument, /製品から引き渡しまでをつなぐ/);
+  for (const path of ["/ja/products/", "/ja/solutions/", "/ja/guides/", "/ja/our-process/", "/ja/request-a-quote/"]) {
+    assert.match(capabilityDocument, new RegExp(path.replaceAll("/", "\\/")), `Expected ${path} on Japanese capabilities.`);
+  }
+});
+
+test("keeps completed Japanese routes in full parity with English", async () => {
+  const template = await readFile(new URL("../index.html", import.meta.url), "utf8");
+  const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
+  const hub = await readFile(new URL("../src/JapaneseExpansion.jsx", import.meta.url), "utf8");
+  const englishRoutes = Object.values(siteRoutes).filter((route) => !route.lang);
+  const japaneseRoutes = Object.values(siteRoutes).filter((route) => route.lang === "ja");
+  const japaneseByEnglishPath = new Map(japaneseRoutes.map((route) => [route.alternatePath, route]));
+
+  assert.equal(englishRoutes.length, 51);
+  assert.equal(japaneseRoutes.length, englishRoutes.length);
+
+  for (const englishRoute of englishRoutes) {
+    const japaneseRoute = japaneseByEnglishPath.get(englishRoute.path);
+    assert.ok(japaneseRoute, `Expected a Japanese route for ${englishRoute.path}.`);
+    assert.equal(findRoute(japaneseRoute.path), japaneseRoute);
+    assert.match(sitemap, new RegExp(`https://zhonigolf\\.com${japaneseRoute.path}`.replaceAll("/", "\\/")));
+    const englishDocument = renderRouteDocument(template, englishRoute);
+    const japaneseDocument = renderRouteDocument(template, japaneseRoute);
+    assert.match(englishDocument, new RegExp(`hreflang="ja" href="https://zhonigolf\\.com${japaneseRoute.path.replaceAll("/", "\\/")}"`));
+    assert.match(japaneseDocument, new RegExp(`hreflang="en" href="https://zhonigolf\\.com${englishRoute.path.replaceAll("/", "\\/")}"`));
+  }
+
+  const japaneseGuideArticles = japaneseRoutes.filter((route) => route.path.startsWith("/ja/guides/") && route.path !== "/ja/guides/");
+  assert.ok(japaneseGuideArticles.length > 20);
+  for (const route of japaneseGuideArticles) {
+    assert.match(hub, new RegExp(route.path.replaceAll("/", "\\/")), `Missing ${route.path} from Japanese guide center.`);
+  }
 });
 
 test("publishes a complete first-round Korean locale with reciprocal SEO alternates", async () => {
