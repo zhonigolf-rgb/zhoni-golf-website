@@ -201,6 +201,33 @@ test("prerenders a self-canonical document for every public route", async () => 
   }
 });
 
+test("publishes the first Japanese locale round with localized SEO and conversion paths", async () => {
+  const [sitemap, app, locale, japanese] = await Promise.all([
+    readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8"),
+    readFile(new URL("../src/App.jsx", import.meta.url), "utf8"),
+    readFile(new URL("../src/locale.jsx", import.meta.url), "utf8"),
+    readFile(new URL("../src/JapaneseSite.jsx", import.meta.url), "utf8"),
+  ]);
+  const routes = [siteRoutes.jaHome, siteRoutes.jaProducts, siteRoutes.jaSolutions, siteRoutes.jaProcess, siteRoutes.jaFaq, siteRoutes.jaAbout, siteRoutes.jaQuote];
+  for (const route of routes) {
+    assert.equal(findRoute(route.path), route);
+    assert.equal(route.lang, "ja");
+    assert.match(sitemap, new RegExp(`https://zhonigolf\\.com${route.path}`.replaceAll("/", "\\/")));
+    const document = await readFile(new URL(`../dist/client/${route.path.slice(1)}index.html`, import.meta.url), "utf8");
+    assert.match(document, /<html lang="ja">/);
+    assert.match(document, new RegExp(`<link rel="alternate" hreflang="en" href="https://zhonigolf\\.com${route.alternatePath.replaceAll("/", "\\/")}"`));
+    assert.match(document, new RegExp(`<link rel="alternate" hreflang="ja" href="https://zhonigolf\\.com${route.path.replaceAll("/", "\\/")}"`));
+    assert.match(document, /<h1(?:\s|>)/);
+  }
+  for (const path of ["/ja/", "/ja/products/", "/ja/solutions/", "/ja/our-process/", "/ja/faq/", "/ja/about/", "/ja/request-a-quote/"]) assert.match(japanese + locale, new RegExp(path.replaceAll("/", "\\/")));
+  assert.match(locale, /日本語/);
+  assert.match(app, /lazy\(\(\) => import\("\.\/JapaneseSite\.jsx"\)/);
+  assert.match(app, /FloatingContactActions locale="ja"/);
+  assert.match(japanese, /page_language", "ja"/);
+  assert.match(japanese, /<TurnstileField \/>/);
+  assert.match(japanese, /data\.set\("source", inquirySourceForLocation\(\)\)/);
+});
+
 test("publishes a complete first-round Korean locale with reciprocal SEO alternates", async () => {
   const template = await readFile(new URL("../index.html", import.meta.url), "utf8");
   const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
@@ -605,6 +632,7 @@ test("prerenders valid localized structured data for every route", async () => {
     ["/faq/", 15, "What custom golf products can be discussed?"],
     ["/ko/faq/", 6, "어떤 골프용품을 맞춤 제작할 수 있나요?"],
     ["/fr-ca/faq/", 6, "Quels produits de golf peuvent être personnalisés?"],
+    ["/ja/faq/", 6, "どのようなゴルフ用品をカスタムできますか？"],
     ["/guides/custom-golf-headcover-materials/", 3, "Is one material always more premium?"],
   ]) {
     const { document, graph } = schemas.get(path);

@@ -14,6 +14,7 @@ import "./canadian-french.css";
 const WHATSAPP_URL = import.meta.env.VITE_WHATSAPP_URL ?? "https://wa.me/8617759190848";
 const KoreanSite = lazy(() => import("./KoreanSite.jsx").then(module => ({ default: module.KoreanSite })));
 const CanadianFrenchSite = lazy(() => import("./CanadianFrenchSite.jsx").then(module => ({ default: module.CanadianFrenchSite })));
+const JapaneseSite = lazy(() => import("./JapaneseSite.jsx").then(module => ({ default: module.JapaneseSite })));
 const slides = [
   ["CUSTOM GOLF MERCHANDISE FOR CLUBS, EVENTS & BRANDS", "One project. A complete golf collection.", "Custom golf merchandise, tournament gift sets and branded packaging developed for clubs, corporate programs, events and growing golf brands.", "/assets/videos/zhoni-custom-golf-collection-showcase.mp4"],
   ["CUSTOM GOLF PRODUCT DEVELOPMENT", "Where materials become a branded collection.", "Begin with the product direction, materials and brand details that help every selected piece feel considered together.", "/assets/videos/zhoni-custom-golf-product-development.mp4"],
@@ -230,7 +231,8 @@ function FloatingContactActions({ hidden = false, locale = "en" }) {
   const currentPath = typeof window === "undefined" ? "" : window.location.pathname;
   const korean = locale === "ko" || currentPath.startsWith("/ko/");
   const french = locale === "fr-CA" || currentPath.startsWith("/fr-ca/");
-  const quotePath = korean ? "/ko/request-a-quote/" : french ? "/fr-ca/request-a-quote/" : "/request-a-quote/";
+  const japanese = locale === "ja" || currentPath.startsWith("/ja/");
+  const quotePath = korean ? "/ko/request-a-quote/" : french ? "/fr-ca/request-a-quote/" : japanese ? "/ja/request-a-quote/" : "/request-a-quote/";
   useEffect(() => {
     const footer = document.querySelector(".site-footer");
     if (!footer || !("IntersectionObserver" in window)) return undefined;
@@ -239,9 +241,9 @@ function FloatingContactActions({ hidden = false, locale = "en" }) {
     return () => observer.disconnect();
   }, []);
   const isHidden = hidden || footerVisible;
-  const panelLabel = korean ? "프로젝트 문의" : french ? "Options de contact" : "Project contact actions";
-  const quoteLabel = korean ? "프로젝트 문의" : french ? "DEMANDER UNE SOUMISSION" : "GET A QUOTE";
-  const toggleLabel = korean ? (open ? "문의 메뉴 숨기기" : "문의 메뉴 보기") : french ? (open ? "Masquer les options de contact" : "Afficher les options de contact") : (open ? "Hide project contact options" : "Show project contact options");
+  const panelLabel = korean ? "프로젝트 문의" : french ? "Options de contact" : japanese ? "お問い合わせ方法" : "Project contact actions";
+  const quoteLabel = korean ? "프로젝트 문의" : french ? "DEMANDER UNE SOUMISSION" : japanese ? "プロジェクト相談" : "GET A QUOTE";
+  const toggleLabel = korean ? (open ? "문의 메뉴 숨기기" : "문의 메뉴 보기") : french ? (open ? "Masquer les options de contact" : "Afficher les options de contact") : japanese ? (open ? "お問い合わせメニューを閉じる" : "お問い合わせメニューを開く") : (open ? "Hide project contact options" : "Show project contact options");
   return <aside className={`float ${open ? "float-open" : ""} ${isHidden ? "float-hidden" : ""}`} aria-label={panelLabel} aria-hidden={isHidden}><div className="float-panel" id="project-contact-menu"><a href={quotePath} tabIndex={isHidden || !open ? -1 : 0} onClick={() => setOpen(false)}><img src="/assets/quote-brief-icon.png" alt="" aria-hidden="true" /><strong>{quoteLabel}</strong><Arrow /></a><a href={whatsappLink} target="_blank" rel="noopener noreferrer" tabIndex={isHidden || !open ? -1 : 0}><img src="/assets/whatsapp-contact-icon.png" alt="" aria-hidden="true" /><strong>WHATSAPP</strong><Arrow /></a></div><button className="golf-flag-mark" type="button" aria-label={toggleLabel} aria-expanded={open} aria-controls="project-contact-menu" tabIndex={isHidden ? -1 : 0} onClick={() => setOpen(value => !value)}><img src="/assets/golf-flag-marker-v2.png" alt="" /></button></aside>;
 }
 
@@ -689,7 +691,7 @@ function track(eventName, details = {}) {
   trackAnalytics(eventName, details);
 }
 
-export function App({ initialRoute = null, KoreanSiteComponent = KoreanSite, CanadianFrenchSiteComponent = CanadianFrenchSite } = {}) {
+export function App({ initialRoute = null, KoreanSiteComponent = KoreanSite, CanadianFrenchSiteComponent = CanadianFrenchSite, JapaneseSiteComponent = JapaneseSite } = {}) {
   const [slide, setSlide] = useState(0);
   const [menu, setMenu] = useState(false);
   const [faq, setFaq] = useState(0);
@@ -729,7 +731,7 @@ export function App({ initialRoute = null, KoreanSiteComponent = KoreanSite, Can
       let url = new URL(link.href, window.location.origin);
       const details = { page_path: window.location.pathname, page_location: window.location.href, page_language: document.documentElement.lang || "en", form_source: inquirySourceForLocation(), placement: link.dataset.analyticsPlacement || "site_link" };
       if (url.hostname === "wa.me") track("whatsapp_click", details);
-      if (url.origin === window.location.origin && /^\/(?:(?:ko|fr-ca)\/)?request-a-quote(?:\/|$)/.test(url.pathname)) {
+      if (url.origin === window.location.origin && /^\/(?:(?:ko|fr-ca|ja)\/)?request-a-quote(?:\/|$)/.test(url.pathname)) {
         url = addInquirySource(url.href, route);
         link.href = url.href;
         track("quote_cta_click", { ...details, form_source: url.searchParams.get("source") });
@@ -743,6 +745,7 @@ export function App({ initialRoute = null, KoreanSiteComponent = KoreanSite, Can
   }, [route]);
   if (route.lang === "ko") return <Suspense fallback={<div className="locale-loading" role="status">ZHONI</div>}><KoreanSiteComponent routeKey={Object.keys(siteRoutes).find(key => siteRoutes[key] === route)} /><FloatingContactActions locale="ko" /></Suspense>;
   if (route.lang === "fr-CA") return <Suspense fallback={<div className="locale-loading" role="status">ZHONI</div>}><CanadianFrenchSiteComponent routeKey={Object.keys(siteRoutes).find(key => siteRoutes[key] === route)} /><FloatingContactActions locale="fr-CA" /></Suspense>;
+  if (route.lang === "ja") return <Suspense fallback={<div className="locale-loading" role="status">ZHONI</div>}><JapaneseSiteComponent routeKey={Object.keys(siteRoutes).find(key => siteRoutes[key] === route)} /><FloatingContactActions locale="ja" /></Suspense>;
   if (route === siteRoutes.products) return <><ProductsHub /><FloatingContactActions /></>;
   if (route === siteRoutes.headcovers) return <><ProductCategoryPage type="headcovers" /><FloatingContactActions /></>;
   if (route === siteRoutes.caps) return <><ProductCategoryPage type="caps" /><FloatingContactActions /></>;
