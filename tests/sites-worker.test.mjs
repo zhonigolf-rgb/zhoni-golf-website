@@ -507,6 +507,43 @@ test("publishes the first German locale round with localized SEO and conversion 
   assert.match(serverEntry, /GermanSiteComponent=\{GermanSite\}/);
 });
 
+test("publishes German product and solution detail pages with complete buyer paths", async () => {
+  const [sitemap, germanSite, expansion] = await Promise.all([
+    readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8"),
+    readFile(new URL("../src/GermanSite.jsx", import.meta.url), "utf8"),
+    readFile(new URL("../src/GermanExpansion.jsx", import.meta.url), "utf8"),
+  ]);
+  const categoryKeys = ["deHeadcovers", "deCaps", "deTowels", "deAccessories", "dePackaging"];
+  const solutionKeys = ["deTournamentGifts", "deCorporateGifts", "deClubMemberPrograms", "dePrivateLabelCollections"];
+
+  for (const key of [...categoryKeys, ...solutionKeys]) {
+    const route = siteRoutes[key];
+    assert.equal(findRoute(route.path), route);
+    assert.equal(route.lang, "de");
+    assert.match(sitemap, new RegExp(`https://zhonigolf\\.com${route.path}`.replaceAll("/", "\\/")));
+    const document = await readFile(new URL(`../dist/client/${route.path.slice(1)}index.html`, import.meta.url), "utf8");
+    assert.match(document, /<html lang="de">/);
+    assert.match(document, /<h1(?:\s|>)/);
+    assert.match(document, new RegExp(`hreflang="en" href="https://zhonigolf\\.com${route.alternatePath.replaceAll("/", "\\/")}"`));
+    assert.match(document, new RegExp(`hreflang="de" href="https://zhonigolf\\.com${route.path.replaceAll("/", "\\/")}"`));
+    assert.match(document, /data-buyer-evidence="de-/);
+    for (const path of ["/de/products/", "/de/solutions/", "/de/our-process/", "/de/request-a-quote/"]) {
+      assert.match(document, new RegExp(path.replaceAll("/", "\\/")), `Expected ${path} on ${route.path}.`);
+    }
+    const schemaMatch = document.match(/<script id="zhoni-page-schema" type="application\/ld\+json">([\s\S]*?)<\/script>/);
+    const graph = JSON.parse(schemaMatch[1])["@graph"];
+    assert.ok(graph.some((entity) => entity["@type"] === "Service"));
+    if (solutionKeys.includes(key)) assert.ok(graph.some((entity) => entity["@type"] === "FAQPage"));
+  }
+
+  for (const product of ["Personalisierte Golf-Headcover", "Personalisierte Golfcaps & Visoren", "Personalisierte Golfhandtücher", "Personalisierte Golfaccessoires", "Individuelle Golfverpackung"]) {
+    assert.match(expansion, new RegExp(product.replace(/[&]/g, "&")));
+    assert.match(germanSite, new RegExp(product.replace(/[&]/g, "&")));
+  }
+  assert.match(germanSite, /<GermanExpansion routeKey=\{routeKey\}/);
+  assert.match(expansion, /same|dieselbe Spezifikationsbasis/i);
+});
+
 test("publishes a complete first-round Korean locale with reciprocal SEO alternates", async () => {
   const template = await readFile(new URL("../index.html", import.meta.url), "utf8");
   const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");

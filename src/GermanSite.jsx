@@ -4,6 +4,7 @@ import { TurnstileField } from "./turnstile.jsx";
 import { trackAnalytics } from "./analytics.jsx";
 import { inquirySourceForLocation } from "./seo.js";
 import { LocalizedBuyerEvidence } from "./LocalizedBuyerEvidence.jsx";
+import { GermanExpansion } from "./GermanExpansion.jsx";
 
 const WHATSAPP_URL = import.meta.env.VITE_WHATSAPP_URL ?? "https://wa.me/8617759190848";
 const Arrow = () => <span aria-hidden="true">↗</span>;
@@ -73,5 +74,5 @@ function Quote() {
 
 export function GermanSite({ routeKey }) {
   const pages = { deHome:<Home />, deProducts:<Products />, deSolutions:<Solutions />, deProcess:<Process />, deFaq:<Faq />, deAbout:<About />, deQuote:<Quote /> };
-  return pages[routeKey] ?? null;
+  return pages[routeKey] ?? <GermanExpansion routeKey={routeKey} />;
 }
