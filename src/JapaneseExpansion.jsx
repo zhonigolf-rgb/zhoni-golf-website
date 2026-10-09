@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { LanguageSwitcher } from "./locale.jsx";
 import { LocalizedBuyerEvidence } from "./LocalizedBuyerEvidence.jsx";
+import { JapaneseProcurement } from "./JapaneseProcurement.jsx";
 
 const WHATSAPP_URL = import.meta.env.VITE_WHATSAPP_URL ?? "https://wa.me/8617759190848";
 const Arrow = () => <span aria-hidden="true">↗</span>;
@@ -40,10 +41,20 @@ function SolutionPage({ pageKey }) {
 }
 
 const guides = [
+  { key:"gifts", group:"event", label:"ギフト・イベント", title:"カスタムゴルフギフト・プロジェクト", copy:"受取人から製品、ブランド表現、パッケージ、納品まで全体経路を整理します。", href:"/ja/custom-golf-gifts/" },
   { key:"headcovers", group:"product", label:"製品・カスタマイズ", title:"カスタムゴルフヘッドカバー購入ガイド", copy:"クラブタイプ、フィット、素材、ロゴ、サンプル、パッケージの確認事項を整理します。", href:"/ja/guides/custom-golf-headcovers-procurement-guide/" },
   { key:"caps", group:"product", label:"製品・カスタマイズ", title:"カスタムゴルフキャップ＆バイザー購入ガイド", copy:"形状、生地、フィット、アジャスター、刺繍位置を使用環境から比較します。", href:"/ja/guides/custom-golf-caps-and-visors/" },
   { key:"towels", group:"product", label:"製品・カスタマイズ", title:"カスタム・マグネットゴルフタオル購入ガイド", copy:"ワッフル生地、サイズ、マグネット構造、刺繍、セット構成を検討します。", href:"/ja/guides/custom-golf-towels-procurement-guide/" },
+  { key:"branding", group:"product", label:"製品・カスタマイズ", title:"ロゴ・ブランド表現方法", copy:"刺繍、型押し、印刷、パッチ、金属仕上げを素材とロゴから比較します。", href:"/ja/guides/branding-methods-for-premium-golf-merchandise/" },
+  { key:"artwork", group:"product", label:"製品・カスタマイズ", title:"ロゴとアートワークの準備", copy:"ベクターデータ、色、位置、サイズ、参考画像、パッケージファイルを整理します。", href:"/ja/guides/prepare-artwork-for-custom-golf-products/" },
+  { key:"moq", group:"procurement", label:"MOQ・初回注文", title:"MOQ・最小注文数量を理解する", copy:"製品、素材、色、ロゴ、数量配分、パッケージによってMOQが変わる理由を説明します。", href:"/ja/guides/custom-golf-merchandise-moq-explained/" },
+  { key:"firstorder", group:"procurement", label:"MOQ・初回注文", title:"MOQ・見積もり・初回注文の準備", copy:"初回案件に必要な仕様、数量、承認方法、日程、納品条件を整理します。", href:"/ja/first-order-guide/" },
+  { key:"quote", group:"procurement", label:"MOQ・初回注文", title:"見積もりに影響する要因", copy:"製品仕様からサンプル、包装、納品条件まで、含まれる範囲を比較します。", href:"/ja/guides/what-affects-a-custom-golf-merchandise-quote/" },
   { key:"packaging", group:"readiness", label:"品質・納品", title:"カスタムゴルフパッケージ購入ガイド", copy:"箱、インサート、印刷、輸送保護、外装カートンまで一つの条件で確認します。", href:"/ja/guides/custom-golf-packaging-procurement-guide/" },
+  { key:"export", group:"readiness", label:"品質・納品", title:"品質・包装・輸出準備", copy:"製品確認、個装、外装カートン、納品先、引き渡し条件をつなげます。", href:"/ja/quality-packaging-export-readiness/" },
+  { key:"quality", group:"readiness", label:"品質・納品", title:"カスタムゴルフ用品品質チェックリスト", copy:"素材、寸法、ロゴ、機能、包装、カートンを承認仕様に基づいて確認します。", href:"/ja/guides/custom-golf-merchandise-quality-checklist/" },
+  { key:"delivery", group:"readiness", label:"品質・納品", title:"納期とイベント日を計画する", copy:"アートワーク、サンプル、生産、包装、国際配送を希望受取日から逆算します。", href:"/ja/guides/how-to-plan-a-golf-merchandise-delivery-date/" },
+  { key:"postbrief", group:"procurement", label:"MOQ・初回注文", title:"プロジェクト相談後の進行", copy:"ブリーフ受付、適合性確認、追加質問、次の段階までをご案内します。", href:"/ja/guides/what-happens-after-a-custom-golf-project-brief/" },
 ];
 
 const guideGroups = [
@@ -97,5 +108,5 @@ export function JapaneseExpansion({ routeKey }) {
   if (solutionContent[routeKey]) return <SolutionPage pageKey={routeKey} />;
   if (articleContent[routeKey]) return <GuideArticle pageKey={routeKey} />;
   if (routeKey === "jaGuides") return <GuidesHub />;
-  return null;
+  return <JapaneseProcurement routeKey={routeKey} />;
 }

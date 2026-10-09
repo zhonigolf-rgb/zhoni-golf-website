@@ -316,6 +316,43 @@ test("publishes the first Japanese buyer-guide collection with filters and proje
   assert.match(site + expansion, /\/ja\/guides\//);
 });
 
+test("publishes Japanese procurement and first-order guides with complete conversion paths", async () => {
+  const [sitemap, expansion, procurement] = await Promise.all([
+    readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8"),
+    readFile(new URL("../src/JapaneseExpansion.jsx", import.meta.url), "utf8"),
+    readFile(new URL("../src/JapaneseProcurement.jsx", import.meta.url), "utf8"),
+  ]);
+  const hubKeys = ["jaGolfGifts", "jaFirstOrder", "jaExportReadiness"];
+  const guideKeys = ["jaBrandingGuide", "jaArtworkGuide", "jaMoqGuide", "jaQuoteFactorsGuide", "jaQualityChecklistGuide", "jaDeliveryDateGuide", "jaPostBriefGuide"];
+
+  for (const key of [...hubKeys, ...guideKeys]) {
+    const route = siteRoutes[key];
+    assert.equal(findRoute(route.path), route);
+    assert.equal(route.lang, "ja");
+    assert.match(sitemap, new RegExp(`https://zhonigolf\\.com${route.path}`.replaceAll("/", "\\/")));
+    const document = await readFile(new URL(`../dist/client/${route.path.slice(1)}index.html`, import.meta.url), "utf8");
+    assert.match(document, /<html lang="ja">/);
+    assert.match(document, /<h1(?:\s|>)/);
+    assert.match(document, new RegExp(`hreflang="en" href="https://zhonigolf\\.com${route.alternatePath.replaceAll("/", "\\/")}"`));
+    assert.match(document, new RegExp(`hreflang="ja" href="https://zhonigolf\\.com${route.path.replaceAll("/", "\\/")}"`));
+    assert.match(document, /data-buyer-evidence="ja-/);
+    for (const path of ["/ja/products/", "/ja/solutions/", "/ja/our-process/", "/ja/request-a-quote/"]) {
+      assert.match(document, new RegExp(path.replaceAll("/", "\\/")), `Expected ${path} on ${route.path}.`);
+    }
+    const schemaMatch = document.match(/<script id="zhoni-page-schema" type="application\/ld\+json">([\s\S]*?)<\/script>/);
+    const graph = JSON.parse(schemaMatch[1])["@graph"];
+    if (key === "jaGolfGifts") assert.ok(graph.some((entity) => entity["@type"] === "CollectionPage"));
+    else assert.ok(graph.some((entity) => entity["@type"] === "Article"));
+    if (guideKeys.includes(key)) assert.ok(graph.some((entity) => entity["@type"] === "FAQPage"));
+  }
+
+  const guideHub = await readFile(new URL("../dist/client/ja/guides/index.html", import.meta.url), "utf8");
+  for (const key of [...hubKeys, ...guideKeys]) assert.match(guideHub, new RegExp(siteRoutes[key].path.replaceAll("/", "\\/")), `Missing ${siteRoutes[key].path} from Japanese guide center.`);
+  for (const label of ["製品・カスタマイズ", "ギフト・イベント", "MOQ・初回注文", "品質・納品"]) assert.match(guideHub, new RegExp(label));
+  assert.match(expansion, /<JapaneseProcurement routeKey=\{routeKey\}/);
+  assert.match(procurement, /同じ基準で比較できるブリーフ/);
+});
+
 test("publishes a complete first-round Korean locale with reciprocal SEO alternates", async () => {
   const template = await readFile(new URL("../index.html", import.meta.url), "utf8");
   const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
