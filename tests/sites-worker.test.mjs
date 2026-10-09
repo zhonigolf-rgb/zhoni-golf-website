@@ -553,6 +553,26 @@ test("keeps product-family imagery large in a responsive three-to-one column gri
   assert.match(styles, /@media \(max-width: 560px\)[\s\S]*?\.family-grid\s*\{\s*grid-template-columns:\s*1fr/);
 });
 
+test("prerenders complete semantic page content for every locale route", async () => {
+  for (const route of Object.values(siteRoutes)) {
+    const relativePath = route.path === "/" ? "../dist/client/index.html" : `../dist/client/${route.path.slice(1)}index.html`;
+    const document = await readFile(new URL(relativePath, import.meta.url), "utf8");
+    assert.doesNotMatch(document, /<div id="root"><\/div>/, `Expected rendered content for ${route.path}.`);
+    assert.match(document, /<main(?:\s|>)/, `Expected semantic main content for ${route.path}.`);
+    assert.match(document, /<h1(?:\s|>)/, `Expected a rendered H1 for ${route.path}.`);
+  }
+
+  const [englishFaq, koreanFaq, frenchFaq] = await Promise.all([
+    readFile(new URL("../dist/client/faq/index.html", import.meta.url), "utf8"),
+    readFile(new URL("../dist/client/ko/faq/index.html", import.meta.url), "utf8"),
+    readFile(new URL("../dist/client/fr-ca/faq/index.html", import.meta.url), "utf8"),
+  ]);
+  assert.match(englishFaq, /What is the best next step\?/);
+  assert.match(englishFaq, /Share the occasion, recipients, product direction/);
+  assert.match(koreanFaq, /여러 제품을 하나의 기프트 세트로 구성할 수 있나요\?/);
+  assert.match(frenchFaq, /Pouvez-vous créer un ensemble-cadeau complet\?/);
+});
+
 test("emits the files required by Sites packaging", async () => {
   await access(new URL("../dist/client/index.html", import.meta.url));
   await access(new URL("../dist/server/index.js", import.meta.url));

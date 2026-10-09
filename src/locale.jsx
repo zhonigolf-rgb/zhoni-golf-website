@@ -1,6 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { findRoute, normalizePath, siteRoutes } from "./siteRoutes.js";
 
+let serverPathname = "/";
+
+export function setServerPathname(pathname) {
+  serverPathname = pathname || "/";
+}
+
 const localeOptions = [
   { code: "en", label: "English", short: "EN", home: "/" },
   { code: "fr-CA", label: "Français (Canada)", short: "FR", home: "/fr-ca/" },
@@ -23,7 +29,7 @@ export function localePath(path, locale = "ko") {
 export function LanguageSwitcher({ variant = "light" }) {
   const [open, setOpen] = useState(false);
   const root = useRef(null);
-  const currentPath = typeof window === "undefined" ? "/" : window.location.pathname;
+  const currentPath = typeof window === "undefined" ? serverPathname : window.location.pathname;
   const currentRoute = findRoute(currentPath);
   const currentLocale = currentRoute?.lang ?? "en";
   const activeOption = localeOptions.find(option => option.code === currentLocale) ?? localeOptions[0];

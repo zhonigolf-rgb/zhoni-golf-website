@@ -57,13 +57,19 @@ export function trackAnalytics(eventName, details = {}) {
 }
 
 export function AnalyticsConsent() {
-  const [consent, setConsent] = useState(() => getAnalyticsConsent());
+  const [consent, setConsent] = useState(null);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    setConsent(getAnalyticsConsent());
+    setReady(true);
+  }, []);
 
   useEffect(() => {
     if (consent === "granted") enableAnalytics();
   }, [consent]);
 
-  if (!hasMeasurementId() || consent) return null;
+  if (!ready || !hasMeasurementId() || consent) return null;
 
   const choose = value => {
     try {
