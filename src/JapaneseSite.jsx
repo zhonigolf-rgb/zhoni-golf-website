@@ -4,6 +4,7 @@ import { TurnstileField } from "./turnstile.jsx";
 import { trackAnalytics } from "./analytics.jsx";
 import { inquirySourceForLocation } from "./seo.js";
 import { LocalizedBuyerEvidence } from "./LocalizedBuyerEvidence.jsx";
+import { JapaneseExpansion } from "./JapaneseExpansion.jsx";
 
 const WHATSAPP_URL = import.meta.env.VITE_WHATSAPP_URL ?? "https://wa.me/8617759190848";
 const Arrow = () => <span aria-hidden="true">↗</span>;
@@ -24,12 +25,12 @@ function Footer() {
 }
 
 const productFamilies = [
-  ["ヘッドカバー", "クラブ保護、フィット、素材、ロゴ表現を一体で検討します。", "/assets/images/zhoni-product-headcovers-v3.png", "カスタムゴルフヘッドカバー"],
-  ["キャップ＆バイザー", "着用環境、フィット、生地、刺繍位置に合わせて設計します。", "/assets/images/zhoni-product-caps-v3.png", "カスタムゴルフキャップ＆バイザー"],
-  ["マグネットタオル", "コースでの使いやすさと刺繍、マグネット構造を確認します。", "/assets/images/zhoni-product-magnetic-towel-v4.png", "カスタムゴルフタオル"],
-  ["アクセサリー", "ボールマーカー、グリーンフォーク、バッグタグ、ポーチを用途別に構成します。", "/assets/images/zhoni-product-accessories-v3.png", "カスタムゴルフアクセサリー"],
-  ["ギフトセット", "受け取る人、贈る場面、製品の役割を一つの体験にまとめます。", "/assets/images/zhoni-product-gift-sets-v3.png", "カスタムゴルフギフトセット"],
-  ["パッケージ", "箱、インサート、カード、保護梱包を製品と納品条件に合わせます。", "/assets/images/zhoni-product-packaging-v3.png", "カスタムゴルフパッケージ"],
+  ["ヘッドカバー", "クラブ保護、フィット、素材、ロゴ表現を一体で検討します。", "/assets/images/zhoni-product-headcovers-v3.png", "/ja/custom-golf-headcovers/"],
+  ["キャップ＆バイザー", "着用環境、フィット、生地、刺繍位置に合わせて設計します。", "/assets/images/zhoni-product-caps-v3.png", "/ja/custom-golf-caps/"],
+  ["マグネットタオル", "コースでの使いやすさと刺繍、マグネット構造を確認します。", "/assets/images/zhoni-product-magnetic-towel-v4.png", "/ja/custom-golf-towels/"],
+  ["アクセサリー", "ボールマーカー、グリーンフォーク、バッグタグ、ポーチを用途別に構成します。", "/assets/images/zhoni-product-accessories-v3.png", "/ja/custom-golf-accessories/"],
+  ["ギフトセット", "受け取る人、贈る場面、製品の役割を一つの体験にまとめます。", "/assets/images/zhoni-product-gift-sets-v3.png", "/ja/solutions/"],
+  ["パッケージ", "箱、インサート、カード、保護梱包を製品と納品条件に合わせます。", "/assets/images/zhoni-product-packaging-v3.png", "/ja/custom-golf-packaging/"],
 ];
 
 function Home() {
@@ -37,12 +38,12 @@ function Home() {
 }
 
 function Products() {
-  return <main className="products-hub ja-page"><Header active="products" /><section className="products-hero"><img src="/assets/images/zhoni-golf-collection-hero-v2.png" alt="ZHONIカスタムゴルフ用品" /><div className="products-hero-copy"><p className="products-kicker">カスタムゴルフ用品</p><h1>単品ではなく、<br />つながるコレクションへ。</h1><p>用途、受け取る人、ブランド表現、渡し方に合わせて製品を組み立てます。</p><a href="/ja/request-a-quote/">プロジェクト相談 <Arrow /></a></div></section><section className="family-index"><div className="family-heading"><p className="products-kicker">製品カテゴリー</p><h2>Product Families</h2><p>製品が違っても、<br />ブランド体験は一つに。</p></div><div className="family-grid">{productFamilies.map(([title,copy,image,brief]) => <a className="family-card" href={`/ja/request-a-quote/?product=${encodeURIComponent(brief)}`} key={title}><img src={image} alt={title} /><h3>{title}</h3><p>{copy}</p><span>— &nbsp; <Arrow /></span></a>)}</div></section><LocalizedBuyerEvidence locale="ja" context="products" /><section className="products-intro"><p className="products-kicker">COORDINATED APPROACH</p><h2>製品、ブランド表現、パッケージを同じ基準で確認。</h2><p>MOQ、価格、サンプル、納期は製品構造、カスタム範囲、数量、パッケージ、納品先によって変わります。</p><a href="/ja/our-process/">進行プロセスを見る <Arrow /></a></section><Footer /></main>;
+  return <main className="products-hub ja-page"><Header active="products" /><section className="products-hero"><img src="/assets/images/zhoni-golf-collection-hero-v2.png" alt="ZHONIカスタムゴルフ用品" /><div className="products-hero-copy"><p className="products-kicker">カスタムゴルフ用品</p><h1>単品ではなく、<br />つながるコレクションへ。</h1><p>用途、受け取る人、ブランド表現、渡し方に合わせて製品を組み立てます。</p><a href="/ja/request-a-quote/">プロジェクト相談 <Arrow /></a></div></section><section className="family-index"><div className="family-heading"><p className="products-kicker">製品カテゴリー</p><h2>Product Families</h2><p>製品が違っても、<br />ブランド体験は一つに。</p></div><div className="family-grid">{productFamilies.map(([title,copy,image,href]) => <a className="family-card" href={href} key={title}><img src={image} alt={title} /><h3>{title}</h3><p>{copy}</p><span>— &nbsp; <Arrow /></span></a>)}</div></section><LocalizedBuyerEvidence locale="ja" context="products" /><section className="products-intro"><p className="products-kicker">COORDINATED APPROACH</p><h2>製品、ブランド表現、パッケージを同じ基準で確認。</h2><p>MOQ、価格、サンプル、納期は製品構造、カスタム範囲、数量、パッケージ、納品先によって変わります。</p><a href="/ja/our-process/">進行プロセスを見る <Arrow /></a></section><Footer /></main>;
 }
 
 function Solutions() {
-  const programs = [["01","ゴルフ大会・プレーヤーパック","参加者、スポンサー、VIP、受賞者ごとに役割を分けます。","/assets/images/zhoni-golf-tournament-gift-delivery-v2.png","golf-tournament-gifts"],["02","企業向けゴルフギフト","顧客、社員、パートナーとの関係と贈呈場面から設計します。","/assets/images/zhoni-custom-golf-packaging-v2.png","corporate-golf-gifts"],["03","クラブ会員プログラム","入会、更新、記念日、会員イベントを継続可能な体系にします。","/assets/images/zhoni-golf-product-development-v2.png","club-member-programs"],["04","プライベートブランド","製品構成、仕様、ロゴ、パッケージ、承認記録を体系化します。","/assets/images/zhoni-golf-collection-hero-v2.png","private-label-collections"]];
-  return <main className="zhoni-page solutions-page ja-page"><Header active="solutions" /><section className="solutions-index-hero"><div className="solutions-rail" aria-hidden="true"><strong>Z</strong><span>SOLUTIONS</span><i>PEOPLE · GOLF · BRANDS</i></div><div className="solutions-index-intro"><p>プロジェクト別ソリューション</p><h1>製品より先に、<br />受け取る人と目的を。</h1><p>対象、場面、数量、渡し方を整理してから、適切な製品構成を検討します。</p></div><figure><img src="/assets/images/zhoni-custom-golf-packaging-v2.png" alt="カスタムゴルフギフトとパッケージ" /><figcaption>MORE THAN PRODUCTS.<br />A MORE THOUGHTFUL APPROACH.</figcaption></figure></section><section className="solutions-program-index">{programs.map(([number,title,copy,image,solution]) => <a className="solutions-program" href={`/ja/request-a-quote/?solution=${solution}&source=${solution}`} key={number}><b>{number}</b><img src={image} alt={title} /><div><h2>{title}</h2><p><strong>適した用途</strong>{copy}</p></div><span>→</span></a>)}</section><LocalizedBuyerEvidence locale="ja" context="solutions" /><section className="solutions-brief-bridge"><div><p>概要から始める</p><h2>目的を定めてから、<br />製品構成を考えます。</h2><p>対象、数量、希望納期、納品国、製品の方向を共有いただければ、次に確認すべき内容をご案内します。</p><a href="/ja/request-a-quote/">プロジェクト概要を送る <Arrow /></a></div><aside><p>最初に役立つ情報</p><ul><li>誰が受け取りますか？</li><li>どのような大会・プログラムですか？</li><li>予定数量はどのくらいですか？</li><li>いつ、どこで必要ですか？</li><li>ロゴや参考画像はありますか？</li></ul></aside></section><Footer /></main>;
+  const programs = [["01","ゴルフ大会・プレーヤーパック","参加者、スポンサー、VIP、受賞者ごとに役割を分けます。","/assets/images/zhoni-golf-tournament-gift-delivery-v2.png","golf-tournament-gifts"],["02","企業向けゴルフギフト","顧客、社員、パートナーとの関係と贈呈場面から設計します。","/assets/images/zhoni-custom-golf-packaging-v2.png","corporate-golf-gifts"],["03","クラブ会員プログラム","入会、更新、記念日、会員イベントを継続可能な体系にします。","/assets/images/zhoni-golf-product-development-v2.png","golf-club-member-programs"],["04","プライベートブランド","製品構成、仕様、ロゴ、パッケージ、承認記録を体系化します。","/assets/images/zhoni-golf-collection-hero-v2.png","private-label-golf-collections"]];
+  return <main className="zhoni-page solutions-page ja-page"><Header active="solutions" /><section className="solutions-index-hero"><div className="solutions-rail" aria-hidden="true"><strong>Z</strong><span>SOLUTIONS</span><i>PEOPLE · GOLF · BRANDS</i></div><div className="solutions-index-intro"><p>プロジェクト別ソリューション</p><h1>製品より先に、<br />受け取る人と目的を。</h1><p>対象、場面、数量、渡し方を整理してから、適切な製品構成を検討します。</p></div><figure><img src="/assets/images/zhoni-custom-golf-packaging-v2.png" alt="カスタムゴルフギフトとパッケージ" /><figcaption>MORE THAN PRODUCTS.<br />A MORE THOUGHTFUL APPROACH.</figcaption></figure></section><section className="solutions-program-index">{programs.map(([number,title,copy,image,solution]) => <a className="solutions-program" href={`/ja/solutions/${solution}/`} key={number}><b>{number}</b><img src={image} alt={title} /><div><h2>{title}</h2><p><strong>適した用途</strong>{copy}</p></div><span>→</span></a>)}</section><LocalizedBuyerEvidence locale="ja" context="solutions" /><section className="solutions-brief-bridge"><div><p>概要から始める</p><h2>目的を定めてから、<br />製品構成を考えます。</h2><p>対象、数量、希望納期、納品国、製品の方向を共有いただければ、次に確認すべき内容をご案内します。</p><a href="/ja/request-a-quote/">プロジェクト概要を送る <Arrow /></a></div><aside><p>最初に役立つ情報</p><ul><li>誰が受け取りますか？</li><li>どのような大会・プログラムですか？</li><li>予定数量はどのくらいですか？</li><li>いつ、どこで必要ですか？</li><li>ロゴや参考画像はありますか？</li></ul></aside></section><Footer /></main>;
 }
 
 function Process() {
@@ -73,5 +74,5 @@ function Quote() {
 
 export function JapaneseSite({ routeKey }) {
   const pages = { jaHome:<Home />, jaProducts:<Products />, jaSolutions:<Solutions />, jaProcess:<Process />, jaFaq:<Faq />, jaAbout:<About />, jaQuote:<Quote /> };
-  return pages[routeKey] ?? null;
+  return pages[routeKey] ?? <JapaneseExpansion routeKey={routeKey} />;
 }
