@@ -10,6 +10,7 @@ import "./zhoni-pages.css";
 import "./locale.css";
 import "./korean.css";
 import "./canadian-french.css";
+import "./visual-system.css";
 
 const WHATSAPP_URL = import.meta.env.VITE_WHATSAPP_URL ?? "https://wa.me/8617759190848";
 const KoreanSite = lazy(() => import("./KoreanSite.jsx").then(module => ({ default: module.KoreanSite })));

@@ -1,0 +1,303 @@
+/*
+ * Shared visual system for every interior route.
+ * Locale styles own language-specific typography; this file owns geometry,
+ * hierarchy and responsive behaviour and is intentionally loaded last.
+ */
+.zhoni-page {
+  --page-hero-height: 680px;
+  --page-hero-copy-x: clamp(2.5rem, 4vw, 4.75rem);
+  --page-hero-copy-y: 4.5rem;
+  --page-hero-title: clamp(3.5rem, 4.4vw, 5.6rem);
+  --page-hero-title-width: 10em;
+  --page-section-x: clamp(2rem, 8vw, 9rem);
+  --page-section-y: clamp(4rem, 7vw, 7.5rem);
+  overflow-x: clip;
+}
+
+.zhoni-page h1 {
+  text-wrap: balance;
+}
+
+/* Product and solution detail pages share one three-column hero frame. */
+.category-page .category-hero,
+.corporate-page .corporate-hero {
+  height: var(--page-hero-height);
+  min-height: var(--page-hero-height);
+  grid-template-columns: 96px minmax(360px, .82fr) minmax(420px, 1.18fr);
+}
+
+.category-page .category-intro,
+.corporate-page .corporate-hero > div {
+  padding: var(--page-hero-copy-y) var(--page-hero-copy-x);
+}
+
+.category-page .category-intro h1,
+.corporate-page .corporate-hero h1 {
+  width: 100%;
+  max-width: var(--page-hero-title-width);
+  margin: 1rem 0 1.35rem;
+  font-size: var(--page-hero-title);
+  line-height: .9;
+}
+
+.category-page .category-intro > p:not(:first-child),
+.corporate-page .corporate-hero > div > p:not(:first-child) {
+  max-width: 32rem;
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+.category-page .category-hero > img,
+.corporate-page .corporate-hero > img {
+  width: 100%;
+  height: var(--page-hero-height);
+  min-height: var(--page-hero-height);
+  object-fit: cover;
+}
+
+/* Standard buyer-guide articles use the same image, title and copy geometry. */
+.guide-page:not(.plush-guide-page) .guide-hero {
+  height: var(--page-hero-height);
+  min-height: var(--page-hero-height);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.guide-page:not(.plush-guide-page) .guide-hero > div {
+  padding: var(--page-hero-copy-y) clamp(2.5rem, 5vw, 5.5rem);
+}
+
+.guide-page .guide-hero h1 {
+  width: 100%;
+  max-width: var(--page-hero-title-width);
+  margin: 1rem 0 1.35rem;
+  font-size: var(--page-hero-title);
+  line-height: .9;
+}
+
+.guide-page .guide-hero > div > p:not(:first-child) {
+  max-width: 34rem;
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+.guide-page:not(.plush-guide-page) .guide-hero > img {
+  width: 100%;
+  height: var(--page-hero-height);
+  min-height: var(--page-hero-height);
+  object-fit: cover;
+}
+
+/* Guide hubs keep their own content model but now share scale and rhythm. */
+.buyer-guides-page .buyer-guides-hero,
+.guides-page .guides-hero {
+  height: 620px;
+  min-height: 620px;
+}
+
+.buyer-guides-page .buyer-guides-hero > div,
+.guides-page .guides-hero {
+  padding: 5rem 7vw;
+}
+
+.buyer-guides-page .buyer-guides-hero h1,
+.guides-page .guides-hero h1 {
+  max-width: 10.5em;
+  margin: 1rem 0 1.35rem;
+  font-size: clamp(3.5rem, 4.4vw, 5.6rem);
+  line-height: .9;
+}
+
+.buyer-guides-page .buyer-guides-hero img {
+  width: 100%;
+  height: 620px;
+  object-fit: cover;
+}
+
+.guides-page .guide-catalog,
+.buyer-guides-page .buyer-guides-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.guides-page .guide-catalog > a,
+.buyer-guides-page .buyer-guide-card {
+  min-height: 280px;
+}
+
+/* The remaining high-level routes use the same headline scale. */
+.process-hero,
+.faq-ledger-hero,
+.solutions-index-hero,
+.program-solution-hero {
+  min-height: 620px;
+}
+
+.faq-ledger-hero {
+  height: 620px;
+  padding: 4.5rem 7vw;
+  align-items: center;
+}
+
+.process-hero h1,
+.faq-ledger-hero h1,
+.solutions-index-intro h1,
+.program-solution-hero h1,
+.zhoni-about-hero h1,
+.quote-ledger-intro h1 {
+  max-width: var(--page-hero-title-width);
+  font-size: var(--page-hero-title);
+  line-height: .9;
+}
+
+.program-solution-hero {
+  height: var(--page-hero-height);
+}
+
+.program-solution-hero > div {
+  padding: var(--page-hero-copy-y) clamp(2.5rem, 6vw, 7rem);
+}
+
+.program-solution-hero figure,
+.program-solution-hero img {
+  height: var(--page-hero-height);
+  min-height: var(--page-hero-height);
+}
+
+.zhoni-about-hero {
+  height: var(--page-hero-height);
+  min-height: var(--page-hero-height);
+}
+
+@media (max-width: 900px) {
+  .category-page .category-hero,
+  .corporate-page .corporate-hero {
+    height: auto;
+    min-height: 0;
+    grid-template-columns: 72px 1fr;
+  }
+
+  .category-page .category-hero > img,
+  .corporate-page .corporate-hero > img {
+    grid-column: 2;
+    width: 100%;
+    height: 440px;
+    min-height: 360px;
+    max-height: 480px;
+  }
+
+  .category-page .category-intro,
+  .corporate-page .corporate-hero > div {
+    grid-column: 2;
+    padding: 4rem 2.5rem;
+  }
+
+  .guide-page:not(.plush-guide-page) .guide-hero {
+    height: auto;
+    min-height: 0;
+    grid-template-columns: 1fr;
+  }
+
+  .guide-page:not(.plush-guide-page) .guide-hero > div {
+    padding: 4rem 2.5rem;
+  }
+
+  .guide-page:not(.plush-guide-page) .guide-hero > img {
+    width: 100%;
+    height: 440px;
+    min-height: 360px;
+  }
+
+  .buyer-guides-page .buyer-guides-hero,
+  .guides-page .guides-hero {
+    height: auto;
+    min-height: 0;
+    grid-template-columns: 1fr;
+  }
+
+  .buyer-guides-page .buyer-guides-hero > div,
+  .guides-page .guides-hero {
+    padding: 4rem 2.5rem;
+  }
+
+  .buyer-guides-page .buyer-guides-hero img {
+    height: 380px;
+  }
+
+  .guides-page .guide-catalog,
+  .buyer-guides-page .buyer-guides-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .program-solution-hero {
+    height: auto;
+  }
+
+  .program-solution-hero figure,
+  .program-solution-hero img {
+    height: 420px;
+    min-height: 0;
+  }
+}
+
+@media (max-width: 620px) {
+  .zhoni-page {
+    --page-hero-title: 3.05rem;
+  }
+
+  .buyer-guides-page .buyer-guides-hero h1,
+  .guides-page .guides-hero h1 {
+    font-size: var(--page-hero-title);
+  }
+
+  .category-page .category-hero,
+  .corporate-page .corporate-hero {
+    display: block;
+  }
+
+  .category-page .category-intro,
+  .corporate-page .corporate-hero > div,
+  .guide-page:not(.plush-guide-page) .guide-hero > div,
+  .buyer-guides-page .buyer-guides-hero > div,
+  .guides-page .guides-hero,
+  .program-solution-hero > div {
+    padding: 3rem 1.25rem;
+  }
+
+  .category-page .category-hero > img,
+  .corporate-page .corporate-hero > img,
+  .guide-page:not(.plush-guide-page) .guide-hero > img {
+    width: 100%;
+    height: 420px;
+    min-height: 300px;
+    max-height: none;
+  }
+
+  .buyer-guides-page .buyer-guides-hero img {
+    height: 320px;
+  }
+
+  .guides-page .guide-catalog,
+  .buyer-guides-page .buyer-guides-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .guides-page .guide-catalog > a,
+  .buyer-guides-page .buyer-guide-card {
+    min-height: 0;
+  }
+
+  .process-hero,
+  .faq-ledger-hero {
+    height: auto;
+    min-height: 0;
+  }
+
+  .zhoni-about-hero {
+    height: 640px;
+    min-height: 0;
+  }
+
+  .program-solution-hero figure,
+  .program-solution-hero img {
+    height: 360px;
+  }
+}
