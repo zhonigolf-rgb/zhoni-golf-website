@@ -7,6 +7,7 @@ const breadcrumbNames = {
   "/": "Home",
   "/products/": "Products",
   "/custom-golf-headcovers/": "Custom Golf Headcovers",
+  "/custom-plush-golf-headcovers/": "Plush & Novelty Golf Headcovers",
   "/custom-golf-caps/": "Custom Golf Caps & Headwear",
   "/custom-golf-towels/": "Custom Golf Towels",
   "/custom-golf-accessories/": "Custom Golf Accessories",
@@ -29,6 +30,10 @@ const breadcrumbNames = {
   "/guides/custom-golf-sample-approval-checklist/": "Custom Golf Sample Approval Checklist",
   "/guides/coordinated-golf-accessory-collection/": "Coordinated Golf Accessory Collection",
   "/guides/headcover-logo-methods-and-placement/": "Headcover Logo Methods and Placement",
+  "/guides/custom-plush-golf-headcover-design-guide/": "Plush Headcover Design Guide",
+  "/guides/plush-golf-headcover-materials-lining-closures/": "Plush Headcover Materials and Construction",
+  "/guides/plush-headcover-embroidery-patches-character-details/": "Plush Headcover Character Details",
+  "/guides/custom-plush-headcover-sample-quality-checklist/": "Plush Headcover Sample Checklist",
   "/guides/custom-golf-caps-and-visors/": "Custom Golf Caps and Visors",
   "/guides/custom-golf-cap-materials/": "Custom Golf Cap Materials",
   "/guides/custom-golf-cap-logo-placement/": "Custom Golf Cap Logo Placement and Branding",
@@ -169,7 +174,7 @@ export function schemaForRoute(route, faqItems = []) {
   const companyId = `${SITE_ORIGIN}/#company`;
   const brandId = `${SITE_ORIGIN}/#brand`;
   const websiteId = `${SITE_ORIGIN}/#website`;
-  const guideRoutes = [siteRoutes.golfGiftGuide, siteRoutes.audienceGiftGuide, siteRoutes.brandingGuide, siteRoutes.artworkGuide, siteRoutes.headcoversGuide, siteRoutes.towelsGuide, siteRoutes.tournamentGuide, siteRoutes.corporateGuide, siteRoutes.packagingGuide, siteRoutes.headcoverMaterialsGuide, siteRoutes.headcoverTypesGuide, siteRoutes.productSpecificationGuide, siteRoutes.sampleApprovalGuide, siteRoutes.collectionPlanningGuide, siteRoutes.headcoverLogoGuide, siteRoutes.capsStyleGuide, siteRoutes.capsMaterialsGuide, siteRoutes.capsBrandingGuide, siteRoutes.productDevelopmentBriefGuide, siteRoutes.tournamentGiftBudgetGuide, siteRoutes.playerPackGuide, siteRoutes.recipientRolesGuide, siteRoutes.premiumGiftSetGuide, siteRoutes.eventBriefGuide, siteRoutes.quoteComparisonGuide, siteRoutes.quoteFactorsGuide, siteRoutes.moqGuide, siteRoutes.qualityChecklistGuide, siteRoutes.deliveryDateGuide, siteRoutes.postBriefGuide, siteRoutes.firstOrder, siteRoutes.exportReadiness];
+  const guideRoutes = [siteRoutes.golfGiftGuide, siteRoutes.audienceGiftGuide, siteRoutes.brandingGuide, siteRoutes.artworkGuide, siteRoutes.headcoversGuide, siteRoutes.towelsGuide, siteRoutes.tournamentGuide, siteRoutes.corporateGuide, siteRoutes.packagingGuide, siteRoutes.headcoverMaterialsGuide, siteRoutes.headcoverTypesGuide, siteRoutes.productSpecificationGuide, siteRoutes.sampleApprovalGuide, siteRoutes.collectionPlanningGuide, siteRoutes.headcoverLogoGuide, siteRoutes.plushDesignGuide, siteRoutes.plushMaterialsGuide, siteRoutes.plushBrandingGuide, siteRoutes.plushSampleGuide, siteRoutes.capsStyleGuide, siteRoutes.capsMaterialsGuide, siteRoutes.capsBrandingGuide, siteRoutes.productDevelopmentBriefGuide, siteRoutes.tournamentGiftBudgetGuide, siteRoutes.playerPackGuide, siteRoutes.recipientRolesGuide, siteRoutes.premiumGiftSetGuide, siteRoutes.eventBriefGuide, siteRoutes.quoteComparisonGuide, siteRoutes.quoteFactorsGuide, siteRoutes.moqGuide, siteRoutes.qualityChecklistGuide, siteRoutes.deliveryDateGuide, siteRoutes.postBriefGuide, siteRoutes.firstOrder, siteRoutes.exportReadiness];
   const graph = [
     {
       "@type": "Organization", "@id": companyId,
@@ -191,7 +196,7 @@ export function schemaForRoute(route, faqItems = []) {
       ja: { home: "ホーム", products: "製品", solutions: "ソリューション", guides: "購入ガイド" },
       de: { home: "Startseite", products: "Produkte", solutions: "Lösungen", guides: "Ratgeber" },
     }[language] ?? { home: "Home", products: "Products", solutions: "Solutions", guides: "Buyer Guides" };
-    const productPaths = [siteRoutes.headcovers.path, siteRoutes.caps.path, siteRoutes.towels.path, siteRoutes.accessories.path, siteRoutes.packaging.path];
+    const productPaths = [siteRoutes.headcovers.path, siteRoutes.plushHeadcovers.path, siteRoutes.caps.path, siteRoutes.towels.path, siteRoutes.accessories.path, siteRoutes.packaging.path];
     const solutionPaths = [siteRoutes.corporateGifts.path, siteRoutes.tournamentGifts.path, siteRoutes.clubMemberPrograms.path, siteRoutes.privateLabelCollections.path];
     const isGuide = guideRoutes.some(guide => guide.path === englishPath);
     const parentEnglishPath = isGuide ? siteRoutes.guides.path : productPaths.includes(englishPath) ? siteRoutes.products.path : solutionPaths.includes(englishPath) ? siteRoutes.solutions.path : null;
@@ -207,7 +212,7 @@ export function schemaForRoute(route, faqItems = []) {
     });
   }
 
-  const servicePaths = [siteRoutes.headcovers, siteRoutes.caps, siteRoutes.towels, siteRoutes.accessories, siteRoutes.packaging, siteRoutes.corporateGifts, siteRoutes.tournamentGifts, siteRoutes.clubMemberPrograms, siteRoutes.privateLabelCollections].map(service => service.path);
+  const servicePaths = [siteRoutes.headcovers, siteRoutes.plushHeadcovers, siteRoutes.caps, siteRoutes.towels, siteRoutes.accessories, siteRoutes.packaging, siteRoutes.corporateGifts, siteRoutes.tournamentGifts, siteRoutes.clubMemberPrograms, siteRoutes.privateLabelCollections].map(service => service.path);
   if (servicePaths.includes(englishPath)) {
     graph.push({ "@type": "Service", name: route.title, description: route.description, provider: { "@id": companyId }, brand: { "@id": brandId }, url: canonical, areaServed: "International" });
   }

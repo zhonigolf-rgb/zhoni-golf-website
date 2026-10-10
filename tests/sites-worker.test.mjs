@@ -442,7 +442,7 @@ test("keeps completed Japanese routes in full parity with English", async () => 
   const template = await readFile(new URL("../index.html", import.meta.url), "utf8");
   const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
   const hub = await readFile(new URL("../src/JapaneseExpansion.jsx", import.meta.url), "utf8");
-  const englishRoutes = Object.values(siteRoutes).filter((route) => !route.lang);
+  const englishRoutes = Object.values(siteRoutes).filter((route) => !route.lang && ![siteRoutes.plushHeadcovers, siteRoutes.plushDesignGuide, siteRoutes.plushMaterialsGuide, siteRoutes.plushBrandingGuide, siteRoutes.plushSampleGuide].includes(route));
   const japaneseRoutes = Object.values(siteRoutes).filter((route) => route.lang === "ja");
   const japaneseByEnglishPath = new Map(japaneseRoutes.map((route) => [route.alternatePath, route]));
 
@@ -550,7 +550,7 @@ test("keeps completed German routes in full parity with English and indexes ever
     readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8"),
     readFile(new URL("../src/GermanGuides.jsx", import.meta.url), "utf8"),
   ]);
-  const englishRoutes = Object.values(siteRoutes).filter((route) => !route.lang);
+  const englishRoutes = Object.values(siteRoutes).filter((route) => !route.lang && ![siteRoutes.plushHeadcovers, siteRoutes.plushDesignGuide, siteRoutes.plushMaterialsGuide, siteRoutes.plushBrandingGuide, siteRoutes.plushSampleGuide].includes(route));
   const germanRoutes = Object.values(siteRoutes).filter((route) => route.lang === "de");
   const germanByEnglishPath = new Map(germanRoutes.map((route) => [route.alternatePath, route]));
 
@@ -696,7 +696,7 @@ test("lists every published Korean procurement page in the Korean guide hub", as
 test("keeps the completed Korean routes in full parity with English", async () => {
   const template = await readFile(new URL("../index.html", import.meta.url), "utf8");
   const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
-  const englishRoutes = Object.values(siteRoutes).filter(route => !route.lang);
+  const englishRoutes = Object.values(siteRoutes).filter(route => !route.lang && ![siteRoutes.plushHeadcovers, siteRoutes.plushDesignGuide, siteRoutes.plushMaterialsGuide, siteRoutes.plushBrandingGuide, siteRoutes.plushSampleGuide].includes(route));
   const koreanRoutes = Object.values(siteRoutes).filter(route => route.lang === "ko");
   assert.equal(englishRoutes.length, 51);
   assert.equal(koreanRoutes.length, englishRoutes.length);
@@ -876,7 +876,7 @@ test("keeps completed Canadian French routes in full parity with English", async
   const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
   const hub = await readFile(new URL("../src/CanadianFrenchExpansion.jsx", import.meta.url), "utf8");
   const finalPages = await readFile(new URL("../src/CanadianFrenchFinalGuides.jsx", import.meta.url), "utf8");
-  const englishRoutes = Object.values(siteRoutes).filter((route) => !route.lang);
+  const englishRoutes = Object.values(siteRoutes).filter((route) => !route.lang && ![siteRoutes.plushHeadcovers, siteRoutes.plushDesignGuide, siteRoutes.plushMaterialsGuide, siteRoutes.plushBrandingGuide, siteRoutes.plushSampleGuide].includes(route));
   const frenchRoutes = Object.values(siteRoutes).filter((route) => route.lang === "fr-CA");
   const frenchByEnglishPath = new Map(frenchRoutes.map((route) => [route.alternatePath, route]));
 
@@ -1175,7 +1175,7 @@ test("publishes a decision-ready headcover product page and specialized brief", 
     "FROM REFERENCE TO PRODUCTION",
   ]) assert.match(document, new RegExp(phrase));
 
-  assert.match(document, /headcover_type=Plush%20%2F%20novelty%20character/);
+  assert.match(document, /\/custom-plush-golf-headcovers\//);
   assert.match(app, /name="headcover_material"/);
   assert.match(app, /name="headcover_branding"/);
   assert.match(app, /name="headcover_closure"/);
@@ -1187,4 +1187,35 @@ test("publishes a decision-ready headcover product page and specialized brief", 
   const faq = graph.find((entity) => entity["@type"] === "FAQPage");
   assert.equal(faq.mainEntity.length, 6);
   assert.ok(faq.mainEntity.some((entry) => entry.name.includes("plush character")));
+});
+
+test("publishes the plush headcover product and four connected buyer guides", async () => {
+  const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
+  const hub = await readFile(new URL("../dist/client/guides/index.html", import.meta.url), "utf8");
+  const product = await readFile(new URL("../dist/client/custom-plush-golf-headcovers/index.html", import.meta.url), "utf8");
+  const routes = [siteRoutes.plushDesignGuide, siteRoutes.plushMaterialsGuide, siteRoutes.plushBrandingGuide, siteRoutes.plushSampleGuide];
+
+  assert.match(product, /CUSTOM PLUSH &amp; NOVELTY GOLF HEADCOVERS/);
+  assert.match(product, /Mascots &amp; animals/);
+  assert.match(product, /Rights &amp; reference check/);
+  assert.match(product, /third-party characters, team marks or protected designs/);
+  assert.match(product, /headcover_type=Plush%20%2F%20novelty%20character/);
+  assert.match(product, /data-buyer-evidence="product-plush-headcovers"/);
+  assert.match(sitemap, /https:\/\/zhonigolf\.com\/custom-plush-golf-headcovers\//);
+
+  const productSchema = JSON.parse(product.match(/<script id="zhoni-page-schema" type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])["@graph"];
+  assert.ok(productSchema.some((entity) => entity["@type"] === "Service"));
+  assert.equal(productSchema.find((entity) => entity["@type"] === "FAQPage").mainEntity.length, 6);
+
+  for (const route of routes) {
+    assert.match(sitemap, new RegExp(`https://zhonigolf\\.com${route.path}`.replaceAll("/", "\\/")));
+    assert.match(hub, new RegExp(route.path.replaceAll("/", "\\/")));
+    const guide = await readFile(new URL(`../dist/client/${route.path.slice(1)}index.html`, import.meta.url), "utf8");
+    for (const path of [siteRoutes.plushHeadcovers.path, siteRoutes.headcovers.path, siteRoutes.process.path, "/request-a-quote/"]) {
+      assert.match(guide, new RegExp(path.replaceAll("/", "\\/")), `Expected ${path} on ${route.path}.`);
+    }
+    const graph = JSON.parse(guide.match(/<script id="zhoni-page-schema" type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])["@graph"];
+    assert.ok(graph.some((entity) => entity["@type"] === "Article"));
+    assert.ok(graph.some((entity) => entity["@type"] === "FAQPage"));
+  }
 });
