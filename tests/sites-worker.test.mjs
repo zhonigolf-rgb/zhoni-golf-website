@@ -1199,6 +1199,8 @@ test("publishes the plush headcover product and four connected buyer guides", as
   assert.match(product, /Mascots &amp; animals/);
   assert.match(product, /Rights &amp; reference check/);
   assert.match(product, /third-party characters, team marks or protected designs/);
+  assert.match(product, /zhoni-plush-headcover-construction-v1\.jpg/);
+  assert.match(product, /REVIEW A PLUSH HEADCOVER PROJECT/);
   assert.match(product, /headcover_type=Plush%20%2F%20novelty%20character/);
   assert.match(product, /data-buyer-evidence="product-plush-headcovers"/);
   assert.match(sitemap, /https:\/\/zhonigolf\.com\/custom-plush-golf-headcovers\//);
