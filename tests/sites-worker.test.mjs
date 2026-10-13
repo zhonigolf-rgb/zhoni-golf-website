@@ -137,6 +137,8 @@ test("indexes every buyer guide route in the guide hub and sitemap", async () =>
     "/guides/custom-golf-caps-and-visors/",
     "/guides/custom-golf-cap-materials/",
     "/guides/custom-golf-cap-logo-placement/",
+    "/guides/custom-golf-cap-construction-fit-closures/",
+    "/guides/custom-golf-cap-sampling-production-quality/",
     "/guides/custom-golf-product-development-brief/",
     "/guides/golf-tournament-gift-budget-planning/",
     "/guides/how-to-build-a-golf-player-pack/",
@@ -169,7 +171,7 @@ test("indexes the custom golf caps product route in the sitemap", async () => {
 test("connects every golf caps buyer guide to the product, solutions, process and inquiry routes", async () => {
   const app = await readFile(new URL("../src/App.jsx", import.meta.url), "utf8");
   const requiredLinks = ["/custom-golf-caps/", "/solutions/", "/our-process/", "/request-a-quote/"];
-  for (const topic of ["capsStyle", "capsMaterials", "capsBranding"]) {
+  for (const topic of ["capsStyle", "capsMaterials", "capsBranding", "capsConstruction", "capsProduction"]) {
     const section = app.split(`  ${topic}: {`)[1].split("\n  },")[0];
     for (const href of requiredLinks) assert.match(section, new RegExp(href.replaceAll("/", "\\/")), `Expected ${topic} to link to ${href}.`);
   }
@@ -208,6 +210,25 @@ test("publishes a decision-ready custom golf caps product page", async () => {
   ]) assert.match(document, new RegExp(phrase.replaceAll("/", "\\/")));
   assert.match(document, /data-buyer-evidence="product-caps"/);
   assert.match(document, /\/request-a-quote\/\?product=Custom%20Golf%20Caps%20%26%20Headwear/);
+});
+
+test("publishes a complete five-guide custom golf cap knowledge cluster with original visuals", async () => {
+  const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
+  const guides = [
+    [siteRoutes.capsStyleGuide, "zhoni-cap-guide-styles-v1.png", "Which custom golf cap style is most versatile?"],
+    [siteRoutes.capsMaterialsGuide, "zhoni-cap-guide-materials-v1.png", "Is cotton always more premium than polyester?"],
+    [siteRoutes.capsBrandingGuide, "zhoni-cap-guide-branding-v1.png", "When should we use a patch instead of embroidery?"],
+    [siteRoutes.capsConstructionGuide, "zhoni-cap-guide-construction-v1.png", "Which closure feels most premium?"],
+    [siteRoutes.capsProductionGuide, "zhoni-cap-guide-sampling-v1.png", "Is a physical cap sample always necessary?"],
+  ];
+  for (const [route, image, question] of guides) {
+    assert.match(sitemap, new RegExp(route.path.replaceAll("/", "\\/")));
+    const document = await readFile(new URL(`../dist/client/${route.path.slice(1)}index.html`, import.meta.url), "utf8");
+    assert.match(document, new RegExp(image.replaceAll(".", "\\.")));
+    assert.match(document, new RegExp(question.replaceAll("?", "\\?")));
+    assert.match(document, /COMMON BUYER QUESTIONS/);
+    assert.match(document, /Custom Golf Caps &amp; Headwear/);
+  }
 });
 
 test("prerenders a self-canonical document for every public route", async () => {
@@ -463,7 +484,7 @@ test("keeps completed Japanese routes in full parity with English", async () => 
   const template = await readFile(new URL("../index.html", import.meta.url), "utf8");
   const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
   const hub = await readFile(new URL("../src/JapaneseExpansion.jsx", import.meta.url), "utf8");
-  const englishRoutes = Object.values(siteRoutes).filter((route) => !route.lang);
+  const englishRoutes = Object.values(siteRoutes).filter((route) => !route.lang && route.localeStage !== "pending");
   const japaneseRoutes = Object.values(siteRoutes).filter((route) => route.lang === "ja");
   const japaneseByEnglishPath = new Map(japaneseRoutes.map((route) => [route.alternatePath, route]));
 
@@ -571,7 +592,7 @@ test("keeps completed German routes in full parity with English and indexes ever
     readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8"),
     readFile(new URL("../src/GermanGuides.jsx", import.meta.url), "utf8"),
   ]);
-  const englishRoutes = Object.values(siteRoutes).filter((route) => !route.lang);
+  const englishRoutes = Object.values(siteRoutes).filter((route) => !route.lang && route.localeStage !== "pending");
   const germanRoutes = Object.values(siteRoutes).filter((route) => route.lang === "de");
   const germanByEnglishPath = new Map(germanRoutes.map((route) => [route.alternatePath, route]));
 
@@ -717,7 +738,7 @@ test("lists every published Korean procurement page in the Korean guide hub", as
 test("keeps the completed Korean routes in full parity with English", async () => {
   const template = await readFile(new URL("../index.html", import.meta.url), "utf8");
   const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
-  const englishRoutes = Object.values(siteRoutes).filter(route => !route.lang);
+  const englishRoutes = Object.values(siteRoutes).filter(route => !route.lang && route.localeStage !== "pending");
   const koreanRoutes = Object.values(siteRoutes).filter(route => route.lang === "ko");
   assert.equal(englishRoutes.length, 56);
   assert.equal(koreanRoutes.length, englishRoutes.length);
@@ -897,7 +918,7 @@ test("keeps completed Canadian French routes in full parity with English", async
   const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
   const hub = await readFile(new URL("../src/CanadianFrenchExpansion.jsx", import.meta.url), "utf8");
   const finalPages = await readFile(new URL("../src/CanadianFrenchFinalGuides.jsx", import.meta.url), "utf8");
-  const englishRoutes = Object.values(siteRoutes).filter((route) => !route.lang);
+  const englishRoutes = Object.values(siteRoutes).filter((route) => !route.lang && route.localeStage !== "pending");
   const frenchRoutes = Object.values(siteRoutes).filter((route) => route.lang === "fr-CA");
   const frenchByEnglishPath = new Map(frenchRoutes.map((route) => [route.alternatePath, route]));
 
