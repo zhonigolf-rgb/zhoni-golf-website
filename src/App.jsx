@@ -4,6 +4,8 @@ import { trackAnalytics } from "./analytics.jsx";
 import { TurnstileField } from "./turnstile.jsx";
 import { addInquirySource, applySeo, inquirySourceForLocation } from "./seo.js";
 import { LanguageSwitcher } from "./locale.jsx";
+import { LocalizedPlushHeadcoverGuidePage, LocalizedPlushHeadcoverProductPage } from "./LocalizedPlushHeadcovers.jsx";
+import enPlushHeadcovers from "./content/plush-headcovers/en.json";
 import "./showcase.css";
 import "./products.css";
 import "./zhoni-pages.css";
@@ -501,7 +503,7 @@ const plushHeadcoverGuideContent = {
   },
 };
 
-function PlushHeadcoverGuide({ topic }) {
+function LegacyPlushHeadcoverGuide({ topic }) {
   const content = plushHeadcoverGuideContent[topic];
   const related = [["Plush & Novelty Golf Headcovers", siteRoutes.plushHeadcovers.path], ["All Custom Golf Headcovers", siteRoutes.headcovers.path], ["Our Process", siteRoutes.process.path], ["Share a Plush Headcover Brief", "/request-a-quote/?product=Headcovers&headcover_type=Plush%20%2F%20novelty%20character"]];
   return <main className="zhoni-page guide-page plush-guide-page"><ZhoniPageHeader active="guides" />
@@ -515,7 +517,7 @@ function PlushHeadcoverGuide({ topic }) {
   </main>;
 }
 
-function PlushHeadcoversPage() {
+function LegacyPlushHeadcoversPage() {
   const formats = [["Mascots & animals","Translate a recognisable club, school, event or original mascot into a padded golf product."],["Objects & icons","Develop food, vehicles, trophies, products or abstract symbols as dimensional cover forms."],["Player & uniform themes","Use original jersey, profession or occasion-led concepts without copying protected characters."],["Coordinated character sets","Plan driver, fairway, hybrid or putter variants around one shared visual system."]];
   const faqs = [["What do you need to quote a plush headcover?","Start with the target club type, estimated quantity, front/side/rear references, required features, logo files, intended material feel, packaging, destination and in-hands date. Pricing remains dependent on the reviewed construction and sample route."],["Can you copy an existing cartoon or sports mascot?","We can work from artwork you are authorised to use. We should not copy third-party characters, team marks or protected designs without the appropriate rights. Original character development is the safer route when permission is unavailable."],["Can a plush cover fit different driver sizes?","A practical fit range may be possible, but the intended club or agreed fit reference must be defined. The character volume, padding, internal depth and opening all affect fit and retention."],["How are multiple character versions ordered?","Each version may introduce separate pattern, material, colour, embroidery and setup requirements. Share the quantity by character rather than only the combined total."],["Will the product recover after shipping?","Packing method, pile, padding and character structure influence recovery. The sample and packaging review should include how the cover is reshaped and presented after transport."],["How long does development take?","There is no universal schedule for a new three-dimensional character. Artwork readiness, complexity, material sourcing, sampling rounds, quantity, packaging and destination all affect the path. Share the required in-hands date before development begins."]];
   return <main className="zhoni-page category-page plush-product-page"><ZhoniPageHeader active="products" />
@@ -530,6 +532,14 @@ function PlushHeadcoversPage() {
     <section className="category-guides"><p>PLUSH HEADCOVER BUYER GUIDES</p><h2>Prepare the character, construction and approval decisions.</h2><div>{[["Design Brief",siteRoutes.plushDesignGuide.path],["Materials & Closures",siteRoutes.plushMaterialsGuide.path],["Embroidery & Details",siteRoutes.plushBrandingGuide.path],["Sample Checklist",siteRoutes.plushSampleGuide.path]].map(([label,href],index)=><a href={href} key={href}><b>{String(index+1).padStart(2,"0")}</b><span>{label}</span><Arrow /></a>)}</div></section>
     <section className="headcover-brief-cta"><div><p>START WITH THE CHARACTER AND THE CLUB</p><h2>Share the references you are authorised to use.</h2><p>Include the target club, quantity by version, essential features, logo files, destination and required date. We will use the brief to identify the next practical questions.</p></div><a href="/request-a-quote/?product=Headcovers&headcover_type=Plush%20%2F%20novelty%20character">BUILD THE PROJECT BRIEF <Arrow /></a></section><ZhoniPageFooter />
   </main>;
+}
+
+function PlushHeadcoverGuide({ topic }) {
+  return <LocalizedPlushHeadcoverGuidePage content={enPlushHeadcovers} topic={topic} Header={ZhoniPageHeader} Footer={ZhoniPageFooter} Evidence={BuyerEvidenceLayer} />;
+}
+
+function PlushHeadcoversPage() {
+  return <LocalizedPlushHeadcoverProductPage content={enPlushHeadcovers} Header={ZhoniPageHeader} Footer={ZhoniPageFooter} Evidence={BuyerEvidenceLayer} />;
 }
 
 function ProductCategoryPage({ type }) {

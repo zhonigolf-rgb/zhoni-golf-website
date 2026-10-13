@@ -5,6 +5,10 @@ import { GermanProcurement } from "./GermanProcurement.jsx";
 
 const guides = [
   ["gifts","event","GESCHENKE & EVENTS","Personalisierte Golfgeschenke als Projekt planen","/de/custom-golf-gifts/"],
+  ["plushdesign","plush","PLÜSCH-HEADCOVER","Maskottchen als funktionelles Golf-Headcover gestalten","/de/guides/custom-plush-golf-headcover-design-guide/"],
+  ["plushmaterials","plush","PLÜSCH-HEADCOVER","Plüsch, Schutzfutter und Öffnung auswählen","/de/guides/plush-golf-headcover-materials-lining-closures/"],
+  ["plushbranding","plush","PLÜSCH-HEADCOVER","Stickerei, Patches und Charakterdetails planen","/de/guides/plush-headcover-embroidery-patches-character-details/"],
+  ["plushsample","plush","PLÜSCH-HEADCOVER","Muster vor der Serienproduktion freigeben","/de/guides/custom-plush-headcover-sample-quality-checklist/"],
   ["headcovers","product","PRODUKT & SPEZIFIKATION","Einkaufsratgeber für personalisierte Golf-Headcover","/de/guides/custom-golf-headcovers-procurement-guide/"],
   ["towels","product","PRODUKT & SPEZIFIKATION","Einkaufsratgeber für personalisierte Golfhandtücher","/de/guides/custom-golf-towels-procurement-guide/"],
   ["caps","product","PRODUKT & SPEZIFIKATION","Golfcaps und Visoren richtig spezifizieren","/de/guides/custom-golf-caps-and-visors/"],
@@ -48,7 +52,7 @@ const initialGuides = {
 
 function GuidesHub() {
   const [filter, setFilter] = useState("all");
-  const groups = [["all","ALLE"],["product","PRODUKT & BRANDING"],["event","GESCHENKE & EVENTS"],["procurement","MOQ & ERSTBESTELLUNG"],["readiness","QUALITÄT & LIEFERUNG"]];
+  const groups = [["all","ALLE"],["plush","PLÜSCH-HEADCOVER"],["product","PRODUKT & BRANDING"],["event","GESCHENKE & EVENTS"],["procurement","MOQ & ERSTBESTELLUNG"],["readiness","QUALITÄT & LIEFERUNG"]];
   return <main className="zhoni-page guides-page de-page"><GermanHeader /><section className="guides-hero"><div><p>GOLF MERCHANDISE BUYER GUIDES</p><h1>Einkaufsratgeber für personalisierte Golfartikel.</h1><p>Praktische Kriterien für Produktauswahl, Spezifikation, MOQ, Muster, Qualität, Verpackung und Lieferung.</p></div><aside><b>MIT DEM KONTEXT BEGINNEN</b><p>Wenn Empfänger, Anlass, Menge, Wunschtermin und Zielort bekannt sind, lassen sich Produkt und Projektweg realistischer eingrenzen.</p><a href="/de/request-a-quote/">PROJEKT ANFRAGEN <Arrow /></a></aside></section><section className="guide-filter" aria-label="Ratgeber filtern">{groups.map(([key,label]) => <button key={key} className={filter === key ? "active" : ""} onClick={() => setFilter(key)}>{label}</button>)}</section><section className="guide-catalog">{guides.filter(guide => filter === "all" || guide[1] === filter).map((guide,index) => <a href={guide[4]} key={guide[0]}><b>{String(index + 1).padStart(2,"0")}</b><span>{guide[2]}</span><h2>{guide[3]}</h2><p>Entscheidungskriterien, Checkliste und konkrete Fragen für den Projektbrief.</p><em>RATGEBER LESEN <Arrow /></em></a>)}</section><LocalizedBuyerEvidence locale="de" context="guides" /><section className="guide-decision"><div><p>EINKAUFSVORBEREITUNG</p><h2>Allgemeines Wissen mit dem konkreten Projekt verbinden.</h2><p>Produktidee, Menge, Markendaten, Wunschtermin und Lieferort machen MOQ, Musterweg und Angebotsumfang belastbar.</p></div><aside><p>GEMEINSAME BRIEFING-PUNKTE</p><ul>{["Empfänger und Einsatz","Produkt oder Referenzbild","Voraussichtliche Menge","Empfangsdatum und Zielort","Logo- und Verpackungsanforderungen"].map(item => <li key={item}>{item}</li>)}</ul></aside></section><GermanFooter /></main>;
 }
 

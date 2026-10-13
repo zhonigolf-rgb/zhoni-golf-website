@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { LanguageSwitcher } from "./locale.jsx";
 import { LocalizedBuyerEvidence } from "./LocalizedBuyerEvidence.jsx";
+import { LocalizedPlushHeadcoverGuidePage, LocalizedPlushHeadcoverProductPage } from "./LocalizedPlushHeadcovers.jsx";
+import dePlushContent from "./content/plush-headcovers/de.json";
 import { GermanGuides } from "./GermanGuides.jsx";
 
 const WHATSAPP_URL = import.meta.env.VITE_WHATSAPP_URL ?? "https://wa.me/8617759190848";
@@ -41,6 +43,10 @@ function SolutionPage({ pageKey }) {
 }
 
 export function GermanExpansion({ routeKey }) {
+  const plushTopics = { dePlushDesignGuide:"design", dePlushMaterialsGuide:"materials", dePlushBrandingGuide:"branding", dePlushSampleGuide:"sample" };
+  const PlushEvidence = ({ context }) => <LocalizedBuyerEvidence locale="de" context={context} />;
+  if (routeKey === "dePlushHeadcovers") return <LocalizedPlushHeadcoverProductPage content={dePlushContent} Header={Header} Footer={Footer} Evidence={PlushEvidence} pageClass="de-page" />;
+  if (plushTopics[routeKey]) return <LocalizedPlushHeadcoverGuidePage content={dePlushContent} topic={plushTopics[routeKey]} Header={Header} Footer={Footer} Evidence={PlushEvidence} pageClass="de-page" />;
   if (categoryContent[routeKey]) return <CategoryPage pageKey={routeKey} />;
   if (solutionContent[routeKey]) return <SolutionPage pageKey={routeKey} />;
   return <GermanGuides routeKey={routeKey} />;

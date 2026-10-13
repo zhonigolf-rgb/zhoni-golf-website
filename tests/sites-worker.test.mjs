@@ -442,11 +442,11 @@ test("keeps completed Japanese routes in full parity with English", async () => 
   const template = await readFile(new URL("../index.html", import.meta.url), "utf8");
   const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
   const hub = await readFile(new URL("../src/JapaneseExpansion.jsx", import.meta.url), "utf8");
-  const englishRoutes = Object.values(siteRoutes).filter((route) => !route.lang && ![siteRoutes.plushHeadcovers, siteRoutes.plushDesignGuide, siteRoutes.plushMaterialsGuide, siteRoutes.plushBrandingGuide, siteRoutes.plushSampleGuide].includes(route));
+  const englishRoutes = Object.values(siteRoutes).filter((route) => !route.lang);
   const japaneseRoutes = Object.values(siteRoutes).filter((route) => route.lang === "ja");
   const japaneseByEnglishPath = new Map(japaneseRoutes.map((route) => [route.alternatePath, route]));
 
-  assert.equal(englishRoutes.length, 51);
+  assert.equal(englishRoutes.length, 56);
   assert.equal(japaneseRoutes.length, englishRoutes.length);
 
   for (const englishRoute of englishRoutes) {
@@ -550,11 +550,11 @@ test("keeps completed German routes in full parity with English and indexes ever
     readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8"),
     readFile(new URL("../src/GermanGuides.jsx", import.meta.url), "utf8"),
   ]);
-  const englishRoutes = Object.values(siteRoutes).filter((route) => !route.lang && ![siteRoutes.plushHeadcovers, siteRoutes.plushDesignGuide, siteRoutes.plushMaterialsGuide, siteRoutes.plushBrandingGuide, siteRoutes.plushSampleGuide].includes(route));
+  const englishRoutes = Object.values(siteRoutes).filter((route) => !route.lang);
   const germanRoutes = Object.values(siteRoutes).filter((route) => route.lang === "de");
   const germanByEnglishPath = new Map(germanRoutes.map((route) => [route.alternatePath, route]));
 
-  assert.equal(englishRoutes.length, 51);
+  assert.equal(englishRoutes.length, 56);
   assert.equal(germanRoutes.length, englishRoutes.length);
 
   for (const englishRoute of englishRoutes) {
@@ -569,7 +569,7 @@ test("keeps completed German routes in full parity with English and indexes ever
   }
 
   const germanGuideArticles = germanRoutes.filter((route) => route.path.startsWith("/de/guides/") && route.path !== "/de/guides/");
-  assert.equal(germanGuideArticles.length, 30);
+  assert.equal(germanGuideArticles.length, 34);
   for (const route of germanGuideArticles) {
     assert.match(hub, new RegExp(route.path.replaceAll("/", "\\/")), `Missing ${route.path} from German guide center.`);
     const document = await readFile(new URL(`../dist/client/${route.path.slice(1)}index.html`, import.meta.url), "utf8");
@@ -696,9 +696,9 @@ test("lists every published Korean procurement page in the Korean guide hub", as
 test("keeps the completed Korean routes in full parity with English", async () => {
   const template = await readFile(new URL("../index.html", import.meta.url), "utf8");
   const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
-  const englishRoutes = Object.values(siteRoutes).filter(route => !route.lang && ![siteRoutes.plushHeadcovers, siteRoutes.plushDesignGuide, siteRoutes.plushMaterialsGuide, siteRoutes.plushBrandingGuide, siteRoutes.plushSampleGuide].includes(route));
+  const englishRoutes = Object.values(siteRoutes).filter(route => !route.lang);
   const koreanRoutes = Object.values(siteRoutes).filter(route => route.lang === "ko");
-  assert.equal(englishRoutes.length, 51);
+  assert.equal(englishRoutes.length, 56);
   assert.equal(koreanRoutes.length, englishRoutes.length);
 
   const koreanByEnglishPath = new Map(koreanRoutes.map(route => [route.alternatePath, route]));
@@ -876,11 +876,11 @@ test("keeps completed Canadian French routes in full parity with English", async
   const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
   const hub = await readFile(new URL("../src/CanadianFrenchExpansion.jsx", import.meta.url), "utf8");
   const finalPages = await readFile(new URL("../src/CanadianFrenchFinalGuides.jsx", import.meta.url), "utf8");
-  const englishRoutes = Object.values(siteRoutes).filter((route) => !route.lang && ![siteRoutes.plushHeadcovers, siteRoutes.plushDesignGuide, siteRoutes.plushMaterialsGuide, siteRoutes.plushBrandingGuide, siteRoutes.plushSampleGuide].includes(route));
+  const englishRoutes = Object.values(siteRoutes).filter((route) => !route.lang);
   const frenchRoutes = Object.values(siteRoutes).filter((route) => route.lang === "fr-CA");
   const frenchByEnglishPath = new Map(frenchRoutes.map((route) => [route.alternatePath, route]));
 
-  assert.equal(englishRoutes.length, 51);
+  assert.equal(englishRoutes.length, 56);
   assert.equal(frenchRoutes.length, englishRoutes.length);
 
   for (const englishRoute of englishRoutes) {

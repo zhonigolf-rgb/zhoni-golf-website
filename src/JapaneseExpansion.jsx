@@ -2,6 +2,8 @@ import { useState } from "react";
 import { LanguageSwitcher } from "./locale.jsx";
 import { LocalizedBuyerEvidence } from "./LocalizedBuyerEvidence.jsx";
 import { JapaneseProcurement } from "./JapaneseProcurement.jsx";
+import { LocalizedPlushHeadcoverGuidePage, LocalizedPlushHeadcoverProductPage } from "./LocalizedPlushHeadcovers.jsx";
+import jaPlushContent from "./content/plush-headcovers/ja.json";
 
 const WHATSAPP_URL = import.meta.env.VITE_WHATSAPP_URL ?? "https://wa.me/8617759190848";
 const Arrow = () => <span aria-hidden="true">↗</span>;
@@ -42,6 +44,10 @@ function SolutionPage({ pageKey }) {
 
 const guides = [
   { key:"gifts", group:"event", label:"ギフト・イベント", title:"カスタムゴルフギフト・プロジェクト", copy:"受取人から製品、ブランド表現、パッケージ、納品まで全体経路を整理します。", href:"/ja/custom-golf-gifts/" },
+  { key:"plushdesign", group:"plush", label:"ぬいぐるみヘッドカバー", title:"キャラクターをゴルフ用ヘッドカバーへ設計する", copy:"許諾済み資料から、識別しやすい輪郭、比率、クラブ機能、立体パーツを整理します。", href:"/ja/guides/custom-plush-golf-headcover-design-guide/" },
+  { key:"plushmaterials", group:"plush", label:"ぬいぐるみヘッドカバー", title:"表地・裏地・開口部を選ぶ", copy:"外側の手触り、形状保持、クラブ保護、挿入感、保持方法を比較します。", href:"/ja/guides/plush-golf-headcover-materials-lining-closures/" },
+  { key:"plushbranding", group:"plush", label:"ぬいぐるみヘッドカバー", title:"刺繍・パッチ・立体ディテールを計画する", copy:"顔、ロゴ、アップリケ、立体部品を素材、曲面、縫い目に合わせて設計します。", href:"/ja/guides/plush-headcover-embroidery-patches-character-details/" },
+  { key:"plushsample", group:"plush", label:"ぬいぐるみヘッドカバー", title:"量産前のサンプルを承認する", copy:"認識性、比率、フィット、裏地、縫製、部品固定、ロゴ、包装を確認します。", href:"/ja/guides/custom-plush-headcover-sample-quality-checklist/" },
   { key:"headcovers", group:"product", label:"製品・カスタマイズ", title:"カスタムゴルフヘッドカバー購入ガイド", copy:"クラブタイプ、フィット、素材、ロゴ、サンプル、パッケージの確認事項を整理します。", href:"/ja/guides/custom-golf-headcovers-procurement-guide/" },
   { key:"caps", group:"product", label:"製品・カスタマイズ", title:"カスタムゴルフキャップ＆バイザー購入ガイド", copy:"形状、生地、フィット、アジャスター、刺繍位置を使用環境から比較します。", href:"/ja/guides/custom-golf-caps-and-visors/" },
   { key:"towels", group:"product", label:"製品・カスタマイズ", title:"カスタム・マグネットゴルフタオル購入ガイド", copy:"ワッフル生地、サイズ、マグネット構造、刺繍、セット構成を検討します。", href:"/ja/guides/custom-golf-towels-procurement-guide/" },
@@ -78,6 +84,7 @@ const guides = [
 
 const guideGroups = [
   ["all", "すべて"],
+  ["plush", "ぬいぐるみヘッドカバー"],
   ["product", "製品・カスタマイズ"],
   ["event", "ギフト・イベント"],
   ["procurement", "MOQ・初回注文"],
@@ -123,6 +130,10 @@ function GuideArticle({ pageKey }) {
 }
 
 export function JapaneseExpansion({ routeKey }) {
+  const plushTopics = { jaPlushDesignGuide:"design", jaPlushMaterialsGuide:"materials", jaPlushBrandingGuide:"branding", jaPlushSampleGuide:"sample" };
+  const PlushEvidence = ({ context }) => <LocalizedBuyerEvidence locale="ja" context={context} />;
+  if (routeKey === "jaPlushHeadcovers") return <LocalizedPlushHeadcoverProductPage content={jaPlushContent} Header={Header} Footer={Footer} Evidence={PlushEvidence} pageClass="ja-page" />;
+  if (plushTopics[routeKey]) return <LocalizedPlushHeadcoverGuidePage content={jaPlushContent} topic={plushTopics[routeKey]} Header={Header} Footer={Footer} Evidence={PlushEvidence} pageClass="ja-page" />;
   if (categoryContent[routeKey]) return <CategoryPage pageKey={routeKey} />;
   if (solutionContent[routeKey]) return <SolutionPage pageKey={routeKey} />;
   if (articleContent[routeKey]) return <GuideArticle pageKey={routeKey} />;

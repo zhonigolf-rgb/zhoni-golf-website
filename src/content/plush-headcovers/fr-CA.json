@@ -1,0 +1,198 @@
+{
+  "locale": "fr-CA",
+  "cluster": "plush-headcovers",
+  "quoteHref": "/fr-ca/request-a-quote/?product=Couvre-b%C3%A2tons%20de%20golf%20personnalis%C3%A9s&headcover_type=Peluche%20%2F%20personnage",
+  "images": {
+    "hero": "/assets/images/zhoni-plush-novelty-headcovers-v1.jpg",
+    "construction": "/assets/images/zhoni-plush-headcover-construction-v1.jpg"
+  },
+  "product": {
+    "rail": "COUVRE-BÂTON EN PELUCHE",
+    "eyebrow": "COUVRE-BÂTON DE GOLF PERSONNALISÉ · PELUCHE ET PERSONNAGE",
+    "title": "Un personnage conçu\npour le bâton.",
+    "intro": "Développez un couvre-bâton mascotte, animal, objet ou personnage original autour d’une forme reconnaissable, d’une construction protectrice, de l’ajustement au bâton et d’un parcours d’approbation concret.",
+    "heroCta": "PRÉSENTER UN PROJET DE COUVRE-BÂTON",
+    "heroMeta": "MASCOTTES · PERSONNAGES · OBJETS · MARQUE PRIVÉE",
+    "heroAlt": "Concepts de couvre-bâton en peluche personnalisés représentant un ours vert forêt, un oiseau crème et une forme géométrique",
+    "formats": {
+      "label": "ORIENTATIONS DE DESIGN",
+      "title": "Des formes originales avec une fonction de golf claire.",
+      "copy": "Le concept peut être ludique sans devenir imprécis. Vous devez tout de même définir le bâton, l’ouverture, la doublure protectrice et le mode de maintien.",
+      "items": [
+        ["Mascottes et animaux", "Transformez une mascotte de club, d’école ou d’événement, ou un animal original, en produit de golf rembourré."],
+        ["Objets et symboles", "Développez aliments, véhicules, trophées, produits ou symboles abstraits sous forme de couvre-bâton tridimensionnel."],
+        ["Joueurs et uniformes", "Créez des concepts originaux inspirés d’un uniforme, d’un métier ou d’une occasion sans reproduire de personnages protégés."],
+        ["Ensembles de personnages", "Planifiez les versions pour bois de départ, bois d’allée, hybride ou fer droit dans un même système visuel."]
+      ]
+    },
+    "specs": {
+      "label": "CADRE DE SPÉCIFICATIONS",
+      "title": "Reconnaissable à l’extérieur. Protecteur et bien ajusté à l’intérieur.",
+      "copy": "Les matières et méthodes exactes sont évaluées selon chaque design. Ce cadre sert à prendre des décisions; il ne signifie pas que toutes les options conviennent à chaque personnage.",
+      "items": [
+        ["Personnage", "Silhouette · proportions · visage · blocs de couleur · éléments tridimensionnels essentiels"],
+        ["Construction", "Peluche extérieure ou textiles mixtes · renforts · rembourrage · sens des coutures et du poil"],
+        ["Contact avec le bâton", "Référence de bois de départ, bois d’allée, hybride ou fer droit · profondeur · ouverture · maintien"],
+        ["Application de marque", "Broderie · appliqué · écusson · étiquette · zone de logo secondaire"],
+        ["Approbation", "Fichier graphique multivue · orientation des matières · échantillon physique au besoin · commentaires consolidés"],
+        ["Présentation", "Protection individuelle · instructions de remise en forme · emballage de vente ou cadeau · carton d’expédition"]
+      ]
+    },
+    "detail": {
+      "imageAlt": "Détail de la peluche, de la doublure, de la broderie et de l’ouverture d’un couvre-bâton de golf",
+      "caption": "ÉTUDE DE CONSTRUCTION · POIL EXTÉRIEUR · DOUBLURE · BRODERIE · OUVERTURE",
+      "label": "EXAMEN DES DÉTAILS",
+      "title": "Le personnage n’est qu’une partie du produit.",
+      "copy": "Un examen utile couvre aussi les surfaces et les interfaces que vous ne pouvez pas juger à partir d’un rendu de face seulement.",
+      "items": [
+        ["Matière extérieure", "Vérifiez le sens du poil, la couleur, le toucher et la visibilité des coutures."],
+        ["Intérieur protecteur", "Examinez la doublure, le rembourrage et les surfaces en contact avec le bâton."],
+        ["Exécution de la marque", "Contrôlez la densité de broderie, la netteté des bords et le placement sur les formes courbes."],
+        ["Ouverture et maintien", "Validez l’insertion, la prise, la reprise de forme et la référence d’ajustement convenue."]
+      ]
+    },
+    "process": {
+      "label": "PARCOURS DE DÉVELOPPEMENT",
+      "title": "Passer des références à une forme physique approuvée.",
+      "items": [
+        ["01", "Droits et références", "Confirmez que le personnage, la mascotte, le logo et les illustrations fournis peuvent être utilisés, puis rassemblez les vues de face, de profil et de dos."],
+        ["02", "Cahier des charges", "Définissez le type de bâton, l’échelle, les traits essentiels, les matières, la doublure, l’ouverture, les quantités et l’emballage."],
+        ["03", "Interprétation multivue", "Traduisez la référence en silhouette réalisable, panneaux, coutures, éléments en volume et emplacements de marque."],
+        ["04", "Examen de l’échantillon", "Évaluez la reconnaissance, les proportions, l’ajustement, le maintien, la manipulation, la doublure, la solidité des éléments et l’emballage."],
+        ["05", "Portée de production confirmée", "Regroupez les illustrations approuvées, les commentaires sur l’échantillon, les quantités par version, l’emballage et les exigences de remise."]
+      ]
+    },
+    "midCta": {
+      "label": "AVEZ-VOUS UN PERSONNAGE OU UNE MASCOTTE EN TÊTE?",
+      "title": "Commencez par le bâton, vos références et les caractéristiques qui doivent rester reconnaissables.",
+      "cta": "FAIRE ÉVALUER LE PROJET"
+    },
+    "faq": {
+      "label": "QUESTIONS FRÉQUENTES DES ACHETEURS",
+      "title": "Les réponses importantes avant de développer le personnage.",
+      "items": [
+        ["Que faut-il pour établir le prix d’un couvre-bâton en peluche?", "Indiquez le type de bâton, la quantité estimée, les vues de face, de profil et de dos, les traits requis, les fichiers de logo, le toucher souhaité, l’emballage, la destination et la date de réception souhaitée. Le prix dépend de la construction et du parcours d’échantillonnage évalués."],
+        ["Pouvez-vous reproduire un dessin animé ou une mascotte sportive existante?", "Nous pouvons travailler à partir d’illustrations que vous êtes autorisé à utiliser. Nous ne devons pas reproduire de personnages, marques d’équipe ou designs protégés sans les droits appropriés. Un personnage original est plus sûr en l’absence d’autorisation."],
+        ["Un couvre-bâton en peluche peut-il convenir à plusieurs bois de départ?", "Une plage d’ajustement peut être possible, mais le bâton visé ou la référence convenue doit être défini. Le volume du personnage, le rembourrage, la profondeur et l’ouverture influencent l’ajustement et le maintien."],
+        ["Comment commander plusieurs versions de personnages?", "Chaque version peut exiger son propre patron, ses matières, ses couleurs, sa broderie et ses réglages. Indiquez la quantité par personnage plutôt qu’un total combiné seulement."],
+        ["Le produit reprendra-t-il sa forme après le transport?", "La méthode d’emballage, la longueur du poil, le rembourrage et la structure influencent la reprise de forme. L’examen de l’échantillon et de l’emballage doit préciser comment le produit sera remis en forme et présenté."],
+        ["Combien de temps faut-il pour le développement?", "Il n’existe pas de délai universel pour un nouveau personnage tridimensionnel. La préparation des fichiers, la complexité, l’approvisionnement, les cycles d’échantillonnage, la quantité, l’emballage et la destination influencent le parcours. Communiquez votre date de réception souhaitée avant le développement."]
+      ]
+    },
+    "guides": {
+      "label": "GUIDES D’ACHAT · COUVRE-BÂTON EN PELUCHE",
+      "title": "Préparez les décisions sur le personnage, la construction et l’approbation.",
+      "items": [
+        {"label": "Cahier des charges du design", "href": "/fr-ca/guides/custom-plush-golf-headcover-design-guide/"},
+        {"label": "Matières, doublure et ouverture", "href": "/fr-ca/guides/plush-golf-headcover-materials-lining-closures/"},
+        {"label": "Broderie et détails", "href": "/fr-ca/guides/plush-headcover-embroidery-patches-character-details/"},
+        {"label": "Liste d’approbation", "href": "/fr-ca/guides/custom-plush-headcover-sample-quality-checklist/"}
+      ]
+    },
+    "close": {
+      "label": "COMMENCEZ PAR LE PERSONNAGE ET LE BÂTON",
+      "title": "Partagez les références que vous êtes autorisé à utiliser.",
+      "copy": "Incluez le bâton visé, la quantité par version, les traits essentiels, les fichiers de logo, la destination et la date requise. Nous utiliserons le cahier des charges pour préciser les prochaines questions.",
+      "cta": "PRÉPARER LE CAHIER DES CHARGES"
+    }
+  },
+  "guides": {
+    "shared": {
+      "rail": "GUIDES · COUVRE-BÂTON EN PELUCHE",
+      "heroMeta": "GUIDE D’ACHAT · DÉVELOPPEMENT DE PERSONNAGE · AJUSTEMENT",
+      "heroAlt": "Collection de concepts de couvre-bâton en peluche et de personnages personnalisés",
+      "shortAnswerLabel": "RÉPONSE COURTE",
+      "shortAnswerTitle": "Concevez le personnage et le produit de golf en même temps.",
+      "shortAnswerCopy": "La reconnaissance, l’ajustement au bâton, la structure, la marque et l’emballage sont liés. Concevoir d’abord un jouet puis ajouter une ouverture crée des corrections d’échantillon évitables.",
+      "tableHeaders": ["DÉCISION", "À DÉFINIR", "À VÉRIFIER"],
+      "preparationLabel": "PRÉPARATION DU PROJET",
+      "preparationTitle": "Fournissez des références qui réduisent les suppositions tridimensionnelles.",
+      "preparationCopy": "Le MOQ, le prix, le parcours d’échantillonnage et l’échéancier dépendent de la complexité, de la construction, du nombre de versions, de la quantité, de l’emballage et de la destination.",
+      "checklistLabel": "LISTE DE L’ACHETEUR",
+      "checklistTitle": "Ce que vous devez préparer.",
+      "faqLabel": "QUESTIONS FRÉQUENTES DES ACHETEURS",
+      "faqTitle": "Des réponses pratiques pour un cahier des charges plus utile.",
+      "relatedLabel": "PARCOURS CONNEXES",
+      "relatedTitle": "Passez de la recherche au projet de produit.",
+      "closeLabel": "PRÊT À DÉVELOPPER LE PERSONNAGE?",
+      "closeTitle": "Partagez le type de bâton, vos références et les traits qui doivent être reconnaissables.",
+      "closeCta": "PRÉSENTER LE PROJET DE COUVRE-BÂTON",
+      "closeAlt": "Détails d’un concept de couvre-bâton en peluche personnalisé"
+    },
+    "related": [
+      {"label": "Couvre-bâton en peluche et personnage", "href": "/fr-ca/custom-plush-golf-headcovers/"},
+      {"label": "Tous les couvre-bâtons personnalisés", "href": "/fr-ca/custom-golf-headcovers/"},
+      {"label": "Notre processus", "href": "/fr-ca/our-process/"},
+      {"label": "Présenter un projet de couvre-bâton", "href": "/fr-ca/request-a-quote/?product=Couvre-b%C3%A2tons%20de%20golf%20personnalis%C3%A9s&headcover_type=Peluche%20%2F%20personnage"}
+    ],
+    "topics": {
+      "design": {
+        "eyebrow": "COUVRE-BÂTON EN PELUCHE · CAHIER DES CHARGES",
+        "title": "Concevoir un couvre-bâton en peluche personnalisé",
+        "intro": "Une mascotte, un animal, un objet ou un personnage original doit fonctionner comme forme tridimensionnelle reconnaissable et comme produit de golf protecteur. Commencez par les traits identitaires, puis construisez la silhouette autour de l’ajustement et de la fabrication.",
+        "rows": [
+          ["Reconnaissance", "Silhouette, visage, proportions, blocs de couleur et deux ou trois traits indispensables", "Classez les traits avant d’ajouter la décoration. Le personnage doit demeurer clair à plusieurs mètres et sous différents angles."],
+          ["Fonction du couvre-bâton", "Type de bâton, ouverture, profondeur, maintien et doublure protectrice", "Un personnage convaincant qui ne convient pas au bâton, ne reste pas en place ou ne le protège pas n’est pas un couvre-bâton réussi."],
+          ["Dossier de références", "Vues de face, profil et dos, valeurs de couleur, logo et notes sur les éléments modifiables", "Une seule vue de face laisse trop d’incertitude sur la profondeur, le dos, le dessous et l’ouverture."]
+        ],
+        "checklist": ["Nommez le type de bâton et fournissez un modèle, des dimensions ou une référence d’ajustement si nécessaire.", "Fournissez les vues de face, de profil et de dos, puis marquez les traits qui ne doivent pas être simplifiés.", "Indiquez la quantité, la date cible, la destination, l’orientation d’emballage et le nombre de versions prévues."],
+        "faqs": [
+          ["Un logo plat ou un dessin de mascotte peut-il devenir un couvre-bâton en peluche?", "Oui, mais il ne suffit pas d’enrouler l’image autour d’un bâton. Elle doit être interprétée en volumes, panneaux, coutures, détails et ouverture tout en préservant les repères les plus reconnaissables."],
+          ["Quel niveau de détail faut-il dans le premier cahier des charges?", "Fournissez assez d’information pour identifier le personnage, le bâton, les traits non négociables, les couleurs, le rôle du logo et l’usage. Les détails de fabrication seront ensuite évalués dans le fichier graphique et l’échantillon."],
+          ["Plusieurs personnages peuvent-ils partager une même construction?", "C’est possible lorsque le volume général et l’ouverture sont compatibles. Des oreilles, becs, cornes, visages ou proportions très différents peuvent exiger des patrons et des échantillons distincts."]
+        ]
+      },
+      "materials": {
+        "eyebrow": "COUVRE-BÂTON EN PELUCHE · CONSTRUCTION",
+        "title": "Peluche, doublure et modes de maintien",
+        "intro": "La texture extérieure n’est qu’une couche du produit. Définissez ensemble la tenue de forme, le rembourrage, la doublure, l’insertion du bâton et la sécurité de l’ouverture avant d’approuver une matière.",
+        "rows": [
+          ["Matière extérieure", "Peluche courte, sherpa, textile de type velours ou panneaux mixtes", "La longueur du poil modifie l’apparence des coutures, de la broderie et des petits détails. Vérifiez couleur, perte de fibres, reprise de forme et toucher."],
+          ["Forme et protection", "Mousse, rembourrage ou renforts adaptés à la forme proposée", "Le soutien intérieur maintient le volume, mais un excès peut influencer le poids, l’ajustement et l’emballage."],
+          ["Doublure", "Velours, peluche courte, molleton ou autre textile protecteur convenu", "Vérifiez douceur, couverture des coutures, risque de transfert de couleur, sensation d’insertion et comportement près de l’ouverture."],
+          ["Ouverture et maintien", "Col ajusté en tricot, bande élastique, cordon ou autre construction évaluée", "L’ouverture doit équilibrer facilité d’utilisation et maintien fiable. La solution dépend du bâton et de la forme du personnage."]
+        ],
+        "checklist": ["Décrivez le toucher recherché à l’aide d’une référence physique ou photographique.", "Confirmez le type de bâton, le niveau de protection intérieure et la sensation d’insertion souhaitée.", "Évaluez la matière extérieure, la structure, la doublure et l’ouverture sur l’échantillon complet plutôt que séparément."],
+        "faqs": [
+          ["Une peluche plus longue est-elle toujours plus haut de gamme?", "Non. Un poil long peut masquer les coutures et créer de la douceur, mais aussi cacher la broderie et les détails précis. La matière doit soutenir le personnage et l’expression de marque."],
+          ["Peut-on mélanger plusieurs matières sur un personnage?", "Oui. Les longueurs de poil, les appliqués et les panneaux structurés peuvent améliorer la reconnaissance, mais les transitions d’épaisseur, les coutures et les couleurs doivent être vérifiées."],
+          ["Une fermeture magnétique est-elle obligatoire?", "Non. Plusieurs modèles utilisent une ouverture ajustée ou un col de type chaussette. Le maintien approprié dépend du bâton, de la géométrie, du poids et de l’utilisation."]
+        ]
+      },
+      "branding": {
+        "eyebrow": "COUVRE-BÂTON EN PELUCHE · DÉTAILS DU PERSONNAGE",
+        "title": "Broderie, écussons et détails du personnage",
+        "intro": "Les petits détails se comportent différemment sur la peluche et sur un tissu plat. Choisissez la méthode qui garde le personnage et la marque lisibles après avoir considéré matière, courbure et coutures.",
+        "rows": [
+          ["Traits du visage", "Broderie, appliqué, pièces textiles formées ou combinaison", "Les yeux, la bouche et l’expression exigent une taille et un contraste suffisants. Évitez les coutures instables et le poil profond pour les traits essentiels."],
+          ["Marques", "Broderie plate ou en relief, écusson tissé ou caoutchouc, appliqué ou étiquette", "Séparez la hiérarchie du logo et celle du personnage afin d’éviter une surface surchargée."],
+          ["Éléments en volume", "Oreilles, ailes, cornes, queues, nageoires ou autres pièces formées", "Chaque élément influence l’équilibre, l’emballage et la durabilité. Vérifiez les points d’attache et les renforts sur l’échantillon."],
+          ["Contrôle des couleurs", "Couleur de matière, fil, impression ou valeurs d’écusson", "Une même référence peut paraître différente sur la peluche, le textile tissé et la broderie; jugez la combinaison finale."]
+        ],
+        "checklist": ["Fournissez les logos vectoriels et les meilleures références de personnage disponibles.", "Indiquez les détails qui doivent être en volume et ceux qui peuvent être brodés ou appliqués.", "Vérifiez la position des détails sur les vues de face, de profil et de dos, pas seulement sur une illustration plate."],
+        "faqs": [
+          ["Peut-on broder du très petit texte sur la peluche?", "Le texte fin peut perdre sa netteté dans le poil et les courbes. Simplifier la marque, augmenter sa taille, utiliser un écusson ou la déplacer sur un panneau plus plat peut améliorer le résultat."],
+          ["Le logo devrait-il remplacer une partie du personnage?", "Seulement si cela soutient le design. Souvent, le personnage assure la reconnaissance et une zone de logo distincte et plus discrète préserve la clarté de la marque."],
+          ["Comment approuver les éléments sculpturaux?", "Le fichier graphique communique la position et les proportions; l’échantillon physique demeure la meilleure référence pour juger projection, équilibre, fixation et reconnaissance tridimensionnelle."]
+        ]
+      },
+      "sample": {
+        "eyebrow": "COUVRE-BÂTON EN PELUCHE · APPROBATION DE L’ÉCHANTILLON",
+        "title": "Liste d’approbation d’un échantillon en peluche",
+        "intro": "N’approuvez pas seulement l’apparence. Vérifiez la reconnaissance, l’ajustement, le maintien, la doublure, les coutures, la solidité des éléments, la marque et l’emballage selon le cahier des charges.",
+        "rows": [
+          ["Reconnaissance et proportions", "Silhouette, visage, équilibre des couleurs et traits requis sous plusieurs angles", "Comparez l’échantillon à la référence approuvée et décrivez précisément les écarts plutôt que de demander une amélioration générale."],
+          ["Ajustement et manipulation", "Insertion, profondeur, ouverture, maintien, retrait et position dans le sac", "Testez avec le bâton prévu ou une référence convenue. Un examen d’exposition ne confirme pas l’utilisation quotidienne."],
+          ["Construction", "Symétrie des panneaux, coutures, sens du poil, rembourrage, doublure et éléments en volume", "Vérifiez la reprise de forme après manipulation et les pressions ou déformations causées par les coutures."],
+          ["Marque et emballage", "Netteté du logo, alignement, couleur, emballage individuel et reprise après carton", "L’emballage peut comprimer la peluche. Confirmez comment le produit sera remis en forme et présenté après le transport."]
+        ],
+        "checklist": ["Utilisez une liste consolidée liée à des photos datées de face, de profil, de dos et du dessous.", "Séparez les corrections essentielles des préférences et reliez chaque commentaire à la référence approuvée.", "Revérifiez l’ajustement, la solidité et l’emballage après les corrections visuelles; un changement peut en influencer un autre."],
+        "faqs": [
+          ["Une épreuve graphique suffit-elle pour un personnage en peluche?", "Elle aide à confirmer couleur, position et proportions, mais un nouveau personnage tridimensionnel bénéficie généralement d’un échantillon physique puisque volume, ajustement et fixation ne peuvent pas être entièrement confirmés à l’écran."],
+          ["Que faut-il mesurer sur l’échantillon?", "Mesurez les proportions externes pertinentes, l’ouverture et la profondeur, puis testez le bâton visé ou la référence convenue. Les mesures soutiennent le test de manipulation sans le remplacer."],
+          ["Que doit contenir le dossier d’échantillon approuvé?", "Conservez ensemble les spécifications, le fichier graphique, les références de matière et de couleur, les photos, les notes d’ajustement, l’emballage et les commentaires finaux d’approbation de l’échantillon."]
+        ]
+      }
+    }
+  }
+}

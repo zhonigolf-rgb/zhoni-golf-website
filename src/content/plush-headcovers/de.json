@@ -1,0 +1,198 @@
+{
+  "locale": "de",
+  "cluster": "plush-headcovers",
+  "quoteHref": "/de/request-a-quote/?product=Personalisierte%20Golf-Headcover&headcover_type=Pl%C3%BCsch%20%2F%20Charakter",
+  "images": {
+    "hero": "/assets/images/zhoni-plush-novelty-headcovers-v1.jpg",
+    "construction": "/assets/images/zhoni-plush-headcover-construction-v1.jpg"
+  },
+  "product": {
+    "rail": "PLÜSCH-GOLF-HEADCOVER",
+    "eyebrow": "INDIVIDUELLES GOLF-HEADCOVER · PLÜSCH UND CHARAKTER",
+    "title": "Ein Charakter,\nfür den Schläger gebaut.",
+    "intro": "Entwickeln Sie Maskottchen-Headcover, Tiere, Objekte und eigene Figuren als erkennbare dreidimensionale Form mit Schutzaufbau, Passform für den Schläger und nachvollziehbarer Freigabe.",
+    "heroCta": "PLÜSCH-HEADCOVER ANFRAGEN",
+    "heroMeta": "MASKOTTCHEN · CHARAKTERE · OBJEKTE · PRIVATE LABEL",
+    "heroAlt": "Individuelle Plüsch-Golf-Headcover als waldgrüner Bär, cremefarbener Vogel und geometrische Form",
+    "formats": {
+      "label": "DESIGNRICHTUNGEN",
+      "title": "Eigenständige Formen mit klarer Golffunktion.",
+      "copy": "Ein verspieltes Konzept darf präzise bleiben. Zielschläger, Öffnung, Schutzfutter und Haltesystem müssen für jede Form definiert werden.",
+      "items": [
+        ["Maskottchen und Tiere", "Übertragen Sie ein erkennbares Club-, Schul-, Event- oder eigenes Maskottchen in ein gepolstertes Golfprodukt."],
+        ["Objekte und Symbole", "Entwickeln Sie Speisen, Fahrzeuge, Pokale, Produkte oder abstrakte Zeichen als dreidimensionale Coverform."],
+        ["Spieler- und Uniformthemen", "Nutzen Sie eigenständige Trikot-, Berufs- oder Anlassideen, ohne geschützte Figuren zu kopieren."],
+        ["Abgestimmte Charakterserien", "Planen Sie Varianten für Driver, Fairwayholz, Hybrid oder Putter in einem gemeinsamen visuellen System."]
+      ]
+    },
+    "specs": {
+      "label": "SPEZIFIKATIONSRAHMEN",
+      "title": "Außen erkennbar. Innen geschützt und passend.",
+      "copy": "Materialien und Verfahren werden je Design geprüft. Der Rahmen unterstützt Entscheidungen und behauptet nicht, dass jede Option zu jedem Charakter passt.",
+      "items": [
+        ["Charakter", "Silhouette · Proportionen · Gesicht · Farbflächen · erforderliche dreidimensionale Merkmale"],
+        ["Konstruktion", "Außenplüsch oder Materialmix · Stützlagen · Polsterung · Naht- und Florrichtung"],
+        ["Schlägerkontakt", "Referenz für Driver, Fairwayholz, Hybrid oder Putter · Innentiefe · Öffnung · Halt"],
+        ["Markenanwendung", "Stickerei · Applikation · Patch · Label · sekundäre Logofläche"],
+        ["Freigabe", "Mehransichten · Materialrichtung · physisches Muster bei Bedarf · konsolidierte Kommentare"],
+        ["Präsentation", "Einzelschutz · Hinweise zur Formgebung · Verkaufs- oder Geschenkverpackung · Umkarton"]
+      ]
+    },
+    "detail": {
+      "imageAlt": "Detailansicht von Material, Schutzfutter, Stickerei und Öffnung eines Plüsch-Golf-Headcovers",
+      "caption": "KONSTRUKTIONSPRÜFUNG · AUSSENFLOR · FUTTER · STICKEREI · ÖFFNUNG",
+      "label": "DETAILPRÜFUNG",
+      "title": "Der Charakter ist nur ein Teil des Produkts.",
+      "copy": "Eine belastbare Prüfung erfasst auch Oberflächen und Kontaktpunkte, die Sie in einer reinen Frontansicht nicht beurteilen können.",
+      "items": [
+        ["Außenmaterial", "Prüfen Sie Florrichtung, Farbe, Haptik und Sichtbarkeit der Nähte."],
+        ["Schützender Innenraum", "Prüfen Sie Schutzfutter, Polsterung und die Flächen, die den Schläger berühren."],
+        ["Markenausführung", "Bewerten Sie Stickdichte, Kantenschärfe und Platzierung auf gewölbten Formen."],
+        ["Öffnung und Halt", "Bestätigen Sie Einführen, Halt, Rückstellung und die vereinbarte Passformreferenz."]
+      ]
+    },
+    "process": {
+      "label": "ENTWICKLUNGSWEG",
+      "title": "Von der Referenz zur freigegebenen physischen Form.",
+      "items": [
+        ["01", "Rechte und Referenzen", "Bestätigen Sie die Nutzungsrechte für Charakter, Maskottchen, Logo und Druckdaten und stellen Sie Vorder-, Seiten- und Rückansichten bereit."],
+        ["02", "Konstruktionsbriefing", "Definieren Sie Schlägertyp, Größe, wesentliche Merkmale, Materialien, Futter, Öffnung, Mengen und Verpackung."],
+        ["03", "Interpretation aus mehreren Ansichten", "Überführen Sie die Referenz in eine produzierbare Silhouette, Paneele, Nähte, Formteile und Markenpositionen."],
+        ["04", "Musterprüfung", "Prüfen Sie Erkennbarkeit, Proportionen, Passform, Halt, Handhabung, Futter, Befestigungen und Verpackung."],
+        ["05", "Bestätigter Produktionsumfang", "Fassen Sie freigegebene Daten, Musterkommentare, Mengen je Version, Verpackung und Übergabeanforderungen zusammen."]
+      ]
+    },
+    "midCta": {
+      "label": "HABEN SIE EINEN CHARAKTER ODER EIN MASKOTTCHEN IM KOPF?",
+      "title": "Beginnen Sie mit dem Schläger, Ihren Referenzen und den Merkmalen, die erkennbar bleiben müssen.",
+      "cta": "PROJEKT PRÜFEN LASSEN"
+    },
+    "faq": {
+      "label": "HÄUFIGE FRAGEN VON EINKÄUFERN",
+      "title": "Wichtige Antworten vor Beginn der Charakterentwicklung.",
+      "items": [
+        ["Welche Angaben braucht eine Angebotsanfrage für ein Plüsch-Golf-Headcover?", "Nennen Sie Zielschläger, voraussichtliche Menge, Vorder-, Seiten- und Rückansichten, Pflichtmerkmale, Logo, gewünschte Haptik und Verpackung. Ein gewünschter Liefertermin und der Zielort gehören ebenfalls in den Projektbrief. Der Preis richtet sich nach geprüfter Konstruktion und Musterweg."],
+        ["Können Sie eine vorhandene Comicfigur oder ein Sportmaskottchen kopieren?", "Wir können mit Unterlagen arbeiten, für die Sie die Nutzungsrechte besitzen. Figuren, Teammarken oder geschützte Designs dürfen ohne passende Rechte nicht kopiert werden. Ohne Freigabe ist eine eigene Charakterentwicklung der sicherere Weg."],
+        ["Kann ein Plüsch-Golf-Headcover auf verschiedene Drivergrößen passen?", "Ein sinnvoller Passformbereich kann möglich sein, jedoch müssen Zielschläger oder vereinbarte Referenz feststehen. Volumen, Polsterung, Innentiefe und Öffnung beeinflussen Passform und Halt."],
+        ["Wie werden mehrere Charakterversionen bestellt?", "Jede Version kann eigene Schnittmuster, Materialien, Farben, Stickereien und Rüstvorgaben erfordern. Teilen Sie die Menge je Charakter statt nur die Gesamtsumme mit."],
+        ["Erholt sich die Form nach dem Versand?", "Verpackungsmethode, Flor, Polsterung und Charakterkonstruktion beeinflussen die Rückstellung. Muster- und Verpackungsprüfung sollten festlegen, wie das Produkt nach dem Transport geformt und präsentiert wird."],
+        ["Wie lange dauert die Entwicklung?", "Für neue dreidimensionale Figuren gibt es keinen pauschalen Zeitplan. Datenstand, Komplexität, Materialbeschaffung, Musterrunden, Menge, Verpackung und Zielort beeinflussen den Ablauf. Teilen Sie den gewünschten Liefertermin vor Entwicklungsbeginn mit."]
+      ]
+    },
+    "guides": {
+      "label": "EINKAUFSRATGEBER FÜR PLÜSCH-GOLF-HEADCOVER",
+      "title": "Bereiten Sie Charakter, Konstruktion und Freigabe strukturiert vor.",
+      "items": [
+        {"label": "Designbriefing", "href": "/de/guides/custom-plush-golf-headcover-design-guide/"},
+        {"label": "Materialien, Futter und Öffnung", "href": "/de/guides/plush-golf-headcover-materials-lining-closures/"},
+        {"label": "Stickerei und Charakterdetails", "href": "/de/guides/plush-headcover-embroidery-patches-character-details/"},
+        {"label": "Checkliste zur Musterfreigabe", "href": "/de/guides/custom-plush-headcover-sample-quality-checklist/"}
+      ]
+    },
+    "close": {
+      "label": "MIT CHARAKTER UND SCHLÄGER BEGINNEN",
+      "title": "Teilen Sie Referenzen, zu deren Nutzung Sie berechtigt sind.",
+      "copy": "Ergänzen Sie Zielschläger, Menge je Version, Pflichtmerkmale, Logo, Zielort und Termin. Daraus leiten wir die nächsten konkreten Fragen ab.",
+      "cta": "PROJEKTBRIEF ERSTELLEN"
+    }
+  },
+  "guides": {
+    "shared": {
+      "rail": "RATGEBER FÜR PLÜSCH-GOLF-HEADCOVER",
+      "heroMeta": "EINKAUFSRATGEBER · CHARAKTERENTWICKLUNG · PASSFORM",
+      "heroAlt": "Konzeptkollektion individueller Plüsch- und Charakter-Golf-Headcover",
+      "shortAnswerLabel": "KURZANTWORT",
+      "shortAnswerTitle": "Entwickeln Sie Charakter und Golfprodukt gleichzeitig.",
+      "shortAnswerCopy": "Erkennbarkeit, Passform für den Schläger, Aufbau, Branding und Verpackung hängen zusammen. Wird zuerst eine Spielfigur gebaut und später eine Öffnung ergänzt, entstehen vermeidbare Musterschleifen.",
+      "tableHeaders": ["ENTSCHEIDUNGSBEREICH", "ZU DEFINIEREN", "ZU PRÜFEN"],
+      "preparationLabel": "PROJEKTVORBEREITUNG",
+      "preparationTitle": "Nutzen Sie Referenzen, die räumliche Annahmen reduzieren.",
+      "preparationCopy": "MOQ, Preis, Musterweg und Timing hängen von Komplexität, Konstruktion, Versionen, Menge, Verpackung und Zielort ab.",
+      "checklistLabel": "EINKÄUFER-CHECKLISTE",
+      "checklistTitle": "Diese Angaben sollten Sie vorbereiten.",
+      "faqLabel": "HÄUFIGE FRAGEN VON EINKÄUFERN",
+      "faqTitle": "Praktische Antworten für ein belastbares Briefing.",
+      "relatedLabel": "VERBUNDENE PROJEKTWEGE",
+      "relatedTitle": "Von der Recherche zum konkreten Produktbrief.",
+      "closeLabel": "BEREIT FÜR DIE CHARAKTERENTWICKLUNG?",
+      "closeTitle": "Teilen Sie Schlägertyp, Referenzen und unverzichtbare Merkmale.",
+      "closeCta": "PLÜSCH-HEADCOVER ANFRAGEN",
+      "closeAlt": "Konzept und Konstruktionsdetails eines individuellen Plüsch-Golf-Headcovers"
+    },
+    "related": [
+      {"label": "Plüsch- und Charakter-Golf-Headcover", "href": "/de/custom-plush-golf-headcovers/"},
+      {"label": "Alle individuellen Golf-Headcover", "href": "/de/custom-golf-headcovers/"},
+      {"label": "Unser Ablauf", "href": "/de/our-process/"},
+      {"label": "Plüsch-Headcover anfragen", "href": "/de/request-a-quote/?product=Personalisierte%20Golf-Headcover&headcover_type=Pl%C3%BCsch%20%2F%20Charakter"}
+    ],
+    "topics": {
+      "design": {
+        "eyebrow": "PLÜSCH-GOLF-HEADCOVER · DESIGNBRIEFING",
+        "title": "Ein individuelles Plüsch-Golf-Headcover gestalten",
+        "intro": "Maskottchen, Tier, Objekt oder eigene Figur müssen als erkennbare dreidimensionale Form und als schützendes Golfprodukt funktionieren. Priorisieren Sie die Identitätsmerkmale und entwickeln Sie die Silhouette anschließend um Passform und Konstruktion.",
+        "rows": [
+          ["Erkennbarkeit", "Silhouette, Gesicht, Proportionen, Farbflächen und zwei bis drei unverzichtbare Merkmale", "Ordnen Sie die Merkmale vor zusätzlicher Dekoration. Das Cover sollte aus mehreren Metern Entfernung und aus verschiedenen Winkeln klar erkennbar bleiben."],
+          ["Headcover-Funktion", "Zielschläger, Öffnung, Innentiefe, Halt und Schutzfutter", "Ein überzeugender Charakter ist kein erfolgreiches Headcover, wenn er nicht passt, am Schläger bleibt oder ihn schützt."],
+          ["Referenzpaket", "Vorder-, Seiten- und Rückansicht, Farbwerte, Logo und Hinweise zu veränderbaren Elementen", "Eine einzelne Frontansicht lässt wichtige Annahmen zu Tiefe, Rückseite, Unterseite und Öffnung offen."]
+        ],
+        "checklist": ["Nennen Sie den Zielschläger und geben Sie bei Bedarf Modell, Maße oder Passformreferenz an.", "Stellen Sie Vorder-, Seiten- und Rückansichten bereit und markieren Sie Merkmale, die nicht vereinfacht werden dürfen.", "Teilen Sie Menge, Zieltermin, Zielort, Verpackungsrichtung und geplante Charakterversionen mit."],
+        "faqs": [
+          ["Kann ein flaches Logo oder eine Maskottchenzeichnung zum Plüsch-Golf-Headcover werden?", "Ja, die Grafik kann jedoch nicht einfach um den Schläger gelegt werden. Volumen, Paneele, Nähte, Formteile und Öffnung müssen interpretiert werden, ohne die wichtigsten Erkennungsmerkmale zu verlieren."],
+          ["Wie detailliert muss das erste Briefing sein?", "Es sollte Charakter, Schläger, unverzichtbare Merkmale, Farben, Logorolle und Einsatz erkennen lassen. Konstruktionsdetails können anschließend über Druckdaten und Muster geprüft werden."],
+          ["Können mehrere Charaktere dieselbe Grundkonstruktion nutzen?", "Das ist möglich, wenn Volumen und Öffnung kompatibel sind. Große Unterschiede bei Ohren, Schnäbeln, Hörnern, Gesichtern oder Proportionen können eigene Schnittmuster und Musterprüfungen erfordern."]
+        ]
+      },
+      "materials": {
+        "eyebrow": "PLÜSCH-GOLF-HEADCOVER · KONSTRUKTION",
+        "title": "Plüschmaterialien, Futter und Öffnungen",
+        "intro": "Die Außenstruktur ist nur eine Produktschicht. Definieren Sie Formstabilität, Polsterung, Schutzfutter, Einführgefühl und Halt der Öffnung gemeinsam, bevor Sie ein Material freigeben.",
+        "rows": [
+          ["Außenmaterial", "Kurzplüsch, Sherpa, veloursähnliches Gewebe oder Materialmix", "Die Florlänge verändert Nähte, Stickerei und kleine Gesichtszüge. Prüfen Sie Farbe, Faserverlust, Rückstellung und Haptik."],
+          ["Form und Schutz", "Schaum, Polsterung oder Stützlagen passend zur vorgeschlagenen Form", "Innere Stützen erhalten das Volumen, zu viel Material kann jedoch Gewicht, Passform und Verpackung beeinflussen."],
+          ["Futter", "Samt, Kurzplüsch, Fleece oder anderes vereinbartes Schutzmaterial", "Prüfen Sie Weichheit, Nahtabdeckung, Abfärberisiko, Einführgefühl und Verhalten an der Öffnung."],
+          ["Öffnung und Halt", "Anliegender Strick- oder Sockenkragen, Elastik, Kordel oder geprüfte Alternative", "Die Öffnung soll einfache Nutzung und zuverlässigen Halt verbinden. Die geeignete Lösung hängt von Schläger und Charakterform ab."]
+        ],
+        "checklist": ["Beschreiben Sie die gewünschte Haptik mit einer physischen oder fotografischen Referenz.", "Bestätigen Sie Schlägertyp, erwarteten Innenschutz und gewünschtes Einführgefühl.", "Prüfen Sie Außenmaterial, Aufbau, Futter und Öffnung am vollständigen Muster statt an einzelnen Materialstücken."],
+        "faqs": [
+          ["Ist längerer Plüsch immer hochwertiger?", "Nein. Langer Flor kann Nähte verdecken und weich wirken, aber Stickerei und feine Details verschleiern. Das Material muss Charakter und Markenwirkung unterstützen."],
+          ["Können verschiedene Materialien kombiniert werden?", "Ja. Unterschiedliche Florlängen, Applikationsstoffe und Stützpaneele können die Erkennbarkeit verbessern. Übergänge, Nähte und Farbabgleich müssen geprüft werden."],
+          ["Ist ein Magnetverschluss erforderlich?", "Nein. Viele Plüsch-Cover verwenden eine anliegende oder sockenartige Öffnung. Die Haltemethode hängt von Schläger, Geometrie, Gewicht und Nutzung ab."]
+        ]
+      },
+      "branding": {
+        "eyebrow": "PLÜSCH-GOLF-HEADCOVER · CHARAKTERDETAILS",
+        "title": "Stickerei, Patches und Charakterdetails",
+        "intro": "Kleine Details wirken auf Plüsch anders als auf glattem Gewebe. Wählen Sie eine Methode, die Figur und Marke auch nach Berücksichtigung von Material, Rundung und Nahtplan klar lesbar hält.",
+        "rows": [
+          ["Gesichtszüge", "Stickerei, Applikation, geformte Textilteile oder Kombination", "Augen, Mund und Ausdruck benötigen ausreichende Größe und Kontrast. Legen Sie wichtige Merkmale nicht über instabile Nähte oder tiefen Flor."],
+          ["Markenzeichen", "Flach- oder Reliefstick, Web- oder Gummipatch, Applikation oder Label", "Trennen Sie die Hierarchie des Logos von den Charaktermerkmalen, damit keine Fläche überladen wirkt."],
+          ["Dreidimensionale Elemente", "Ohren, Flügel, Hörner, Schwänze, Flossen oder andere Formteile", "Jedes herausstehende Teil beeinflusst Balance, Verpackung und Haltbarkeit. Befestigung und Stützung gehören in die Musterprüfung."],
+          ["Farbkontrolle", "Materialfarbe, Stickgarn, Druck- oder Patchwerte", "Dieselbe Farbreferenz kann auf Plüsch, Webstoff und Stickerei unterschiedlich wirken. Entscheidend ist die fertige Kombination."]
+        ],
+        "checklist": ["Stellen Sie Vektorlogos und möglichst hochwertige Charakterreferenzen bereit.", "Markieren Sie, welche Details dreidimensional und welche gestickt oder appliziert werden dürfen.", "Prüfen Sie die Position in Vorder-, Seiten- und Rückansicht, nicht nur in einer flachen Frontgrafik."],
+        "faqs": [
+          ["Kann sehr kleine Schrift auf Plüsch gestickt werden?", "Feine Schrift kann in Flor und Rundung an Klarheit verlieren. Vereinfachung, Vergrößerung, ein Patch oder eine flachere Fläche können ein besseres Ergebnis liefern."],
+          ["Soll das Logo einen Teil des Charakters ersetzen?", "Nur wenn es das beabsichtigte Design unterstützt. Häufig schafft der Charakter die Erkennbarkeit, während eine separate zurückhaltende Logofläche die Markenklarheit erhält."],
+          ["Wie werden plastische Merkmale freigegeben?", "Druckdaten zeigen Position und Proportion. Das physische Muster ist der verlässliche Prüfpunkt für Ausladung, Balance, Befestigung und räumliche Erkennbarkeit."]
+        ]
+      },
+      "sample": {
+        "eyebrow": "PLÜSCH-GOLF-HEADCOVER · MUSTERFREIGABE",
+        "title": "Checkliste zur Freigabe eines Plüschmusters",
+        "intro": "Geben Sie nicht nur die Optik frei. Prüfen Sie Erkennbarkeit, Passform, Halt, Futter, Nähte, Befestigung, Branding und Verpackung gegen das schriftliche Briefing.",
+        "rows": [
+          ["Erkennbarkeit und Proportionen", "Silhouette, Gesicht, Farbbalance und Pflichtmerkmale aus mehreren Winkeln", "Vergleichen Sie das Muster mit der freigegebenen Referenz und beschreiben Sie Abweichungen konkret statt pauschal eine Verbesserung zu verlangen."],
+          ["Passform und Handhabung", "Einführen, Innentiefe, Öffnung, Halt, Abnehmen und Position im Bag", "Testen Sie mit dem Zielschläger oder einer vereinbarten Referenz. Eine reine Präsentationsprüfung bestätigt den Alltagseinsatz nicht."],
+          ["Konstruktion", "Paneelsymmetrie, Nähte, Florrichtung, Polsterung, Futter und Formteile", "Prüfen Sie die Rückstellung nach Handhabung und unerwünschten Druck oder Verzug durch innere und äußere Nähte."],
+          ["Branding und Verpackung", "Logoschärfe, Ausrichtung, Farbe, Einzelverpackung und Rückstellung nach Karton", "Verpackung kann Plüschformen komprimieren. Bestätigen Sie Formgebung und Präsentation nach dem Transport."]
+        ],
+        "checklist": ["Nutzen Sie eine konsolidierte Kommentarliste mit datierten Vorder-, Seiten-, Rück- und Unterseitenfotos.", "Trennen Sie kritische Korrekturen von Präferenzen und nennen Sie die zugehörige freigegebene Referenz.", "Prüfen Sie Passform, Befestigungen und Verpackung nach optischen Korrekturen erneut; eine Änderung kann andere Bereiche beeinflussen."],
+        "faqs": [
+          ["Reicht eine digitale Ansicht für einen Plüschcharakter?", "Sie hilft bei Farbe, Position und Proportion, doch eine neue dreidimensionale Figur profitiert meist von einem physischen Muster. Volumen, Passform und Befestigung lassen sich am Bildschirm nicht vollständig bestätigen."],
+          ["Was sollte am Muster gemessen werden?", "Messen Sie relevante Außenproportionen, Öffnung und Innentiefe und testen Sie mit Zielschläger oder vereinbarter Referenz. Maße ergänzen die Handhabungsprüfung, ersetzen sie aber nicht."],
+          ["Was gehört in den freigegebenen Musterdatensatz?", "Bewahren Sie aktuelle Spezifikation, Druckdaten, Material- und Farbreferenzen, Fotos, Passformnotizen, Verpackungsdetails und finale Kommentare zur Musterfreigabe zusammen auf."]
+        ]
+      }
+    }
+  }
+}
