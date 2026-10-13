@@ -12,6 +12,8 @@ const guides = [
   ["headcovers","product","PRODUKT & SPEZIFIKATION","Einkaufsratgeber für personalisierte Golf-Headcover","/de/guides/custom-golf-headcovers-procurement-guide/"],
   ["towels","product","PRODUKT & SPEZIFIKATION","Einkaufsratgeber für personalisierte Golfhandtücher","/de/guides/custom-golf-towels-procurement-guide/"],
   ["caps","product","PRODUKT & SPEZIFIKATION","Golfcaps und Visoren richtig spezifizieren","/de/guides/custom-golf-caps-and-visors/"],
+  ["capsconstruction","product","PRODUKTENTWICKLUNG","Konstruktion, Passform und Verschlüsse für Golfcaps","/de/guides/custom-golf-cap-construction-fit-closures/"],
+  ["capsproduction","product","PRODUKTENTWICKLUNG","Muster, Produktion und Qualität von Golfcaps","/de/guides/custom-golf-cap-sampling-production-quality/"],
   ["packaging","readiness","QUALITÄT & LIEFERUNG","Individuelle Golfverpackungen planen","/de/guides/custom-golf-packaging-procurement-guide/"],
   ["firstorder","procurement","MOQ & ERSTBESTELLUNG","Erste Bestellung, MOQ und Angebotsbasis","/de/first-order-guide/"],
   ["export","readiness","QUALITÄT & LIEFERUNG","Qualität, Verpackung und Exportbereitschaft","/de/quality-packaging-export-readiness/"],

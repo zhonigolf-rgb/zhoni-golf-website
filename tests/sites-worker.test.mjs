@@ -488,7 +488,7 @@ test("keeps completed Japanese routes in full parity with English", async () => 
   const japaneseRoutes = Object.values(siteRoutes).filter((route) => route.lang === "ja");
   const japaneseByEnglishPath = new Map(japaneseRoutes.map((route) => [route.alternatePath, route]));
 
-  assert.equal(englishRoutes.length, 56);
+  assert.equal(englishRoutes.length, 58);
   assert.equal(japaneseRoutes.length, englishRoutes.length);
 
   for (const englishRoute of englishRoutes) {
@@ -596,7 +596,7 @@ test("keeps completed German routes in full parity with English and indexes ever
   const germanRoutes = Object.values(siteRoutes).filter((route) => route.lang === "de");
   const germanByEnglishPath = new Map(germanRoutes.map((route) => [route.alternatePath, route]));
 
-  assert.equal(englishRoutes.length, 56);
+  assert.equal(englishRoutes.length, 58);
   assert.equal(germanRoutes.length, englishRoutes.length);
 
   for (const englishRoute of englishRoutes) {
@@ -611,7 +611,7 @@ test("keeps completed German routes in full parity with English and indexes ever
   }
 
   const germanGuideArticles = germanRoutes.filter((route) => route.path.startsWith("/de/guides/") && route.path !== "/de/guides/");
-  assert.equal(germanGuideArticles.length, 34);
+  assert.equal(germanGuideArticles.length, 36);
   for (const route of germanGuideArticles) {
     assert.match(hub, new RegExp(route.path.replaceAll("/", "\\/")), `Missing ${route.path} from German guide center.`);
     const document = await readFile(new URL(`../dist/client/${route.path.slice(1)}index.html`, import.meta.url), "utf8");
@@ -740,7 +740,7 @@ test("keeps the completed Korean routes in full parity with English", async () =
   const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
   const englishRoutes = Object.values(siteRoutes).filter(route => !route.lang && route.localeStage !== "pending");
   const koreanRoutes = Object.values(siteRoutes).filter(route => route.lang === "ko");
-  assert.equal(englishRoutes.length, 56);
+  assert.equal(englishRoutes.length, 58);
   assert.equal(koreanRoutes.length, englishRoutes.length);
 
   const koreanByEnglishPath = new Map(koreanRoutes.map(route => [route.alternatePath, route]));
@@ -922,7 +922,7 @@ test("keeps completed Canadian French routes in full parity with English", async
   const frenchRoutes = Object.values(siteRoutes).filter((route) => route.lang === "fr-CA");
   const frenchByEnglishPath = new Map(frenchRoutes.map((route) => [route.alternatePath, route]));
 
-  assert.equal(englishRoutes.length, 56);
+  assert.equal(englishRoutes.length, 58);
   assert.equal(frenchRoutes.length, englishRoutes.length);
 
   for (const englishRoute of englishRoutes) {

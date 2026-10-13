@@ -50,6 +50,8 @@ const guides = [
   { key:"plushsample", group:"plush", label:"ぬいぐるみヘッドカバー", title:"量産前のサンプルを承認する", copy:"認識性、比率、フィット、裏地、縫製、部品固定、ロゴ、包装を確認します。", href:"/ja/guides/custom-plush-headcover-sample-quality-checklist/" },
   { key:"headcovers", group:"product", label:"製品・カスタマイズ", title:"カスタムゴルフヘッドカバー購入ガイド", copy:"クラブタイプ、フィット、素材、ロゴ、サンプル、パッケージの確認事項を整理します。", href:"/ja/guides/custom-golf-headcovers-procurement-guide/" },
   { key:"caps", group:"product", label:"製品・カスタマイズ", title:"カスタムゴルフキャップ＆バイザー購入ガイド", copy:"形状、生地、フィット、アジャスター、刺繍位置を使用環境から比較します。", href:"/ja/guides/custom-golf-caps-and-visors/" },
+  { key:"caps-construction", group:"product", label:"ゴルフ帽子開発", title:"構造・フィット・アジャスター", copy:"クラウン、パネル、つば、サイズ、汗止め、アジャスターを一つの仕様にまとめます。", href:"/ja/guides/custom-golf-cap-construction-fit-closures/" },
+  { key:"caps-production", group:"product", label:"ゴルフ帽子開発", title:"サンプル・生産・品質", copy:"承認サンプルから量産確認、検品、包装、納品準備までを整理します。", href:"/ja/guides/custom-golf-cap-sampling-production-quality/" },
   { key:"towels", group:"product", label:"製品・カスタマイズ", title:"カスタム・マグネットゴルフタオル購入ガイド", copy:"ワッフル生地、サイズ、マグネット構造、刺繍、セット構成を検討します。", href:"/ja/guides/custom-golf-towels-procurement-guide/" },
   { key:"branding", group:"product", label:"製品・カスタマイズ", title:"ロゴ・ブランド表現方法", copy:"刺繍、型押し、印刷、パッチ、金属仕上げを素材とロゴから比較します。", href:"/ja/guides/branding-methods-for-premium-golf-merchandise/" },
   { key:"artwork", group:"product", label:"製品・カスタマイズ", title:"ロゴとアートワークの準備", copy:"ベクターデータ、色、位置、サイズ、参考画像、パッケージファイルを整理します。", href:"/ja/guides/prepare-artwork-for-custom-golf-products/" },

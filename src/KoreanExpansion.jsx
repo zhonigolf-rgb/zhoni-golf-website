@@ -47,6 +47,8 @@ const guides=[
   {key:"gifts",group:"product",label:"프로젝트 허브",title:"맞춤 골프 선물 프로젝트 가이드",copy:"수령 대상부터 제품, 브랜딩, 패키징과 납품까지 전체 경로를 계획합니다.",href:"/ko/custom-golf-gifts/"},
   {key:"headcovers",group:"product",label:"제품 & 맞춤 제작",title:"맞춤 골프 헤드커버 구매 가이드",copy:"유형, 소재, 클럽 핏, 로고와 샘플 확인 항목을 준비합니다.",href:"/ko/guides/custom-golf-headcovers-procurement-guide/"},
   {key:"caps",group:"product",label:"제품 & 맞춤 제작",title:"맞춤 골프 모자·바이저 구매 가이드",copy:"스타일, 원단, 핏, 잠금 방식과 자수 위치를 비교합니다.",href:"/ko/guides/custom-golf-caps-and-visors/"},
+  {key:"caps-construction",group:"product",label:"골프 모자 개발",title:"골프 모자 구조·핏·잠금 방식",copy:"크라운, 패널, 챙, 사이즈, 땀받이와 잠금 장치를 하나의 착용 사양으로 정리합니다.",href:"/ko/guides/custom-golf-cap-construction-fit-closures/"},
+  {key:"caps-production",group:"product",label:"골프 모자 개발",title:"골프 모자 샘플·생산·품질",copy:"승인 샘플부터 대량 생산 확인, 검사, 포장과 납품 준비까지 연결합니다.",href:"/ko/guides/custom-golf-cap-sampling-production-quality/"},
   {key:"towels",group:"product",label:"제품 & 맞춤 제작",title:"맞춤 골프 타월 구매 가이드",copy:"와플 원단, 마그네틱 구조, 크기와 자수 사양을 정리합니다.",href:"/ko/guides/custom-golf-towels-procurement-guide/"},
   {key:"branding",group:"product",label:"브랜딩 & 아트워크",title:"골프용품 로고·브랜딩 방식",copy:"자수, 디보싱, 인쇄, 패치와 금속 마감을 비교합니다.",href:"/ko/guides/branding-methods-for-premium-golf-merchandise/"},
   {key:"artwork",group:"product",label:"브랜딩 & 아트워크",title:"로고·아트워크 파일 준비",copy:"벡터 파일, 색상, 위치, 크기와 패키징 파일을 정리합니다.",href:"/ko/guides/prepare-artwork-for-custom-golf-products/"},

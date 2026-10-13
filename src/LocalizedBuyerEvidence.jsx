@@ -1,3 +1,5 @@
+import { LocalizedCapsExtras } from "./LocalizedCapsExtras.jsx";
+
 const evidenceCopy = {
   de: {
     eyebrow: "NACHWEISE FÜR EINKÄUFER",
@@ -64,9 +66,9 @@ const evidenceCopy = {
 export function LocalizedBuyerEvidence({ locale, context = "project" }) {
   const copy = evidenceCopy[locale];
   if (!copy) return null;
-  return <section className="buyer-evidence-layer" data-buyer-evidence={`${locale.toLowerCase()}-${context}`}>
+  return <>{context === "product-caps" && <LocalizedCapsExtras locale={locale} />}<section className="buyer-evidence-layer" data-buyer-evidence={`${locale.toLowerCase()}-${context}`}>
     <div className="buyer-evidence-heading"><p>{copy.eyebrow}</p><h2>{copy.title}</h2><p>{copy.intro}</p></div>
     <div className="buyer-evidence-grid">{copy.items.map(([number, title, description]) => <article key={number}><b>{number}</b><h3>{title}</h3><p>{description}</p></article>)}</div>
     <aside><div><b>{copy.boundary}</b><p>{copy.boundaryCopy}</p></div><a href={copy.href}>{copy.link} <span aria-hidden="true">↗</span></a></aside>
-  </section>;
+  </section></>;
 }
