@@ -189,6 +189,27 @@ test("keeps golf caps visible in shared SEO paths and prefills the inquiry form"
   assert.match(robots, /User-agent: \*\s+Allow: \/\s+\s*Sitemap: https:\/\/zhonigolf\.com\/sitemap\.xml/);
 });
 
+test("publishes a decision-ready custom golf caps product page", async () => {
+  const document = await readFile(new URL("../dist/client/custom-golf-caps/index.html", import.meta.url), "utf8");
+  for (const phrase of [
+    "CHOOSE THE HEADWEAR DIRECTION",
+    "Performance golf caps",
+    "Five-panel camp caps",
+    "Snapback &amp; flat-brim caps",
+    "Structured tournament caps",
+    "Rope caps",
+    "Golf visors",
+    "BUILD THE CAP SPECIFICATION",
+    "SELECT THE BRANDING ROUTE",
+    "3D / puff embroidery",
+    "FROM BRIEF TO PACKED CAP",
+    "What should be checked on a cap sample?",
+    "BUILD YOUR HEADWEAR BRIEF",
+  ]) assert.match(document, new RegExp(phrase.replaceAll("/", "\\/")));
+  assert.match(document, /data-buyer-evidence="product-caps"/);
+  assert.match(document, /\/request-a-quote\/\?product=Custom%20Golf%20Caps%20%26%20Headwear/);
+});
+
 test("prerenders a self-canonical document for every public route", async () => {
   const template = await readFile(new URL("../index.html", import.meta.url), "utf8");
 
