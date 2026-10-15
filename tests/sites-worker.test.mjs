@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { access, readFile } from "node:fs/promises";
+import { access, readFile, readdir, stat } from "node:fs/promises";
 import test from "node:test";
 import worker from "../worker/index.js";
 import { onRequest as pagesMiddleware } from "../functions/_middleware.js";
@@ -1225,6 +1225,36 @@ test("emits the files required by Sites packaging", async () => {
   await access(new URL("../dist/client/index.html", import.meta.url));
   await access(new URL("../dist/server/index.js", import.meta.url));
   await access(new URL("../dist/.openai/hosting.json", import.meta.url));
+});
+
+test("self-hosts fonts and keeps internal route code out of the homepage bundle", async () => {
+  const cssFiles = ["styles.css", "products.css", "zhoni-pages.css"];
+  for (const file of cssFiles) {
+    const css = await readFile(new URL(`../src/${file}`, import.meta.url), "utf8");
+    assert.doesNotMatch(css, /fonts\.(?:googleapis|gstatic)\.com/);
+  }
+
+  const fontCss = await readFile(new URL("../src/fonts.css", import.meta.url), "utf8");
+  assert.match(fontCss, /font-display:swap/);
+  for (const font of ["dm-sans-latin.woff2", "dm-mono-500-latin.woff2", "instrument-serif-normal-latin.woff2", "playfair-display-latin.woff2"]) {
+    await access(new URL(`../public/assets/fonts/${font}`, import.meta.url));
+    assert.match(fontCss, new RegExp(font.replaceAll(".", "\\.")));
+  }
+
+  const mainSource = await readFile(new URL("../src/main.jsx", import.meta.url), "utf8");
+  assert.doesNotMatch(mainSource, /import\s+\{\s*App\s*\}\s+from/);
+  assert.match(mainSource, /import\("\.\/HomePage\.jsx"\)/);
+  assert.match(mainSource, /import\("\.\/App\.jsx"\)/);
+
+  const assetDirectory = new URL("../dist/client/assets/", import.meta.url);
+  const files = await readdir(assetDirectory);
+  const homeChunk = files.find(file => /^HomePage-.*\.js$/.test(file));
+  const internalChunk = files.find(file => /^App-.*\.js$/.test(file));
+  const entryChunk = files.find(file => /^index-.*\.js$/.test(file));
+  assert.ok(homeChunk && internalChunk && entryChunk, "Expected separate entry, homepage and internal route chunks.");
+  const homepageBytes = (await stat(new URL(homeChunk, assetDirectory))).size + (await stat(new URL(entryChunk, assetDirectory))).size;
+  assert.ok(homepageBytes < 250_000, `Expected homepage JavaScript below 250 KB before gzip, received ${homepageBytes}.`);
+  assert.ok((await stat(new URL(internalChunk, assetDirectory))).size > (await stat(new URL(homeChunk, assetDirectory))).size);
 });
 
 test("publishes a decision-ready headcover product page and specialized brief", async () => {

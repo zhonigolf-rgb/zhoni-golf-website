@@ -1,6 +1,7 @@
 import React from "react";
 import { renderToString } from "react-dom/server";
 import { App } from "./App.jsx";
+import { HomePage } from "./HomePage.jsx";
 import { AnalyticsConsent } from "./analytics.jsx";
 import { CanadianFrenchSite } from "./CanadianFrenchSite.jsx";
 import { KoreanSite } from "./KoreanSite.jsx";
@@ -13,10 +14,11 @@ import { findRoute, siteRoutes } from "./siteRoutes.js";
 export function renderPage(pathname) {
   const route = findRoute(pathname) ?? siteRoutes.home;
   setServerPathname(route.path);
+  const Page = route === siteRoutes.home ? HomePage : App;
 
   const markup = renderToString(
     <React.StrictMode>
-      <App
+      <Page
         initialRoute={route}
         KoreanSiteComponent={KoreanSite}
         CanadianFrenchSiteComponent={CanadianFrenchSite}

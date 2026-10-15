@@ -1,5 +1,5 @@
 .ko-page {
-  font-family: "Noto Sans KR", "DM Sans", Arial, sans-serif;
+  font-family: "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
   word-break: keep-all;
 }
 
@@ -9,7 +9,7 @@
 .ko-page h2,
 .ko-page h3,
 .ko-page p {
-  font-family: "Noto Serif KR", "Playfair Display", Georgia, serif;
+  font-family: "Noto Serif KR", Batang, "AppleMyungjo", serif;
 }
 
 .ko-page .zhoni-header nav a,

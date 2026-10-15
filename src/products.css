@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@400;500&display=swap');
 
 .products-hub { --ink: #102b25; --paper: #f7f3eb; --line: #cfc8bb; --gold: #a98755; background: var(--paper); color: var(--ink); font-family: "DM Sans", Arial, sans-serif; min-height: 100vh; }
 .products-hub * { box-sizing: border-box; }
