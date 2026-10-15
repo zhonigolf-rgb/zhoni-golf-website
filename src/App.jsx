@@ -939,13 +939,43 @@ export function App({ initialRoute = null, KoreanSiteComponent = KoreanSite, Can
   const [faq, setFaq] = useState(0);
   const [floatHidden, setFloatHidden] = useState(false);
   const [heroVisible, setHeroVisible] = useState(true);
+  const [heroVideoEnabled, setHeroVideoEnabled] = useState(false);
   const [formStatus, setFormStatus] = useState("idle");
   const [formMessage, setFormMessage] = useState("");
   const [scrolled, setScrolled] = useState(false);
   const quoteRef = useRef(null);
   const heroRef = useRef(null);
+  const heroVideoRef = useRef(null);
   const route = initialRoute ?? (typeof window === "undefined" ? siteRoutes.home : findRoute(window.location.pathname) ?? siteRoutes.home);
-  useEffect(() => { const timer = setInterval(() => setSlide(i => (i + 1) % slides.length), 8500); return () => clearInterval(timer); }, []);
+  useEffect(() => {
+    if (!heroVideoEnabled || !heroVisible) return undefined;
+    const timer = setInterval(() => setSlide(i => (i + 1) % slides.length), 8500);
+    return () => clearInterval(timer);
+  }, [heroVideoEnabled, heroVisible]);
+  useEffect(() => {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const compactOrTouch = window.matchMedia("(max-width: 900px), (pointer: coarse)");
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    const updateVideoPolicy = () => {
+      const weakConnection = Boolean(connection?.saveData) || ["slow-2g", "2g", "3g"].includes(connection?.effectiveType);
+      setHeroVideoEnabled(!reducedMotion.matches && !compactOrTouch.matches && !weakConnection);
+    };
+    updateVideoPolicy();
+    reducedMotion.addEventListener?.("change", updateVideoPolicy);
+    compactOrTouch.addEventListener?.("change", updateVideoPolicy);
+    connection?.addEventListener?.("change", updateVideoPolicy);
+    return () => {
+      reducedMotion.removeEventListener?.("change", updateVideoPolicy);
+      compactOrTouch.removeEventListener?.("change", updateVideoPolicy);
+      connection?.removeEventListener?.("change", updateVideoPolicy);
+    };
+  }, []);
+  useEffect(() => {
+    const video = heroVideoRef.current;
+    if (!video || !heroVideoEnabled) return;
+    if (heroVisible) video.play().catch(() => {});
+    else video.pause();
+  }, [heroVideoEnabled, heroVisible, slide]);
   useEffect(() => {
     const quote = quoteRef.current;
     if (!quote || !("IntersectionObserver" in window)) return undefined;
@@ -1100,7 +1130,7 @@ export function App({ initialRoute = null, KoreanSiteComponent = KoreanSite, Can
     </header>
 
     <section className="hero" id="top" ref={heroRef}>
-      <div className="hero-image"><img src="/assets/images/zhoni-golf-collection-hero-v2.png" alt="" loading="eager" decoding="async" fetchPriority="high" /><video key={active[3]} autoPlay muted loop playsInline poster="/assets/images/zhoni-golf-collection-hero-v2.png"><source src={active[3]} type="video/mp4" /></video></div>
+      <div className="hero-image"><picture><source type="image/avif" srcSet="/assets/images/responsive/zhoni-golf-collection-hero-v2-640.avif 640w, /assets/images/responsive/zhoni-golf-collection-hero-v2-1024.avif 1024w, /assets/images/responsive/zhoni-golf-collection-hero-v2-1672.avif 1672w" sizes="100vw" /><source type="image/webp" srcSet="/assets/images/responsive/zhoni-golf-collection-hero-v2-640.webp 640w, /assets/images/responsive/zhoni-golf-collection-hero-v2-1024.webp 1024w, /assets/images/responsive/zhoni-golf-collection-hero-v2-1672.webp 1672w" sizes="100vw" /><img src="/assets/images/zhoni-golf-collection-hero-v2.png" width="1672" height="941" alt="" loading="eager" decoding="async" fetchPriority="high" /></picture>{heroVideoEnabled && <video ref={heroVideoRef} key={active[3]} autoPlay muted loop playsInline preload="metadata" poster="/assets/images/responsive/zhoni-golf-collection-hero-v2-1672.webp" aria-hidden="true" onError={() => setHeroVideoEnabled(false)}><source src={active[3]} type="video/mp4" /></video>}</div>
       <div className="shade" />
       <div className="shell hero-copy"><p className="eyebrow">{active[0]}</p><h1>{active[1]}</h1><p className="lead">{active[2]}</p><div className="actions"><a className="button button-primary" href="/products/">EXPLORE PRODUCTS <Arrow /></a><a className="button button-secondary" href="/request-a-quote/">START A CUSTOM PROJECT <Arrow /></a></div></div>
     </section>

@@ -1333,6 +1333,10 @@ test("makes product families the measurable, lazy-loaded homepage entry path in 
   assert.match(gatewaySource, /product_family_click/);
   assert.match(gatewaySource, /loading="lazy"/);
   assert.match(gatewaySource, /decoding="async"/);
+  assert.match(gatewaySource, /<picture>/);
+  assert.match(gatewaySource, /type="image\/avif"/);
+  assert.match(gatewaySource, /type="image\/webp"/);
+  assert.match(gatewaySource, /productImageWidths = \[360, 720, 1122\]/);
 
   for (const route of homeRoutes) {
     const relativePath = route.path === "/" ? "" : route.path.slice(1);
@@ -1349,10 +1353,36 @@ test("makes product families the measurable, lazy-loaded homepage entry path in 
 
 test("prioritizes only the homepage hero image and defers legacy below-the-fold imagery", async () => {
   const document = await readFile(new URL("../dist/client/index.html", import.meta.url), "utf8");
+  const appSource = await readFile(new URL("../src/App.jsx", import.meta.url), "utf8");
   const hero = document.match(/<div class="hero-image">([\s\S]*?)<\/div>/)?.[1] ?? "";
+  assert.match(hero, /<picture>/);
+  assert.match(hero, /type="image\/avif"/);
+  assert.match(hero, /type="image\/webp"/);
+  assert.match(hero, /640w[\s\S]*1024w[\s\S]*1672w/);
   assert.match(hero, /<img[^>]+loading="eager"[^>]+fetchpriority="high"/i);
-  const imagePreloads = [...document.matchAll(/<link rel="preload" as="image"[^>]*>/g)].map(match => match[0]);
-  assert.deepEqual(imagePreloads, ['<link rel="preload" as="image" href="/assets/images/zhoni-golf-collection-hero-v2.png" fetchPriority="high"/>']);
+  assert.doesNotMatch(hero, /<video/i, "SSR must not make mobile or constrained clients discover a hero video.");
+  assert.match(appSource, /navigator\.connection/);
+  assert.match(appSource, /connection\?\.saveData/);
+  assert.match(appSource, /"slow-2g", "2g", "3g"/);
+  assert.match(appSource, /prefers-reduced-motion: reduce/);
+  assert.match(appSource, /max-width: 900px/);
+  assert.match(appSource, /video\.pause\(\)/);
+
+  const responsiveImages = [
+    ["zhoni-golf-collection-hero-v2", [640, 1024, 1672]],
+    ["zhoni-product-headcovers-v3", [360, 720, 1122]],
+    ["zhoni-plush-novelty-headcovers-v1", [360, 720, 1122]],
+    ["zhoni-product-caps-v3", [360, 720, 1122]],
+    ["zhoni-product-magnetic-towel-v4", [360, 720, 1122]],
+    ["zhoni-product-ball-markers-v3", [360, 720, 1122]],
+    ["zhoni-product-packaging-v3", [360, 720, 1122]],
+  ];
+  for (const [stem, widths] of responsiveImages) {
+    for (const width of widths) {
+      await access(new URL(`../public/assets/images/responsive/${stem}-${width}.avif`, import.meta.url));
+      await access(new URL(`../public/assets/images/responsive/${stem}-${width}.webp`, import.meta.url));
+    }
+  }
 
   for (const className of ["showcase shell", "evidence"]) {
     const section = document.match(new RegExp(`<section class="${className}"[\\s\\S]*?<\\/section>`))?.[0] ?? "";
