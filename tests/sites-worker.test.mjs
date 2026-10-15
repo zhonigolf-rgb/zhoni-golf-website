@@ -1346,3 +1346,23 @@ test("makes product families the measurable, lazy-loaded homepage entry path in 
     assert.ok(productList.itemListElement.every(item => item.url.startsWith("https://zhonigolf.com/")));
   }
 });
+
+test("prioritizes only the homepage hero image and defers legacy below-the-fold imagery", async () => {
+  const document = await readFile(new URL("../dist/client/index.html", import.meta.url), "utf8");
+  const hero = document.match(/<div class="hero-image">([\s\S]*?)<\/div>/)?.[1] ?? "";
+  assert.match(hero, /<img[^>]+loading="eager"[^>]+fetchpriority="high"/i);
+  const imagePreloads = [...document.matchAll(/<link rel="preload" as="image"[^>]*>/g)].map(match => match[0]);
+  assert.deepEqual(imagePreloads, ['<link rel="preload" as="image" href="/assets/images/zhoni-golf-collection-hero-v2.png" fetchPriority="high"/>']);
+
+  for (const className of ["showcase shell", "evidence"]) {
+    const section = document.match(new RegExp(`<section class="${className}"[\\s\\S]*?<\\/section>`))?.[0] ?? "";
+    assert.ok(section, `Expected ${className} on the homepage.`);
+    const images = [...section.matchAll(/<img\b[^>]*>/g)].map(match => match[0]);
+    assert.ok(images.length > 0, `Expected images in ${className}.`);
+    for (const image of images) {
+      assert.match(image, /loading="lazy"/);
+      assert.match(image, /decoding="async"/);
+      assert.match(image, /fetchpriority="low"/i);
+    }
+  }
+});
