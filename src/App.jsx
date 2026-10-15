@@ -6,6 +6,7 @@ import { addInquirySource, applySeo, inquirySourceForLocation } from "./seo.js";
 import { LanguageSwitcher } from "./locale.jsx";
 import { LocalizedPlushHeadcoverGuidePage, LocalizedPlushHeadcoverProductPage } from "./LocalizedPlushHeadcovers.jsx";
 import { ProductPriorityGateway } from "./ProductPriorityGateway.jsx";
+import { BallMarkerProductPage } from "./BallMarkerProductPage.jsx";
 import { majorTournamentDisclaimer, majorTournamentGuides } from "./MajorTournamentGuides.js";
 import enPlushHeadcovers from "./content/plush-headcovers/en.json";
 import "./showcase.css";
@@ -41,15 +42,14 @@ const productFamilyRoutes = {
   "Golf Towels": "/custom-golf-towels/",
   Pouches: "/custom-golf-accessories/",
   "Bag Tags": "/custom-golf-accessories/",
-  "Ball Markers": "/custom-golf-accessories/",
-  "Divot Tools": "/custom-golf-accessories/",
+  "Ball Markers": "/custom-golf-ball-markers-divot-tools/",
+  "Divot Tools": "/custom-golf-ball-markers-divot-tools/",
   "Golf Balls": "/custom-golf-accessories/",
   "Custom Packaging": "/custom-golf-packaging/",
   "Caps & Headwear": "/custom-golf-caps/",
   Towels: "/custom-golf-towels/",
   Accessories: "/custom-golf-accessories/",
-  "Ball Markers & Tools": "/custom-golf-accessories/",
-  "Gift Sets": "/solutions/corporate-golf-gifts/",
+  "Ball Markers & Tools": "/custom-golf-ball-markers-divot-tools/",
   Packaging: "/custom-golf-packaging/",
 };
 
@@ -66,7 +66,6 @@ const productFamilies = [
   ["Towels", "Magnetic course utility with a more considered finish.", "/assets/images/zhoni-product-magnetic-towel-v4.png", "Custom magnetic forest green waffle golf towel with gold Z embroidery attached to a golf cart rail"],
   ["Accessories", "Pouches, bag tags and small pieces that carry the identity.", "/assets/images/zhoni-product-accessories-v3.png", "Custom golf pouch, bag tag and tee pouch with gold Z branding"],
   ["Ball Markers & Tools", "Small-format pieces for player packs and club moments.", "/assets/images/zhoni-product-ball-markers-v3.png", "Custom antique brass golf ball marker, hat clip and divot repair tool with engraved Z branding"],
-  ["Gift Sets", "Coordinated pieces planned around the recipient and occasion.", "/assets/images/zhoni-product-gift-sets-v3.png", "Custom golf gift set with cap, towel and ball marker in a presentation box"],
   ["Packaging", "Boxes, inserts and finishing details that complete the hand-off.", "/assets/images/zhoni-product-packaging-v3.png", "Custom golf presentation box with fitted insert, tissue and gold Z foil detail"],
 ];
 
@@ -75,7 +74,7 @@ const homeProductFamilies = [
   { title: "Custom Plush Golf Headcovers", copy: "Mascot, animal and novelty character covers developed for recognisable form and practical club fit.", image: "/assets/images/zhoni-plush-novelty-headcovers-v1.jpg", href: "/custom-plush-golf-headcovers/" },
   { title: "Custom Golf Caps & Visors", copy: "Cap structure, fabric, closure and embroidery selected for clubs, teams and branded programs.", image: "/assets/images/zhoni-product-caps-v3.png", href: "/custom-golf-caps/" },
   { title: "Custom Magnetic Golf Towels", copy: "Waffle towels, magnetic attachments and embroidery designed for useful on-course handling.", image: "/assets/images/zhoni-product-magnetic-towel-v4.png", href: "/custom-golf-towels/" },
-  { title: "Custom Ball Markers & Golf Accessories", copy: "Ball markers, divot tools, bag tags and pouches developed as focused standalone products.", image: "/assets/images/zhoni-product-ball-markers-v3.png", href: "/custom-golf-accessories/" },
+  { title: "Custom Ball Markers & Divot Tools", copy: "Ball markers, magnetic hat clips and divot tools developed as focused standalone products.", image: "/assets/images/zhoni-product-ball-markers-v3.png", href: "/custom-golf-ball-markers-divot-tools/" },
   { title: "Custom Golf Packaging", copy: "Presentation boxes, inserts, cards and protective packing matched to the selected product.", image: "/assets/images/zhoni-product-packaging-v3.png", href: "/custom-golf-packaging/" },
 ];
 
@@ -996,6 +995,7 @@ export function App({ initialRoute = null, KoreanSiteComponent = KoreanSite, Can
   if (route === siteRoutes.caps) return <><ProductCategoryPage type="caps" /><FloatingContactActions /></>;
   if (route === siteRoutes.towels) return <><ProductCategoryPage type="towels" /><FloatingContactActions /></>;
   if (route === siteRoutes.accessories) return <><ProductCategoryPage type="accessories" /><FloatingContactActions /></>;
+  if (route === siteRoutes.ballMarkers) return <><BallMarkerProductPage Header={ZhoniPageHeader} Footer={ZhoniPageFooter} /><FloatingContactActions /></>;
   if (route === siteRoutes.packaging) return <><ProductCategoryPage type="packaging" /><FloatingContactActions /></>;
   if (route === siteRoutes.solutions) return <><SolutionsPage /><FloatingContactActions /></>;
   if (route === siteRoutes.golfGifts) return <><GolfGiftsHub /><FloatingContactActions /></>;
@@ -1102,7 +1102,7 @@ export function App({ initialRoute = null, KoreanSiteComponent = KoreanSite, Can
     <section className="hero" id="top" ref={heroRef}>
       <div className="hero-image"><img src="/assets/images/zhoni-golf-collection-hero-v2.png" alt="" /><video key={active[3]} autoPlay muted loop playsInline poster="/assets/images/zhoni-golf-collection-hero-v2.png"><source src={active[3]} type="video/mp4" /></video></div>
       <div className="shade" />
-      <div className="shell hero-copy"><p className="eyebrow">{active[0]}</p><h1>{active[1]}</h1><p className="lead">{active[2]}</p><div className="actions"><Button>START A CUSTOM PROJECT</Button><a className="button button-secondary" href="/products/">EXPLORE PRODUCTS <Arrow /></a></div></div>
+      <div className="shell hero-copy"><p className="eyebrow">{active[0]}</p><h1>{active[1]}</h1><p className="lead">{active[2]}</p><div className="actions"><a className="button button-primary" href="/products/">EXPLORE PRODUCTS <Arrow /></a><a className="button button-secondary" href="/request-a-quote/">START A CUSTOM PROJECT <Arrow /></a></div></div>
     </section>
 
     <ProductPriorityGateway eyebrow="START WITH THE PRODUCT" title="Choose the custom golf product buyers are already looking for." intro="Compare construction, branding and purchasing requirements before building a wider program." products={homeProductFamilies} allProducts={{ label: "VIEW ALL CUSTOM GOLF PRODUCTS", href: "/products/" }} bridge={{ eyebrow: "WHEN ONE PRODUCT BECOMES A PROGRAM", title: "Turn selected products into tournament, corporate or club solutions.", copy: "Gift sets and event programs remain the next step when the audience, hand-off and packaging need to work together.", label: "EXPLORE PROJECT SOLUTIONS", href: "/solutions/" }} />

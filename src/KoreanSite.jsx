@@ -5,6 +5,7 @@ import { trackAnalytics } from "./analytics.jsx";
 import { inquirySourceForLocation } from "./seo.js";
 import { ProductPriorityGateway } from "./ProductPriorityGateway.jsx";
 import { KoreanExpansion } from "./KoreanExpansion.jsx";
+import { BallMarkerProductPage } from "./BallMarkerProductPage.jsx";
 
 const WHATSAPP_URL = import.meta.env.VITE_WHATSAPP_URL ?? "https://wa.me/8617759190848";
 const Arrow = () => <span aria-hidden="true">↗</span>;
@@ -13,11 +14,12 @@ const productFamilies = [
   ["봉제 인형 골프 헤드커버", "마스코트, 동물과 캐릭터를 실제 클럽 보호 기능으로 구현하는 맞춤 헤드커버", "/assets/images/zhoni-plush-novelty-headcovers-v1.jpg"],
   ["골프 모자 & 바이저", "착용 환경과 브랜드 표현을 함께 고려한 맞춤 헤드웨어", "/assets/images/zhoni-product-caps-v3.png"],
   ["마그네틱 골프 타월", "라운드 중 사용성과 자수 디테일을 고려한 골프 타월", "/assets/images/zhoni-product-magnetic-towel-v4.png"],
-  ["골프 액세서리", "파우치, 백 태그, 볼 마커, 디봇 툴 등 브랜드 소품", "/assets/images/zhoni-product-accessories-v3.png"],
+  ["골프 액세서리", "파우치, 백 태그, 티 홀더 등 브랜드 소품", "/assets/images/zhoni-product-accessories-v3.png"],
+  ["볼 마커 & 디봇 툴", "소재, 마감, 로고와 전달 방식에 맞춘 볼 마커, 모자 클립과 디봇 툴", "/assets/images/zhoni-product-ball-markers-v3.png"],
   ["기프트 세트", "수령 대상과 전달 순간에 맞춰 구성하는 골프 선물 세트", "/assets/images/zhoni-product-gift-sets-v3.png"],
   ["맞춤 패키징", "박스, 인서트, 카드와 마감까지 연결되는 선물 패키징", "/assets/images/zhoni-product-packaging-v3.png"],
 ];
-const homeProductPaths = ["/ko/custom-golf-headcovers/","/ko/custom-plush-golf-headcovers/","/ko/custom-golf-caps/","/ko/custom-golf-towels/","/ko/custom-golf-accessories/","/ko/solutions/","/ko/custom-golf-packaging/"];
+const homeProductPaths = ["/ko/custom-golf-headcovers/","/ko/custom-plush-golf-headcovers/","/ko/custom-golf-caps/","/ko/custom-golf-towels/","/ko/custom-golf-accessories/","/ko/custom-golf-ball-markers-divot-tools/","/ko/solutions/","/ko/custom-golf-packaging/"];
 
 function KoreanHeader({ active }) {
   const [menu, setMenu] = useState(false);
@@ -35,7 +37,7 @@ function KoreanFooter() {
 }
 
 function KoreanHome() {
-  const homepageProducts = productFamilies.filter((_, index) => index !== 5).map(([title, copy, image], index) => ({ title, copy, image, href: homeProductPaths[index < 5 ? index : index + 1] }));
+  const homepageProducts = productFamilies.map((item,index)=>({ item,index })).filter(({index}) => index !== 4 && index !== 6).map(({item:[title, copy, image],index}) => ({ title, copy, image, href: homeProductPaths[index] }));
   return <main className="zhoni-page ko-page"><KoreanHeader />
     <section className="gifts-hero"><aside><span>CLUBS</span><span>EVENTS</span><span>BRANDS</span><span>ON COURSE</span></aside><div><p>맞춤 골프 제품 · B2B 제작</p><h1>맞춤 골프 헤드커버,<br />모자, 타월과 액세서리.</h1><p>필요한 제품 하나부터 시작하세요. 제품 방향이 정해지면 로고, 패키징과 대회·기업 기프트 구성을 프로젝트 범위에 맞춰 확장합니다.</p><div className="gifts-fit"><article><b>제품부터 검토</b><span>구조, 소재, 로고 방식과 예상 수량을 먼저 확인합니다.</span></article><article><b>필요할 때 확장</b><span>여러 제품, 패키징과 전달 경험을 하나의 프로그램으로 연결합니다.</span></article></div><a href="/ko/products/">맞춤 골프 제품 보기 <Arrow /></a></div><img src="/assets/images/zhoni-golf-collection-hero-v2.png" alt="ZHONI 맞춤 골프 헤드커버, 모자, 타월과 액세서리" /></section>
     <ProductPriorityGateway eyebrow="제품부터 시작하세요" title="구매자가 찾는 맞춤 골프 제품을 바로 확인하세요." intro="각 제품 페이지에서 구조, 소재, 로고 방식과 구매 준비 사항을 먼저 비교할 수 있습니다." products={homepageProducts} allProducts={{ label: "전체 맞춤 골프 제품 보기", href: "/ko/products/" }} bridge={{ eyebrow: "제품에서 프로그램으로", title: "선택한 제품을 대회, 기업 또는 클럽 솔루션으로 확장합니다.", copy: "대상, 전달 방식과 패키징을 함께 설계해야 할 때 기프트 세트와 행사 프로그램으로 연결합니다.", label: "프로젝트 솔루션 보기", href: "/ko/solutions/" }} />
@@ -45,8 +47,8 @@ function KoreanHome() {
 }
 
 function KoreanProducts() {
-  const paths=["/ko/custom-golf-headcovers/","/ko/custom-plush-golf-headcovers/","/ko/custom-golf-caps/","/ko/custom-golf-towels/","/ko/custom-golf-accessories/","/ko/solutions/corporate-golf-gifts/","/ko/custom-golf-packaging/"];
-  return <main className="products-hub ko-page"><KoreanHeader active="products" /><section className="products-hero"><img src="/assets/images/zhoni-golf-collection-hero-v2.png" alt="ZHONI 맞춤 골프 제품 컬렉션" /><div className="products-hero-copy"><p className="products-kicker">맞춤 골프용품</p><h1>개별 제품을 넘어,<br />하나의 컬렉션으로.</h1><p>골프 클럽, 대회, 기업 프로그램과 브랜드를 위한 제품을 용도와 전달 경험에 맞춰 구성합니다.</p><a href="/ko/request-a-quote/">프로젝트 시작 <Arrow /></a></div></section><section className="family-index"><div className="family-heading"><p className="products-kicker">제품군</p><h2>Product Families</h2><p>목적은 달라도<br />브랜드 경험은 하나로.</p></div><div className="family-grid">{productFamilies.map(([title,copy,image],index)=><a className="family-card" href={paths[index]} key={title}><img src={image} alt={`ZHONI ${title}`} /><h3>{title}</h3><p>{copy}</p><span>— &nbsp; <Arrow /></span></a>)}</div></section><section className="products-intro"><p className="products-kicker">COORDINATED APPROACH</p><h2>제품, 브랜딩과 패키징을 함께 검토합니다.</h2><p>최종 사양, MOQ, 가격과 일정은 제품 구조, 맞춤 범위, 수량, 패키징 및 배송지에 따라 달라집니다. 먼저 프로젝트 맥락을 공유해 주세요.</p><a href="/ko/our-process/">프로젝트 진행 과정 <Arrow /></a></section><KoreanFooter /></main>;
+  const paths=["/ko/custom-golf-headcovers/","/ko/custom-plush-golf-headcovers/","/ko/custom-golf-caps/","/ko/custom-golf-towels/","/ko/custom-golf-accessories/","/ko/custom-golf-ball-markers-divot-tools/","/ko/solutions/","/ko/custom-golf-packaging/"];
+  return <main className="products-hub ko-page"><KoreanHeader active="products" /><section className="products-hero"><img src="/assets/images/zhoni-golf-collection-hero-v2.png" alt="ZHONI 맞춤 골프 제품 컬렉션" /><div className="products-hero-copy"><p className="products-kicker">맞춤 골프용품</p><h1>개별 제품을 넘어,<br />하나의 컬렉션으로.</h1><p>골프 클럽, 대회, 기업 프로그램과 브랜드를 위한 제품을 용도와 전달 경험에 맞춰 구성합니다.</p><a href="/ko/request-a-quote/">프로젝트 시작 <Arrow /></a></div></section><section className="family-index"><div className="family-heading"><p className="products-kicker">제품군</p><h2>Product Families</h2><p>목적은 달라도<br />브랜드 경험은 하나로.</p></div><div className="family-grid">{productFamilies.map((item,index)=>({item,index})).filter(({index})=>index!==6).map(({item:[title,copy,image],index})=><a className="family-card" href={paths[index]} key={title}><img src={image} alt={`ZHONI ${title}`} /><h3>{title}</h3><p>{copy}</p><span>— &nbsp; <Arrow /></span></a>)}</div></section><section className="program-bridge"><div><p>골프대회 · 기업 · 클럽 · 프라이빗 라벨</p><h2>선택한 제품을 기프트와 프로그램으로 확장하세요.</h2></div><a href="/ko/solutions/">프로젝트 솔루션 보기 <Arrow /></a></section><section className="products-intro"><p className="products-kicker">COORDINATED APPROACH</p><h2>제품, 브랜딩과 패키징을 함께 검토합니다.</h2><p>최종 사양, MOQ, 가격과 일정은 제품 구조, 맞춤 범위, 수량, 패키징 및 배송지에 따라 달라집니다. 먼저 프로젝트 맥락을 공유해 주세요.</p><a href="/ko/our-process/">프로젝트 진행 과정 <Arrow /></a></section><KoreanFooter /></main>;
 }
 
 function KoreanSolutions() {
@@ -78,6 +80,6 @@ function KoreanQuote() {
 }
 
 export function KoreanSite({ routeKey }) {
-  const pages={koHome:<KoreanHome />,koProducts:<KoreanProducts />,koSolutions:<KoreanSolutions />,koProcess:<KoreanProcess />,koFaq:<KoreanFAQ />,koAbout:<KoreanAbout />,koQuote:<KoreanQuote />};
+  const pages={koHome:<KoreanHome />,koProducts:<KoreanProducts />,koSolutions:<KoreanSolutions />,koProcess:<KoreanProcess />,koFaq:<KoreanFAQ />,koAbout:<KoreanAbout />,koQuote:<KoreanQuote />,koBallMarkers:<BallMarkerProductPage locale="ko" Header={KoreanHeader} Footer={KoreanFooter} />};
   return pages[routeKey] ?? <KoreanExpansion routeKey={routeKey} />;
 }

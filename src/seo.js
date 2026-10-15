@@ -11,6 +11,7 @@ const breadcrumbNames = {
   "/custom-golf-caps/": "Custom Golf Caps & Headwear",
   "/custom-golf-towels/": "Custom Golf Towels",
   "/custom-golf-accessories/": "Custom Golf Accessories",
+  "/custom-golf-ball-markers-divot-tools/": "Custom Golf Ball Markers & Divot Tools",
   "/custom-golf-packaging/": "Custom Golf Packaging",
   "/solutions/": "Solutions",
   "/custom-golf-gifts/": "Custom Golf Gifts",
@@ -182,7 +183,7 @@ export function schemaForRoute(route, faqItems = []) {
   const brandId = `${SITE_ORIGIN}/#brand`;
   const websiteId = `${SITE_ORIGIN}/#website`;
   const guideRoutes = [siteRoutes.golfGiftGuide, siteRoutes.audienceGiftGuide, siteRoutes.brandingGuide, siteRoutes.artworkGuide, siteRoutes.headcoversGuide, siteRoutes.towelsGuide, siteRoutes.tournamentGuide, siteRoutes.corporateGuide, siteRoutes.packagingGuide, siteRoutes.headcoverMaterialsGuide, siteRoutes.headcoverTypesGuide, siteRoutes.productSpecificationGuide, siteRoutes.sampleApprovalGuide, siteRoutes.collectionPlanningGuide, siteRoutes.headcoverLogoGuide, siteRoutes.plushDesignGuide, siteRoutes.plushMaterialsGuide, siteRoutes.plushBrandingGuide, siteRoutes.plushSampleGuide, siteRoutes.capsStyleGuide, siteRoutes.capsMaterialsGuide, siteRoutes.capsBrandingGuide, siteRoutes.capsConstructionGuide, siteRoutes.capsProductionGuide, siteRoutes.productDevelopmentBriefGuide, siteRoutes.tournamentGiftBudgetGuide, siteRoutes.playerPackGuide, siteRoutes.recipientRolesGuide, siteRoutes.premiumGiftSetGuide, siteRoutes.eventBriefGuide, siteRoutes.majorTournamentCalendarGuide, siteRoutes.championshipHospitalityGuide, siteRoutes.golfEventGiftTiersGuide, siteRoutes.eventFormatsGiftGuide, siteRoutes.weatherReadyTournamentGuide, siteRoutes.quoteComparisonGuide, siteRoutes.quoteFactorsGuide, siteRoutes.moqGuide, siteRoutes.qualityChecklistGuide, siteRoutes.deliveryDateGuide, siteRoutes.postBriefGuide, siteRoutes.firstOrder, siteRoutes.exportReadiness];
-  const homeProductRoutes = [siteRoutes.headcovers, siteRoutes.plushHeadcovers, siteRoutes.caps, siteRoutes.towels, siteRoutes.accessories, siteRoutes.packaging];
+  const homeProductRoutes = [siteRoutes.headcovers, siteRoutes.plushHeadcovers, siteRoutes.caps, siteRoutes.towels, siteRoutes.ballMarkers, siteRoutes.packaging];
   const graph = [
     {
       "@type": "Organization", "@id": companyId,
@@ -221,7 +222,7 @@ export function schemaForRoute(route, faqItems = []) {
       ja: { home: "ホーム", products: "製品", solutions: "ソリューション", guides: "購入ガイド" },
       de: { home: "Startseite", products: "Produkte", solutions: "Lösungen", guides: "Ratgeber" },
     }[language] ?? { home: "Home", products: "Products", solutions: "Solutions", guides: "Buyer Guides" };
-    const productPaths = [siteRoutes.headcovers.path, siteRoutes.plushHeadcovers.path, siteRoutes.caps.path, siteRoutes.towels.path, siteRoutes.accessories.path, siteRoutes.packaging.path];
+    const productPaths = [siteRoutes.headcovers.path, siteRoutes.plushHeadcovers.path, siteRoutes.caps.path, siteRoutes.towels.path, siteRoutes.accessories.path, siteRoutes.ballMarkers.path, siteRoutes.packaging.path];
     const solutionPaths = [siteRoutes.corporateGifts.path, siteRoutes.tournamentGifts.path, siteRoutes.clubMemberPrograms.path, siteRoutes.privateLabelCollections.path];
     const isGuide = guideRoutes.some(guide => guide.path === englishPath);
     const parentEnglishPath = isGuide ? siteRoutes.guides.path : productPaths.includes(englishPath) ? siteRoutes.products.path : solutionPaths.includes(englishPath) ? siteRoutes.solutions.path : null;
@@ -237,7 +238,7 @@ export function schemaForRoute(route, faqItems = []) {
     });
   }
 
-  const servicePaths = [siteRoutes.headcovers, siteRoutes.plushHeadcovers, siteRoutes.caps, siteRoutes.towels, siteRoutes.accessories, siteRoutes.packaging, siteRoutes.corporateGifts, siteRoutes.tournamentGifts, siteRoutes.clubMemberPrograms, siteRoutes.privateLabelCollections].map(service => service.path);
+  const servicePaths = [siteRoutes.headcovers, siteRoutes.plushHeadcovers, siteRoutes.caps, siteRoutes.towels, siteRoutes.accessories, siteRoutes.ballMarkers, siteRoutes.packaging, siteRoutes.corporateGifts, siteRoutes.tournamentGifts, siteRoutes.clubMemberPrograms, siteRoutes.privateLabelCollections].map(service => service.path);
   if (servicePaths.includes(englishPath)) {
     graph.push({ "@type": "Service", name: route.title, description: route.description, provider: { "@id": companyId }, brand: { "@id": brandId }, url: canonical, areaServed: "International" });
   }

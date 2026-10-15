@@ -184,7 +184,7 @@ test("keeps golf caps visible in shared SEO paths and prefills the inquiry form"
     readFile(new URL("../public/robots.txt", import.meta.url), "utf8"),
   ]);
 
-  assert.match(routes, /caps and visors, towels, accessories, gift sets and packaging/);
+  assert.match(routes, /caps and visors, magnetic towels, ball markers, divot tools, accessories and packaging/);
   assert.match(app, /productAliases/);
   assert.match(app, /defaultValue=\{prefilledProduct\}/);
   assert.match(app, /Custom Golf Caps & Headwear/);
@@ -488,7 +488,7 @@ test("keeps completed Japanese routes in full parity with English", async () => 
   const japaneseRoutes = Object.values(siteRoutes).filter((route) => route.lang === "ja");
   const japaneseByEnglishPath = new Map(japaneseRoutes.map((route) => [route.alternatePath, route]));
 
-  assert.equal(englishRoutes.length, 63);
+  assert.equal(englishRoutes.length, 64);
   assert.equal(japaneseRoutes.length, englishRoutes.length);
 
   for (const englishRoute of englishRoutes) {
@@ -596,7 +596,7 @@ test("keeps completed German routes in full parity with English and indexes ever
   const germanRoutes = Object.values(siteRoutes).filter((route) => route.lang === "de");
   const germanByEnglishPath = new Map(germanRoutes.map((route) => [route.alternatePath, route]));
 
-  assert.equal(englishRoutes.length, 63);
+  assert.equal(englishRoutes.length, 64);
   assert.equal(germanRoutes.length, englishRoutes.length);
 
   for (const englishRoute of englishRoutes) {
@@ -740,7 +740,7 @@ test("keeps the completed Korean routes in full parity with English", async () =
   const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
   const englishRoutes = Object.values(siteRoutes).filter(route => !route.lang && route.localeStage !== "pending");
   const koreanRoutes = Object.values(siteRoutes).filter(route => route.lang === "ko");
-  assert.equal(englishRoutes.length, 63);
+  assert.equal(englishRoutes.length, 64);
   assert.equal(koreanRoutes.length, englishRoutes.length);
 
   const koreanByEnglishPath = new Map(koreanRoutes.map(route => [route.alternatePath, route]));
@@ -922,7 +922,7 @@ test("keeps completed Canadian French routes in full parity with English", async
   const frenchRoutes = Object.values(siteRoutes).filter((route) => route.lang === "fr-CA");
   const frenchByEnglishPath = new Map(frenchRoutes.map((route) => [route.alternatePath, route]));
 
-  assert.equal(englishRoutes.length, 63);
+  assert.equal(englishRoutes.length, 64);
   assert.equal(frenchRoutes.length, englishRoutes.length);
 
   for (const englishRoute of englishRoutes) {
@@ -974,7 +974,6 @@ test("uses distinct product-specific images for every products hub family", asyn
     "zhoni-product-magnetic-towel-v4.png",
     "zhoni-product-accessories-v3.png",
     "zhoni-product-ball-markers-v3.png",
-    "zhoni-product-gift-sets-v3.png",
     "zhoni-product-packaging-v3.png",
   ];
 
@@ -983,6 +982,33 @@ test("uses distinct product-specific images for every products hub family", asyn
     await access(path);
     assert.match(app, new RegExp(asset.replaceAll(".", "\\.")));
   }
+});
+
+test("publishes ball markers and divot tools as a product-first route in every locale", async () => {
+  const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
+  const app = await readFile(new URL("../src/App.jsx", import.meta.url), "utf8");
+  const routes = [
+    [siteRoutes.ballMarkers, "Ball markers &amp; divot tools"],
+    [siteRoutes.koBallMarkers, "볼 마커 &amp; 디봇 툴"],
+    [siteRoutes.frCaBallMarkers, "Marque-balles et relève-pitchs"],
+    [siteRoutes.jaBallMarkers, "ボールマーカー＆グリーンフォーク"],
+    [siteRoutes.deBallMarkers, "Personalisierte Ballmarker &amp; Pitchgabeln"],
+  ];
+
+  for (const [route, projectType] of routes) {
+    assert.match(sitemap, new RegExp(`https://zhonigolf\\.com${route.path}`.replaceAll("/", "\\/")));
+    const document = await readFile(new URL(`../dist/client${route.path}index.html`, import.meta.url), "utf8");
+    assert.match(document, /ball-marker-product-page/);
+    assert.match(document, /zhoni-product-ball-markers-v3\.png/);
+    assert.match(document, /"@type":"Service"/);
+    assert.match(document, /"@type":"BreadcrumbList"/);
+    assert.match(document, new RegExp(`product=${encodeURIComponent(projectType.replaceAll("&amp;", "&"))}`.replaceAll("%", "%")));
+  }
+
+  const primary = app.indexOf('className="button button-primary" href="/products/"');
+  const secondary = app.indexOf('className="button button-secondary" href="/request-a-quote/"');
+  assert.ok(primary >= 0 && secondary > primary, "Expected products before the secondary quote CTA.");
+  assert.doesNotMatch(app, /\["Gift Sets",[^\n]+zhoni-product-gift-sets-v3\.png/);
 });
 
 test("keeps product-family imagery large in a responsive three-to-one column grid", async () => {
