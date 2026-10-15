@@ -5,6 +5,7 @@ import { trackAnalytics } from "./analytics.jsx";
 import { inquirySourceForLocation } from "./seo.js";
 import { LocalizedBuyerEvidence } from "./LocalizedBuyerEvidence.jsx";
 import { JapaneseExpansion } from "./JapaneseExpansion.jsx";
+import { ProductPriorityGateway } from "./ProductPriorityGateway.jsx";
 
 const WHATSAPP_URL = import.meta.env.VITE_WHATSAPP_URL ?? "https://wa.me/8617759190848";
 const Arrow = () => <span aria-hidden="true">↗</span>;
@@ -26,6 +27,7 @@ function Footer() {
 
 const productFamilies = [
   ["ヘッドカバー", "クラブ保護、フィット、素材、ロゴ表現を一体で検討します。", "/assets/images/zhoni-product-headcovers-v3.png", "/ja/custom-golf-headcovers/"],
+  ["ぬいぐるみゴルフヘッドカバー", "マスコット、動物、キャラクターを識別しやすい形状とクラブ保護機能へ落とし込みます。", "/assets/images/zhoni-plush-novelty-headcovers-v1.jpg", "/ja/custom-plush-golf-headcovers/"],
   ["キャップ＆バイザー", "着用環境、フィット、生地、刺繍位置に合わせて設計します。", "/assets/images/zhoni-product-caps-v3.png", "/ja/custom-golf-caps/"],
   ["マグネットタオル", "コースでの使いやすさと刺繍、マグネット構造を確認します。", "/assets/images/zhoni-product-magnetic-towel-v4.png", "/ja/custom-golf-towels/"],
   ["アクセサリー", "ボールマーカー、グリーンフォーク、バッグタグ、ポーチを用途別に構成します。", "/assets/images/zhoni-product-accessories-v3.png", "/ja/custom-golf-accessories/"],
@@ -34,7 +36,8 @@ const productFamilies = [
 ];
 
 function Home() {
-  return <main className="home-page ja-page"><Header /><section className="zhoni-hero"><div className="zhoni-hero-copy"><p>CUSTOM GOLF MERCHANDISE</p><h1>製品を並べるだけでなく、<br />目的に合うゴルフ体験へ。</h1><p>クラブ、大会、企業、ブランドのために、製品選定、ロゴ表現、ギフト構成、パッケージ、納品準備を一つのプロジェクトとして検討します。</p><div><a href="/ja/products/">製品を見る <Arrow /></a><a href="/ja/request-a-quote/">相談を始める <Arrow /></a></div></div><img src="/assets/images/zhoni-golf-collection-hero-v2.png" alt="ZHONIのカスタムゴルフ用品コレクション" /></section><section className="gift-atlas"><p>ZHONI PROJECT ROUTE</p><h2>一つの製品から、統一されたコレクションまで。</h2><p className="atlas-intro">誰が、いつ、何のために受け取るかを確認し、製品、ブランド表現、パッケージの方向を整理します。</p>{[["01","製品を選ぶ","ヘッドカバー、キャップ、タオル、アクセサリー、ギフトセットから検討します。","製品を見る","/ja/products/"],["02","用途を整理する","大会、企業ギフト、クラブ会員、プライベートブランドの目的を定めます。","ソリューション","/ja/solutions/"],["03","仕様と承認を確認する","素材、ロゴ、色、パッケージ、必要な確認段階を整理します。","進め方","/ja/our-process/"],["04","概要を共有する","数量、希望日、納品先、ブランド資料をお送りください。","相談する","/ja/request-a-quote/"]].map(([number,title,copy,label,href]) => <article key={number}><b>{number}</b><div><h3>{title}</h3><p>{copy}</p></div><a href={href}>{label} <Arrow /></a></article>)}</section><Footer /></main>;
+  const homepageProducts = productFamilies.filter((_, index) => index !== 5).map(([title, copy, image, href]) => ({ title, copy, image, href }));
+  return <main className="home-page ja-page"><Header /><section className="zhoni-hero"><div className="zhoni-hero-copy"><p>CUSTOM GOLF PRODUCTS · B2B</p><h1>カスタムゴルフヘッドカバー、<br />キャップ、タオル、アクセサリー。</h1><p>必要な製品一つから始め、用途に応じてロゴ、パッケージ、大会・企業向けギフトプログラムへ展開します。</p><div><a href="/ja/products/">製品を見る <Arrow /></a><a href="/ja/request-a-quote/">相談を始める <Arrow /></a></div></div><img src="/assets/images/zhoni-golf-collection-hero-v2.png" alt="ZHONIのカスタムゴルフ製品" /></section><ProductPriorityGateway eyebrow="製品から始める" title="買い手が探しているカスタムゴルフ製品へ直接アクセス。" intro="各製品ページで構造、素材、ロゴ方法、発注準備を確認してから、より大きなプログラムへ展開できます。" products={homepageProducts} allProducts={{ label: "すべての製品を見る", href: "/ja/products/" }} bridge={{ eyebrow: "製品からプログラムへ", title: "選んだ製品を大会、企業、クラブ向けソリューションへ。", copy: "対象、渡し方、パッケージを一体で考える場合は、ギフトセットやイベントプログラムとして構成します。", label: "ソリューションを見る", href: "/ja/solutions/" }} /><section className="gift-atlas"><p>ZHONI PROJECT ROUTE</p><h2>一つの製品から、統一されたコレクションまで。</h2><p className="atlas-intro">誰が、いつ、何のために受け取るかを確認し、製品、ブランド表現、パッケージの方向を整理します。</p>{[["01","製品を選ぶ","ヘッドカバー、キャップ、タオル、アクセサリー、ギフトセットから検討します。","製品を見る","/ja/products/"],["02","用途を整理する","大会、企業ギフト、クラブ会員、プライベートブランドの目的を定めます。","ソリューション","/ja/solutions/"],["03","仕様と承認を確認する","素材、ロゴ、色、パッケージ、必要な確認段階を整理します。","進め方","/ja/our-process/"],["04","概要を共有する","数量、希望日、納品先、ブランド資料をお送りください。","相談する","/ja/request-a-quote/"]].map(([number,title,copy,label,href]) => <article key={number}><b>{number}</b><div><h3>{title}</h3><p>{copy}</p></div><a href={href}>{label} <Arrow /></a></article>)}</section><Footer /></main>;
 }
 
 function Products() {

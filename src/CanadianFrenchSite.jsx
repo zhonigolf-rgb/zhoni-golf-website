@@ -4,18 +4,21 @@ import { TurnstileField } from "./turnstile.jsx";
 import { trackAnalytics } from "./analytics.jsx";
 import { inquirySourceForLocation } from "./seo.js";
 import { CanadianFrenchExpansion } from "./CanadianFrenchExpansion.jsx";
+import { ProductPriorityGateway } from "./ProductPriorityGateway.jsx";
 
 const WHATSAPP_URL = import.meta.env.VITE_WHATSAPP_URL ?? "https://wa.me/8617759190848";
 const Arrow = () => <span aria-hidden="true">↗</span>;
 
 const productFamilies = [
   ["Couvre-bâtons", "Des couvre-bâtons personnalisés pour les clubs, tournois et marques.", "/assets/images/zhoni-product-headcovers-v3.png", "Couvre-bâtons de golf personnalisés"],
+  ["Couvre-bâtons en peluche", "Des mascottes, animaux et personnages transformés en couvre-bâtons fonctionnels.", "/assets/images/zhoni-plush-novelty-headcovers-v1.jpg", "Couvre-bâtons de golf en peluche personnalisés"],
   ["Casquettes et visières", "Des modèles pensés selon l'usage, l'ajustement et l'identité de marque.", "/assets/images/zhoni-product-caps-v3.png", "Casquettes et visières de golf personnalisées"],
   ["Serviettes magnétiques", "Une solution pratique sur le parcours avec broderie et finitions soignées.", "/assets/images/zhoni-product-magnetic-towel-v4.png", "Serviettes de golf personnalisées"],
   ["Accessoires de golf", "Pochettes, étiquettes de sac, marque-balles et relève-pitchs coordonnés.", "/assets/images/zhoni-product-accessories-v3.png", "Accessoires de golf personnalisés"],
   ["Ensembles-cadeaux", "Des articles réunis autour du destinataire et du moment de remise.", "/assets/images/zhoni-product-gift-sets-v3.png", "Ensembles-cadeaux de golf"],
   ["Emballages personnalisés", "Boîtes, calages, cartes et détails de présentation pour une remise cohérente.", "/assets/images/zhoni-product-packaging-v3.png", "Emballages de golf personnalisés"],
 ];
+const homeProductPaths = ["/fr-ca/custom-golf-headcovers/","/fr-ca/custom-plush-golf-headcovers/","/fr-ca/custom-golf-caps/","/fr-ca/custom-golf-towels/","/fr-ca/custom-golf-accessories/","/fr-ca/solutions/","/fr-ca/custom-golf-packaging/"];
 
 function FrenchHeader({ active }) {
   const [menu, setMenu] = useState(false);
@@ -33,15 +36,17 @@ function FrenchFooter() {
 }
 
 function FrenchHome() {
+  const homepageProducts = productFamilies.filter((_, index) => index !== 5).map(([title, copy, image, alt], index) => ({ title, copy, image, alt, href: homeProductPaths[index < 5 ? index : index + 1] }));
   return <main className="zhoni-page fr-ca-page"><FrenchHeader />
     <section className="gifts-hero"><aside><span>CLUBS</span><span>TOURNOIS</span><span>ENTREPRISES</span><span>MARQUES</span></aside><div><p>ARTICLES DE GOLF · ENSEMBLES-CADEAUX · EMBALLAGES</p><h1>Votre marque,<br />jusque sur le parcours.</h1><p>ZHONI réunit le développement de produits, le marquage, la composition d'ensembles-cadeaux et l'emballage dans un même projet pour les clubs, tournois, entreprises et marques.</p><div className="gifts-fit"><article><b>PROJETS ADAPTÉS</b><span>Projets B2B qui exigent plusieurs articles réunis dans une expérience de marque cohérente.</span></article><article><b>POUR COMMENCER</b><span>Orientation du produit, quantité estimée, date cible, destination et fichiers de marque.</span></article></div><a href="/fr-ca/request-a-quote/">PRÉSENTER UN PROJET <Arrow /></a></div><img src="/assets/images/zhoni-golf-collection-hero-v2.png" alt="Collection d'articles et de cadeaux de golf personnalisés ZHONI" /></section>
+    <ProductPriorityGateway eyebrow="COMMENCEZ PAR LE PRODUIT" title="Accédez directement aux produits de golf personnalisés recherchés par les acheteurs." intro="Évaluez la construction, le marquage et les renseignements d'achat avant de bâtir un programme plus large." products={homepageProducts} allProducts={{ label: "VOIR TOUS LES PRODUITS", href: "/fr-ca/products/" }} bridge={{ eyebrow: "DU PRODUIT AU PROGRAMME", title: "Transformez les produits choisis en solution de tournoi, d'entreprise ou de club.", copy: "Les ensembles-cadeaux et programmes événementiels interviennent lorsque le public, la remise et l'emballage doivent être coordonnés.", label: "EXPLORER LES SOLUTIONS", href: "/fr-ca/solutions/" }} />
     <section className="gift-atlas"><p>PARCOURS DE PROJET ZHONI</p><h2>D'un article unique à une collection complète.</h2><p className="atlas-intro">Nous partons du destinataire, de l'occasion et de l'échéance pour définir les produits, le marquage et l'emballage appropriés.</p>{[["01","Choisir les produits","Couvre-bâtons, casquettes, serviettes, accessoires ou ensembles-cadeaux.","VOIR LES PRODUITS","/fr-ca/products/"],["02","Structurer le programme","Tournoi, cadeau d'entreprise, programme de club ou collection de marque privée.","VOIR LES SOLUTIONS","/fr-ca/solutions/"],["03","Confirmer les détails","Matières, couleurs, méthode de marquage, emballage et étapes d'approbation.","NOTRE PROCESSUS","/fr-ca/our-process/"],["04","Partager le cahier des charges","Quantité, échéance, destination et éléments de marque permettent une évaluation utile.","DEMANDER UNE SOUMISSION","/fr-ca/request-a-quote/"]].map(([n,t,c,l,h])=><article key={n}><b>{n}</b><div><h3>{t}</h3><p>{c}</p></div><a href={h}>{l} <Arrow /></a></article>)}</section>
     <section className="gifts-closing"><img src="/assets/images/zhoni-custom-golf-packaging-v2.png" alt="Emballage personnalisé pour cadeaux de golf ZHONI" /><div><p>UN SEUL CAHIER DES CHARGES</p><h2>Un projet pensé pour le destinataire et le moment de remise.</h2><p>Indiquez-nous les produits, la quantité, la date souhaitée, la destination et les attentes d'emballage. Nous vous guiderons vers la prochaine étape réaliste.</p><a href="/fr-ca/request-a-quote/">COMMENCER LE PROJET <Arrow /></a></div></section><FrenchFooter />
   </main>;
 }
 
 function FrenchProducts() {
-  const paths=["/fr-ca/custom-golf-headcovers/","/fr-ca/custom-golf-caps/","/fr-ca/custom-golf-towels/","/fr-ca/custom-golf-accessories/","/fr-ca/solutions/corporate-golf-gifts/","/fr-ca/custom-golf-packaging/"];
+  const paths=["/fr-ca/custom-golf-headcovers/","/fr-ca/custom-plush-golf-headcovers/","/fr-ca/custom-golf-caps/","/fr-ca/custom-golf-towels/","/fr-ca/custom-golf-accessories/","/fr-ca/solutions/corporate-golf-gifts/","/fr-ca/custom-golf-packaging/"];
   return <main className="products-hub fr-ca-page"><FrenchHeader active="products" /><section className="products-hero"><img src="/assets/images/zhoni-golf-collection-hero-v2.png" alt="Collection de produits de golf personnalisés ZHONI" /><div className="products-hero-copy"><p className="products-kicker">PRODUITS DE GOLF PERSONNALISÉS</p><h1>Plus que des articles,<br />une collection cohérente.</h1><p>Des produits pensés selon l'usage, le destinataire et l'expérience de remise pour les clubs, tournois, entreprises et marques.</p><a href="/fr-ca/request-a-quote/">COMMENCER UN PROJET <Arrow /></a></div></section><section className="family-index"><div className="family-heading"><p className="products-kicker">NOS FAMILLES</p><h2>Produits</h2><p>Des usages différents.<br />Une seule identité.</p></div><div className="family-grid">{productFamilies.map(([title,copy,image],index)=><a className="family-card" href={paths[index]} key={title}><img src={image} alt={`${title} ZHONI`} /><h3>{title}</h3><p>{copy}</p><span>— &nbsp; <Arrow /></span></a>)}</div></section><section className="products-intro"><p className="products-kicker">UNE APPROCHE COORDONNÉE</p><h2>Le produit, le marquage et l'emballage sont étudiés ensemble.</h2><p>Les spécifications, quantités minimales, prix et délais dépendent de la construction, du niveau de personnalisation, de la quantité, de l'emballage et de la destination.</p><a href="/fr-ca/our-process/">VOIR NOTRE PROCESSUS <Arrow /></a></section><FrenchFooter /></main>;
 }
 
