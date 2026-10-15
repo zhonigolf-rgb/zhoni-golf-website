@@ -4,6 +4,11 @@ import { Arrow, GermanBuyerGuide, GermanFooter, GermanHeader } from "./GermanGui
 import { GermanProcurement } from "./GermanProcurement.jsx";
 
 const guides = [
+  ["majorcalendar","event","CHAMPIONSHIP-SAISON","Planungskalender 2027 für Golfturnier-Merchandise","/de/guides/2027-major-golf-tournament-merchandise-planning-calendar/"],
+  ["championshiphospitality","event","CHAMPIONSHIP-SAISON","Hospitality-Geschenke für die Championship-Woche","/de/guides/corporate-golf-hospitality-gifts-championship-week/"],
+  ["eventtiers","event","CHAMPIONSHIP-SAISON","Geschenkstufen für Teilnehmer, Sponsoren, VIPs und Gewinner","/de/guides/golf-event-gift-tiers-players-sponsors-vips-winners/"],
+  ["eventformats","event","CHAMPIONSHIP-SAISON","Golfgeschenke für Pro-Ams, Invitationals und Charity-Turniere","/de/guides/branded-golf-gifts-pro-ams-invitationals-charity-tournaments/"],
+  ["weatherready","event","CHAMPIONSHIP-SAISON","Wettergerechte Golfturnier-Merchandise-Planung","/de/guides/weather-ready-golf-tournament-merchandise/"],
   ["gifts","event","GESCHENKE & EVENTS","Personalisierte Golfgeschenke als Projekt planen","/de/custom-golf-gifts/"],
   ["plushdesign","plush","PLÜSCH-HEADCOVER","Maskottchen als funktionelles Golf-Headcover gestalten","/de/guides/custom-plush-golf-headcover-design-guide/"],
   ["plushmaterials","plush","PLÜSCH-HEADCOVER","Plüsch, Schutzfutter und Öffnung auswählen","/de/guides/plush-golf-headcover-materials-lining-closures/"],

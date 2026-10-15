@@ -2,7 +2,9 @@ import { useState } from "react";
 import { LanguageSwitcher } from "./locale.jsx";
 import { LocalizedBuyerEvidence } from "./LocalizedBuyerEvidence.jsx";
 import { LocalizedPlushHeadcoverGuidePage, LocalizedPlushHeadcoverProductPage } from "./LocalizedPlushHeadcovers.jsx";
+import { LocalizedMajorTournamentGuide } from "./LocalizedMajorTournamentGuides.jsx";
 import dePlushContent from "./content/plush-headcovers/de.json";
+import deMajorTournamentGuides from "./content/major-tournament-guides/de.js";
 import { GermanGuides } from "./GermanGuides.jsx";
 
 const WHATSAPP_URL = import.meta.env.VITE_WHATSAPP_URL ?? "https://wa.me/8617759190848";
@@ -43,6 +45,8 @@ function SolutionPage({ pageKey }) {
 }
 
 export function GermanExpansion({ routeKey }) {
+  const majorTopics = { deMajorTournamentCalendarGuide:"calendar2027", deChampionshipHospitalityGuide:"hospitality", deGolfEventGiftTiersGuide:"giftTiers", deEventFormatsGiftGuide:"eventFormats", deWeatherReadyTournamentGuide:"weather" };
+  if (majorTopics[routeKey]) return <LocalizedMajorTournamentGuide content={deMajorTournamentGuides} topic={majorTopics[routeKey]} Header={Header} Footer={Footer} Evidence={({context})=><LocalizedBuyerEvidence locale="de" context={context}/>} pageClass="de-page" />;
   const plushTopics = { dePlushDesignGuide:"design", dePlushMaterialsGuide:"materials", dePlushBrandingGuide:"branding", dePlushSampleGuide:"sample" };
   const PlushEvidence = ({ context }) => <LocalizedBuyerEvidence locale="de" context={context} />;
   if (routeKey === "dePlushHeadcovers") return <LocalizedPlushHeadcoverProductPage content={dePlushContent} Header={Header} Footer={Footer} Evidence={PlushEvidence} pageClass="de-page" />;

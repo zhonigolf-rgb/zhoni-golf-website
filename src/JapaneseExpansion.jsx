@@ -3,7 +3,9 @@ import { LanguageSwitcher } from "./locale.jsx";
 import { LocalizedBuyerEvidence } from "./LocalizedBuyerEvidence.jsx";
 import { JapaneseProcurement } from "./JapaneseProcurement.jsx";
 import { LocalizedPlushHeadcoverGuidePage, LocalizedPlushHeadcoverProductPage } from "./LocalizedPlushHeadcovers.jsx";
+import { LocalizedMajorTournamentGuide } from "./LocalizedMajorTournamentGuides.jsx";
 import jaPlushContent from "./content/plush-headcovers/ja.json";
+import jaMajorTournamentGuides from "./content/major-tournament-guides/ja.js";
 
 const WHATSAPP_URL = import.meta.env.VITE_WHATSAPP_URL ?? "https://wa.me/8617759190848";
 const Arrow = () => <span aria-hidden="true">↗</span>;
@@ -43,6 +45,11 @@ function SolutionPage({ pageKey }) {
 }
 
 const guides = [
+  { key:"majorcalendar", group:"event", label:"選手権シーズン", title:"2027年主要ゴルフトーナメント記念品計画", copy:"希望納品日から承認、量産、包装、輸送を逆算します。", href:"/ja/guides/2027-major-golf-tournament-merchandise-planning-calendar/" },
+  { key:"championshiphospitality", group:"event", label:"選手権シーズン", title:"選手権週の法人ホスピタリティギフト", copy:"ホテル到着、現地接遇、スポンサー、事後フォローに合わせます。", href:"/ja/guides/corporate-golf-hospitality-gifts-championship-week/" },
+  { key:"eventtiers", group:"event", label:"選手権シーズン", title:"参加者・スポンサー・VIP・受賞者ギフト", copy:"一つのデザイン体系で対象者ごとの役割と価値を分けます。", href:"/ja/guides/golf-event-gift-tiers-players-sponsors-vips-winners/" },
+  { key:"eventformats", group:"event", label:"選手権シーズン", title:"プロアマ・招待競技・チャリティ大会ギフト", copy:"運営形式、スポンサー構造、配布動線に製品を合わせます。", href:"/ja/guides/branded-golf-gifts-pro-ams-invitationals-charity-tournaments/" },
+  { key:"weatherready", group:"event", label:"選手権シーズン", title:"天候対応ゴルフトーナメント用品", copy:"暑さ、雨、風、変化する予報に備えて素材と包装を計画します。", href:"/ja/guides/weather-ready-golf-tournament-merchandise/" },
   { key:"gifts", group:"event", label:"ギフト・イベント", title:"カスタムゴルフギフト・プロジェクト", copy:"受取人から製品、ブランド表現、パッケージ、納品まで全体経路を整理します。", href:"/ja/custom-golf-gifts/" },
   { key:"plushdesign", group:"plush", label:"ぬいぐるみヘッドカバー", title:"キャラクターをゴルフ用ヘッドカバーへ設計する", copy:"許諾済み資料から、識別しやすい輪郭、比率、クラブ機能、立体パーツを整理します。", href:"/ja/guides/custom-plush-golf-headcover-design-guide/" },
   { key:"plushmaterials", group:"plush", label:"ぬいぐるみヘッドカバー", title:"表地・裏地・開口部を選ぶ", copy:"外側の手触り、形状保持、クラブ保護、挿入感、保持方法を比較します。", href:"/ja/guides/plush-golf-headcover-materials-lining-closures/" },
@@ -132,6 +139,8 @@ function GuideArticle({ pageKey }) {
 }
 
 export function JapaneseExpansion({ routeKey }) {
+  const majorTopics = { jaMajorTournamentCalendarGuide:"calendar2027", jaChampionshipHospitalityGuide:"hospitality", jaGolfEventGiftTiersGuide:"giftTiers", jaEventFormatsGiftGuide:"eventFormats", jaWeatherReadyTournamentGuide:"weather" };
+  if (majorTopics[routeKey]) return <LocalizedMajorTournamentGuide content={jaMajorTournamentGuides} topic={majorTopics[routeKey]} Header={Header} Footer={Footer} Evidence={({context})=><LocalizedBuyerEvidence locale="ja" context={context}/>} pageClass="ja-page" />;
   const plushTopics = { jaPlushDesignGuide:"design", jaPlushMaterialsGuide:"materials", jaPlushBrandingGuide:"branding", jaPlushSampleGuide:"sample" };
   const PlushEvidence = ({ context }) => <LocalizedBuyerEvidence locale="ja" context={context} />;
   if (routeKey === "jaPlushHeadcovers") return <LocalizedPlushHeadcoverProductPage content={jaPlushContent} Header={Header} Footer={Footer} Evidence={PlushEvidence} pageClass="ja-page" />;
