@@ -4,7 +4,7 @@ export const majorTournamentGuides = {
     title: ["2027 Major Golf Tournament", "Merchandise Planning Calendar"],
     intro: "Use the major-championship season as a planning framework for corporate hospitality, sponsor gifting and tournament merchandise. The practical deadline is the required in-hands date—not the first day of play.",
     shortAnswer: "For a 2027 championship-week programme, define the recipients, delivery location and in-hands date first. Work backward through distribution preparation, freight allowance, production, sample approval and artwork review; do not treat the public tournament date as the production deadline.",
-    image: "/assets/images/zhoni-golf-tournament-gift-delivery-v2.png",
+    image: "/assets/images/zhoni-2027-tournament-planning-hero-v1.jpg",
     alt: "Custom golf tournament merchandise prepared for an event hand-off",
     rows: [
       ["3–11 April 2027", "Masters-week client activity and spring golf programmes", "Confirm the guest list, product route and branding well before April. Venue rules and official marks remain separate from independently branded corporate gifts."],
@@ -33,7 +33,7 @@ export const majorTournamentGuides = {
     title: ["Corporate Golf Hospitality Gifts", "for Championship Week"],
     intro: "A championship-week gift should support the guest journey before, during or after the hosted experience. Build it around travel, weather, course use and the relationship—not a collection of unrelated logo items.",
     shortAnswer: "The strongest championship-week hospitality gifts combine one memorable lead item with one or two useful supporting pieces, restrained company branding and a distribution plan matched to hotel arrival, hospitality check-in or post-event follow-up.",
-    image: "/assets/images/zhoni-custom-golf-packaging-v2.png",
+    image: "/assets/images/zhoni-championship-hospitality-hero-v1.jpg",
     alt: "Premium custom golf gift set for corporate hospitality",
     rows: [
       ["Pre-arrival or hotel room", "Compact welcome set, cap, travel pouch or message-led presentation", "Confirm room-drop timing, guest names, packaging dimensions and who manages final distribution."],
@@ -61,7 +61,7 @@ export const majorTournamentGuides = {
     title: ["Golf Event Gift Tiers for Players,", "Sponsors, VIPs and Winners"],
     intro: "One event can contain several different relationships. Build a connected family of gifts, then change the product value, branding intensity and presentation by recipient role.",
     shortAnswer: "Use a shared event colour and design language across every tier, but give each recipient group a distinct job: practical use for players, recognition for sponsors, hospitality for VIPs and a keepsake moment for winners.",
-    image: "/assets/images/zhoni-golf-collection-hero-v2.png",
+    image: "/assets/images/zhoni-event-gift-tiers-hero-v1.jpg",
     alt: "Coordinated custom golf merchandise collection for several recipient groups",
     rows: [
       ["Players", "Scalable, useful and easy to distribute", "Towel, cap, ball marker, divot tool or compact player pack with an equitable event identity."],
@@ -89,7 +89,7 @@ export const majorTournamentGuides = {
     title: ["Branded Golf Gifts for Pro-Ams,", "Invitationals and Charity Tournaments"],
     intro: "The event format changes the gift brief. A pro-am, member-guest invitational and charity scramble may use similar products, but the audience, sponsor structure, pace of distribution and fundraising purpose are different.",
     shortAnswer: "Match the merchandise to the event operating model: premium relationship-building for pro-ams, club identity and repeat tradition for invitationals, and scalable sponsor visibility plus efficient distribution for charity tournaments.",
-    image: "/assets/images/zhoni-golf-tournament-gift-delivery-v2.png",
+    image: "/assets/images/zhoni-event-formats-hero-v1.jpg",
     alt: "Branded golf gifts arranged for tournament distribution",
     rows: [
       ["Pro-am", "Amateur guests, professionals, sponsors and hosts share one programme", "Separate hospitality and participant needs; clarify any player, team or sponsor-specific versions before artwork."],
@@ -117,7 +117,7 @@ export const majorTournamentGuides = {
     title: ["Weather-Ready Golf Tournament", "Merchandise Planning"],
     intro: "Tournament gifts are handled outdoors, carried between venues and often distributed before the weather is known. Product, fabric, packaging and contingency stock should reflect the likely conditions.",
     shortAnswer: "Build a weather-ready golf gift around climate, guest movement and storage: breathable headwear and absorbent towels for heat, packable protection and secure packaging for rain, and layered usefulness for cooler or windy conditions.",
-    image: "/assets/images/zhoni-material-direction-v1.png",
+    image: "/assets/images/zhoni-weather-ready-hero-v1.jpg",
     alt: "Material and finish direction for weather-ready golf merchandise",
     rows: [
       ["Hot and sunny", "Performance cap or visor, absorbent towel and compact accessories", "Review fabric weight, sweat management, brim coverage, colour fastness and how the item feels during a full day outdoors."],

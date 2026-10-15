@@ -223,6 +223,8 @@ function MajorTournamentGuide({ topic }) {
   return <main className="zhoni-page guide-page"><ZhoniPageHeader active="guides" />
     <section className="guide-hero"><div><p>{content.eyebrow}</p><h1>{content.title.map((line, index) => <Fragment key={line}>{index > 0 && <br />}{line}</Fragment>)}</h1><p>{content.intro}</p><small>SHORT ANSWER · PROCUREMENT PLAN · BUYER FAQ</small></div><img src={content.image} alt={content.alt} /></section>
     <section className="guide-intro"><p>SHORT ANSWER</p><h2>Plan the guest experience and the operational hand-off together.</h2><p>{content.shortAnswer}</p></section>
+    {topic === "calendar2027" && <ChampionshipPlanningTimeline />}
+    {topic === "giftTiers" && <RecipientTierMap />}
     <section className="guide-table"><table><thead><tr><th>PLANNING AREA</th><th>RECOMMENDED DIRECTION</th><th>WHAT TO REVIEW</th></tr></thead><tbody>{content.rows.map(row => <tr key={row[0]}>{row.map(cell => <td key={cell}>{cell}</td>)}</tr>)}</tbody></table></section>
     <section className="guide-decision"><div><p>PROJECT PREPARATION</p><h2>Convert the event idea into an assessable brief.</h2><p>Product suitability, MOQ, sampling, timing, price, documentation and delivery remain project-specific. These inputs make the first review more useful without presenting an unverified production promise.</p></div><aside><p>BUYER CHECKLIST</p><h3>What to prepare.</h3><ul>{content.checklist.map(item => <li key={item}>{item}</li>)}</ul></aside></section>
     <section className="guide-faq"><p>COMMON BUYER QUESTIONS</p><h2>Practical answers for tournament planners.</h2><div>{content.faqs.map(([question, answer], index) => <article key={question}><b>{String(index + 1).padStart(2, "0")}</b><h3>{question}</h3><p>{answer}</p></article>)}</div></section>
@@ -231,6 +233,28 @@ function MajorTournamentGuide({ topic }) {
     <section className="guide-decision tournament-editorial-note"><div><p>EDITORIAL &amp; TRADEMARK NOTE</p><h2>Event context is not an affiliation claim.</h2></div><aside><p>IMPORTANT</p><h3>Use only authorised artwork.</h3><p>{majorTournamentDisclaimer}</p></aside></section>
     <section className="guide-close"><div><p>PLANNING A TOURNAMENT OR HOSPITALITY PROGRAMME?</p><h2>Share the audience, quantities, in-hands date and destination.</h2><a href={`/request-a-quote/?source=${encodeURIComponent(content.source)}`}>START YOUR EVENT BRIEF <Arrow /></a></div><img src="/assets/images/zhoni-custom-golf-packaging-v2.png" alt="ZHONI custom golf tournament gift presentation" /></section><ZhoniPageFooter />
   </main>;
+}
+
+function ChampionshipPlanningTimeline() {
+  const milestones = [
+    ["01", "Event brief", "Recipients, quantities, destination and required in-hands date."],
+    ["02", "Design direction", "Product route, logo hierarchy, packaging and authorised artwork."],
+    ["03", "Approval path", "Relevant proof, material, sample and written specification review."],
+    ["04", "Production", "Approved scope becomes the reference for manufacturing and checks."],
+    ["05", "Freight & receipt", "Packing, destination hand-off, receiving contact and contingency."],
+    ["06", "Guest moment", "Registration, hospitality, awards or post-event distribution."],
+  ];
+  return <section className="tournament-planning-visual" aria-labelledby="tournament-timeline-title"><div className="tournament-visual-heading"><p>ORIGINAL PLANNING VISUAL · ZHONI</p><h2 id="tournament-timeline-title">Work backward from the guest moment.</h2><p>The exact duration varies by product and project. The sequence keeps the in-hands date separate from the public event date.</p></div><ol>{milestones.map(([number, title, copy]) => <li key={number}><b>{number}</b><span>{title}</span><p>{copy}</p></li>)}</ol></section>;
+}
+
+function RecipientTierMap() {
+  const tiers = [
+    ["01", "Players", "Utility", "Scalable product, easy registration hand-off."],
+    ["02", "Sponsors", "Recognition", "Clear logo hierarchy and partner presentation."],
+    ["03", "VIP guests", "Hospitality", "Quieter branding and elevated material or packaging."],
+    ["04", "Winners", "Keepsake", "Distinct finish, award detail or individual presentation."],
+  ];
+  return <section className="recipient-tier-visual" aria-labelledby="recipient-tier-title"><div className="tournament-visual-heading"><p>ORIGINAL RECIPIENT MAP · ZHONI</p><h2 id="recipient-tier-title">One design family. Four different jobs.</h2><p>Keep the event system coherent while changing purpose, value signal and hand-off by recipient role.</p></div><div>{tiers.map(([number, title, role, copy]) => <article key={number}><b>{number}</b><span>{role}</span><h3>{title}</h3><p>{copy}</p></article>)}</div></section>;
 }
 
 const sourcingConfidenceGuides = {

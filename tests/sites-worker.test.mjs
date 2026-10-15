@@ -1268,17 +1268,19 @@ test("publishes the five-guide championship-season planning cluster", async () =
   const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
   const hub = await readFile(new URL("../dist/client/guides/index.html", import.meta.url), "utf8");
   const routes = [
-    siteRoutes.majorTournamentCalendarGuide,
-    siteRoutes.championshipHospitalityGuide,
-    siteRoutes.golfEventGiftTiersGuide,
-    siteRoutes.eventFormatsGiftGuide,
-    siteRoutes.weatherReadyTournamentGuide,
+    [siteRoutes.majorTournamentCalendarGuide, "zhoni-2027-tournament-planning-hero-v1.jpg"],
+    [siteRoutes.championshipHospitalityGuide, "zhoni-championship-hospitality-hero-v1.jpg"],
+    [siteRoutes.golfEventGiftTiersGuide, "zhoni-event-gift-tiers-hero-v1.jpg"],
+    [siteRoutes.eventFormatsGiftGuide, "zhoni-event-formats-hero-v1.jpg"],
+    [siteRoutes.weatherReadyTournamentGuide, "zhoni-weather-ready-hero-v1.jpg"],
   ];
 
-  for (const route of routes) {
+  for (const [route, image] of routes) {
     assert.match(sitemap, new RegExp(`https://zhonigolf\\.com${route.path}`.replaceAll("/", "\\/")));
     assert.match(hub, new RegExp(route.path.replaceAll("/", "\\/")), `Missing ${route.path} from buyer guide hub.`);
     const guide = await readFile(new URL(`../dist/client/${route.path.slice(1)}index.html`, import.meta.url), "utf8");
+    await access(new URL(`../public/assets/images/${image}`, import.meta.url));
+    assert.match(guide, new RegExp(image.replaceAll(".", "\\.")));
     assert.match(guide, /SHORT ANSWER/);
     assert.match(guide, /EDITORIAL &amp; TRADEMARK NOTE/);
     assert.match(guide, /not affiliated with or endorsed by any tournament/);
@@ -1290,4 +1292,11 @@ test("publishes the five-guide championship-season planning cluster", async () =
     assert.ok(graph.some((entity) => entity["@type"] === "FAQPage"));
     assert.equal(graph.find((entity) => entity["@type"] === "FAQPage").mainEntity.length, 4);
   }
+
+  const calendar = await readFile(new URL(`../dist/client/${siteRoutes.majorTournamentCalendarGuide.path.slice(1)}index.html`, import.meta.url), "utf8");
+  const tiers = await readFile(new URL(`../dist/client/${siteRoutes.golfEventGiftTiersGuide.path.slice(1)}index.html`, import.meta.url), "utf8");
+  assert.match(calendar, /tournament-planning-visual/);
+  assert.match(calendar, /Work backward from the guest moment/);
+  assert.match(tiers, /recipient-tier-visual/);
+  assert.match(tiers, /One design family\. Four different jobs/);
 });
