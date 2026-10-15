@@ -1,10 +1,11 @@
-import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { Fragment, lazy, Suspense, useEffect, useRef, useState } from "react";
 import { findRoute, siteRoutes } from "./siteRoutes";
 import { trackAnalytics } from "./analytics.jsx";
 import { TurnstileField } from "./turnstile.jsx";
 import { addInquirySource, applySeo, inquirySourceForLocation } from "./seo.js";
 import { LanguageSwitcher } from "./locale.jsx";
 import { LocalizedPlushHeadcoverGuidePage, LocalizedPlushHeadcoverProductPage } from "./LocalizedPlushHeadcovers.jsx";
+import { majorTournamentDisclaimer, majorTournamentGuides } from "./MajorTournamentGuides.js";
 import enPlushHeadcovers from "./content/plush-headcovers/en.json";
 import "./showcase.css";
 import "./products.css";
@@ -136,6 +137,11 @@ const buyerGuideCatalog = [
   { category: "event", label: "EVENT & GIFT PLANNING", title: "Tournament Gifts, Sponsor Gifts and Winner Prizes", copy: "Separate recipient roles before selecting products, branding intensity and presentation for a golf event.", href: siteRoutes.recipientRolesGuide.path },
   { category: "event", label: "EVENT & GIFT PLANNING", title: "How to Build a Premium Golf Gift Set", copy: "Create a premium gift set around one lead product, useful supporting pieces and a considered hand-off.", href: siteRoutes.premiumGiftSetGuide.path },
   { category: "event", label: "EVENT & GIFT PLANNING", title: "What to Include in a Golf Event Brief", copy: "Prepare the facts a supplier needs to assess event gifts, product routes, artwork, timing and delivery.", href: siteRoutes.eventBriefGuide.path },
+  { category: "event", label: "CHAMPIONSHIP-SEASON PLANNING", title: "2027 Major Golf Tournament Merchandise Planning Calendar", copy: "Work backward from championship-week delivery through approval, production, packing and contingency milestones.", href: siteRoutes.majorTournamentCalendarGuide.path },
+  { category: "event", label: "CHAMPIONSHIP-SEASON PLANNING", title: "Corporate Golf Hospitality Gifts for Championship Week", copy: "Plan a useful, premium guest experience around hotel arrival, hosted viewing and post-event follow-up.", href: siteRoutes.championshipHospitalityGuide.path },
+  { category: "event", label: "CHAMPIONSHIP-SEASON PLANNING", title: "Golf Event Gift Tiers for Players, Sponsors, VIPs and Winners", copy: "Create a connected gift family while giving every recipient group a distinct purpose and value level.", href: siteRoutes.golfEventGiftTiersGuide.path },
+  { category: "event", label: "CHAMPIONSHIP-SEASON PLANNING", title: "Branded Golf Gifts for Pro-Ams, Invitationals and Charity Tournaments", copy: "Match the merchandise route to the audience, sponsor structure and operating model of the golf event.", href: siteRoutes.eventFormatsGiftGuide.path },
+  { category: "event", label: "CHAMPIONSHIP-SEASON PLANNING", title: "Weather-Ready Golf Tournament Merchandise", copy: "Choose caps, towels, accessories and packing details around heat, rain, wind and uncertain forecasts.", href: siteRoutes.weatherReadyTournamentGuide.path },
   { category: "sourcing", label: "SOURCING CONFIDENCE", title: "How to Compare Custom Golf Product Quotes", copy: "Compare quotations by the actual scope, product specification, branding, packaging and delivery assumptions behind them.", href: siteRoutes.quoteComparisonGuide.path },
   { category: "sourcing", label: "SOURCING CONFIDENCE", title: "What Affects a Custom Golf Merchandise Quote", copy: "See which product, customisation, quantity, packaging and destination details change a project quotation.", href: siteRoutes.quoteFactorsGuide.path },
   { category: "sourcing", label: "SOURCING CONFIDENCE", title: "Custom Golf Merchandise MOQ Explained", copy: "Understand why MOQ changes with product construction, decoration, colours, packaging and production scope.", href: siteRoutes.moqGuide.path },
@@ -209,6 +215,21 @@ function EventGiftPlanningGuide({ topic }) {
     <section className="guide-faq"><p>COMMON BUYER QUESTIONS</p><h2>Answers that make event planning more specific.</h2><div>{content.faqs.map(([question, answer], index) => <article key={question}><b>{String(index + 1).padStart(2, "0")}</b><h3>{question}</h3><p>{answer}</p></article>)}</div></section>
     <section className="guide-products"><p>CONNECTED PROJECT ROUTES</p><h2>Move from the event plan to a relevant project brief.</h2><div>{related.map(([label, href]) => <a href={href} key={label}>{label}<Arrow /></a>)}</div></section>
     <section className="guide-close"><div><p>READY TO PLAN THE EVENT?</p><h2>Share the recipient, event context and gift direction you have.</h2><a href={`/request-a-quote/?source=${encodeURIComponent(`event-gift-planning-${topic}`)}`}>SHARE YOUR PROJECT BRIEF <Arrow /></a></div><img src="/assets/images/zhoni-custom-golf-packaging-v2.png" alt="ZHONI custom golf gift presentation" /></section><ZhoniPageFooter />
+  </main>;
+}
+
+function MajorTournamentGuide({ topic }) {
+  const content = majorTournamentGuides[topic];
+  return <main className="zhoni-page guide-page"><ZhoniPageHeader active="guides" />
+    <section className="guide-hero"><div><p>{content.eyebrow}</p><h1>{content.title.map((line, index) => <Fragment key={line}>{index > 0 && <br />}{line}</Fragment>)}</h1><p>{content.intro}</p><small>SHORT ANSWER · PROCUREMENT PLAN · BUYER FAQ</small></div><img src={content.image} alt={content.alt} /></section>
+    <section className="guide-intro"><p>SHORT ANSWER</p><h2>Plan the guest experience and the operational hand-off together.</h2><p>{content.shortAnswer}</p></section>
+    <section className="guide-table"><table><thead><tr><th>PLANNING AREA</th><th>RECOMMENDED DIRECTION</th><th>WHAT TO REVIEW</th></tr></thead><tbody>{content.rows.map(row => <tr key={row[0]}>{row.map(cell => <td key={cell}>{cell}</td>)}</tr>)}</tbody></table></section>
+    <section className="guide-decision"><div><p>PROJECT PREPARATION</p><h2>Convert the event idea into an assessable brief.</h2><p>Product suitability, MOQ, sampling, timing, price, documentation and delivery remain project-specific. These inputs make the first review more useful without presenting an unverified production promise.</p></div><aside><p>BUYER CHECKLIST</p><h3>What to prepare.</h3><ul>{content.checklist.map(item => <li key={item}>{item}</li>)}</ul></aside></section>
+    <section className="guide-faq"><p>COMMON BUYER QUESTIONS</p><h2>Practical answers for tournament planners.</h2><div>{content.faqs.map(([question, answer], index) => <article key={question}><b>{String(index + 1).padStart(2, "0")}</b><h3>{question}</h3><p>{answer}</p></article>)}</div></section>
+    <section className="guide-products"><p>CONNECTED PROJECT ROUTES</p><h2>Continue from planning to a relevant project brief.</h2><div>{content.related.map(([label, href]) => <a href={href} key={href}>{label}<Arrow /></a>)}</div></section>
+    {content.references && <section className="guide-products"><p>OFFICIAL DATE REFERENCES</p><h2>Verify the public event calendar before final approval.</h2><div>{content.references.map(([label, href]) => <a href={href} target="_blank" rel="noopener noreferrer" key={href}>{label}<Arrow /></a>)}</div></section>}
+    <section className="guide-decision tournament-editorial-note"><div><p>EDITORIAL &amp; TRADEMARK NOTE</p><h2>Event context is not an affiliation claim.</h2></div><aside><p>IMPORTANT</p><h3>Use only authorised artwork.</h3><p>{majorTournamentDisclaimer}</p></aside></section>
+    <section className="guide-close"><div><p>PLANNING A TOURNAMENT OR HOSPITALITY PROGRAMME?</p><h2>Share the audience, quantities, in-hands date and destination.</h2><a href={`/request-a-quote/?source=${encodeURIComponent(content.source)}`}>START YOUR EVENT BRIEF <Arrow /></a></div><img src="/assets/images/zhoni-custom-golf-packaging-v2.png" alt="ZHONI custom golf tournament gift presentation" /></section><ZhoniPageFooter />
   </main>;
 }
 
@@ -975,6 +996,11 @@ export function App({ initialRoute = null, KoreanSiteComponent = KoreanSite, Can
   if (route === siteRoutes.recipientRolesGuide) return <><EventGiftPlanningGuide topic="roles" /><FloatingContactActions /></>;
   if (route === siteRoutes.premiumGiftSetGuide) return <><EventGiftPlanningGuide topic="premium" /><FloatingContactActions /></>;
   if (route === siteRoutes.eventBriefGuide) return <><EventGiftPlanningGuide topic="brief" /><FloatingContactActions /></>;
+  if (route === siteRoutes.majorTournamentCalendarGuide) return <><MajorTournamentGuide topic="calendar2027" /><FloatingContactActions /></>;
+  if (route === siteRoutes.championshipHospitalityGuide) return <><MajorTournamentGuide topic="hospitality" /><FloatingContactActions /></>;
+  if (route === siteRoutes.golfEventGiftTiersGuide) return <><MajorTournamentGuide topic="giftTiers" /><FloatingContactActions /></>;
+  if (route === siteRoutes.eventFormatsGiftGuide) return <><MajorTournamentGuide topic="eventFormats" /><FloatingContactActions /></>;
+  if (route === siteRoutes.weatherReadyTournamentGuide) return <><MajorTournamentGuide topic="weather" /><FloatingContactActions /></>;
   if (route === siteRoutes.quoteComparisonGuide) return <><SourcingConfidenceGuide topic="compareQuotes" /><FloatingContactActions /></>;
   if (route === siteRoutes.quoteFactorsGuide) return <><SourcingConfidenceGuide topic="quoteFactors" /><FloatingContactActions /></>;
   if (route === siteRoutes.moqGuide) return <><SourcingConfidenceGuide topic="moq" /><FloatingContactActions /></>;

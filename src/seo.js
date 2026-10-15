@@ -45,6 +45,11 @@ const breadcrumbNames = {
   "/guides/tournament-gifts-sponsor-gifts-and-winner-prizes/": "Tournament Gifts, Sponsor Gifts and Winner Prizes",
   "/guides/how-to-build-a-premium-golf-gift-set/": "How to Build a Premium Golf Gift Set",
   "/guides/what-to-include-in-a-golf-event-brief/": "What to Include in a Golf Event Brief",
+  "/guides/2027-major-golf-tournament-merchandise-planning-calendar/": "2027 Tournament Merchandise Planning Calendar",
+  "/guides/corporate-golf-hospitality-gifts-championship-week/": "Corporate Golf Hospitality Gifts for Championship Week",
+  "/guides/golf-event-gift-tiers-players-sponsors-vips-winners/": "Golf Event Gift Tiers",
+  "/guides/branded-golf-gifts-pro-ams-invitationals-charity-tournaments/": "Golf Gifts for Pro-Ams, Invitationals and Charity Tournaments",
+  "/guides/weather-ready-golf-tournament-merchandise/": "Weather-Ready Golf Tournament Merchandise",
   "/guides/how-to-compare-custom-golf-product-quotes/": "How to Compare Custom Golf Product Quotes",
   "/guides/what-affects-a-custom-golf-merchandise-quote/": "What Affects a Custom Golf Merchandise Quote",
   "/guides/custom-golf-merchandise-moq-explained/": "Custom Golf Merchandise MOQ Explained",
@@ -176,7 +181,7 @@ export function schemaForRoute(route, faqItems = []) {
   const companyId = `${SITE_ORIGIN}/#company`;
   const brandId = `${SITE_ORIGIN}/#brand`;
   const websiteId = `${SITE_ORIGIN}/#website`;
-  const guideRoutes = [siteRoutes.golfGiftGuide, siteRoutes.audienceGiftGuide, siteRoutes.brandingGuide, siteRoutes.artworkGuide, siteRoutes.headcoversGuide, siteRoutes.towelsGuide, siteRoutes.tournamentGuide, siteRoutes.corporateGuide, siteRoutes.packagingGuide, siteRoutes.headcoverMaterialsGuide, siteRoutes.headcoverTypesGuide, siteRoutes.productSpecificationGuide, siteRoutes.sampleApprovalGuide, siteRoutes.collectionPlanningGuide, siteRoutes.headcoverLogoGuide, siteRoutes.plushDesignGuide, siteRoutes.plushMaterialsGuide, siteRoutes.plushBrandingGuide, siteRoutes.plushSampleGuide, siteRoutes.capsStyleGuide, siteRoutes.capsMaterialsGuide, siteRoutes.capsBrandingGuide, siteRoutes.capsConstructionGuide, siteRoutes.capsProductionGuide, siteRoutes.productDevelopmentBriefGuide, siteRoutes.tournamentGiftBudgetGuide, siteRoutes.playerPackGuide, siteRoutes.recipientRolesGuide, siteRoutes.premiumGiftSetGuide, siteRoutes.eventBriefGuide, siteRoutes.quoteComparisonGuide, siteRoutes.quoteFactorsGuide, siteRoutes.moqGuide, siteRoutes.qualityChecklistGuide, siteRoutes.deliveryDateGuide, siteRoutes.postBriefGuide, siteRoutes.firstOrder, siteRoutes.exportReadiness];
+  const guideRoutes = [siteRoutes.golfGiftGuide, siteRoutes.audienceGiftGuide, siteRoutes.brandingGuide, siteRoutes.artworkGuide, siteRoutes.headcoversGuide, siteRoutes.towelsGuide, siteRoutes.tournamentGuide, siteRoutes.corporateGuide, siteRoutes.packagingGuide, siteRoutes.headcoverMaterialsGuide, siteRoutes.headcoverTypesGuide, siteRoutes.productSpecificationGuide, siteRoutes.sampleApprovalGuide, siteRoutes.collectionPlanningGuide, siteRoutes.headcoverLogoGuide, siteRoutes.plushDesignGuide, siteRoutes.plushMaterialsGuide, siteRoutes.plushBrandingGuide, siteRoutes.plushSampleGuide, siteRoutes.capsStyleGuide, siteRoutes.capsMaterialsGuide, siteRoutes.capsBrandingGuide, siteRoutes.capsConstructionGuide, siteRoutes.capsProductionGuide, siteRoutes.productDevelopmentBriefGuide, siteRoutes.tournamentGiftBudgetGuide, siteRoutes.playerPackGuide, siteRoutes.recipientRolesGuide, siteRoutes.premiumGiftSetGuide, siteRoutes.eventBriefGuide, siteRoutes.majorTournamentCalendarGuide, siteRoutes.championshipHospitalityGuide, siteRoutes.golfEventGiftTiersGuide, siteRoutes.eventFormatsGiftGuide, siteRoutes.weatherReadyTournamentGuide, siteRoutes.quoteComparisonGuide, siteRoutes.quoteFactorsGuide, siteRoutes.moqGuide, siteRoutes.qualityChecklistGuide, siteRoutes.deliveryDateGuide, siteRoutes.postBriefGuide, siteRoutes.firstOrder, siteRoutes.exportReadiness];
   const graph = [
     {
       "@type": "Organization", "@id": companyId,

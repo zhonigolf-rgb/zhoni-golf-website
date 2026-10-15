@@ -1263,3 +1263,31 @@ test("publishes the plush headcover product and four connected buyer guides", as
     assert.ok(graph.some((entity) => entity["@type"] === "FAQPage"));
   }
 });
+
+test("publishes the five-guide championship-season planning cluster", async () => {
+  const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
+  const hub = await readFile(new URL("../dist/client/guides/index.html", import.meta.url), "utf8");
+  const routes = [
+    siteRoutes.majorTournamentCalendarGuide,
+    siteRoutes.championshipHospitalityGuide,
+    siteRoutes.golfEventGiftTiersGuide,
+    siteRoutes.eventFormatsGiftGuide,
+    siteRoutes.weatherReadyTournamentGuide,
+  ];
+
+  for (const route of routes) {
+    assert.match(sitemap, new RegExp(`https://zhonigolf\\.com${route.path}`.replaceAll("/", "\\/")));
+    assert.match(hub, new RegExp(route.path.replaceAll("/", "\\/")), `Missing ${route.path} from buyer guide hub.`);
+    const guide = await readFile(new URL(`../dist/client/${route.path.slice(1)}index.html`, import.meta.url), "utf8");
+    assert.match(guide, /SHORT ANSWER/);
+    assert.match(guide, /EDITORIAL &amp; TRADEMARK NOTE/);
+    assert.match(guide, /not affiliated with or endorsed by any tournament/);
+    assert.match(guide, /\/solutions\/golf-tournament-gifts\/|\/solutions\/corporate-golf-gifts\//);
+    assert.match(guide, /\/request-a-quote\/\?source=/);
+
+    const graph = JSON.parse(guide.match(/<script id="zhoni-page-schema" type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])["@graph"];
+    assert.ok(graph.some((entity) => entity["@type"] === "Article"));
+    assert.ok(graph.some((entity) => entity["@type"] === "FAQPage"));
+    assert.equal(graph.find((entity) => entity["@type"] === "FAQPage").mainEntity.length, 4);
+  }
+});
