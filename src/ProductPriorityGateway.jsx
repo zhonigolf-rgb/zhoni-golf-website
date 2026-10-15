@@ -1,4 +1,16 @@
+import { trackAnalytics } from "./analytics.jsx";
+
 const Arrow = () => <span aria-hidden="true">↗</span>;
+
+function trackProductEntry(product, position) {
+  trackAnalytics("product_family_click", {
+    item_name: product.title,
+    item_url: product.href,
+    item_position: position + 1,
+    page_language: document.documentElement.lang || "en",
+    page_path: window.location.pathname,
+  });
+}
 
 export function ProductPriorityGateway({ eyebrow, title, intro, products, allProducts, bridge }) {
   return <>
@@ -9,7 +21,7 @@ export function ProductPriorityGateway({ eyebrow, title, intro, products, allPro
         <p>{intro}</p>
         <a className="home-product-all" href={allProducts.href}>{allProducts.label} <Arrow /></a>
       </div>
-      <div className="family-grid">{products.map(product => <a className="family-card" href={product.href} key={product.href}><img src={product.image} alt={product.alt || product.title} /><h3>{product.title}</h3><p>{product.copy}</p><span>— &nbsp; <Arrow /></span></a>)}</div>
+      <div className="family-grid">{products.map((product, index) => <a className="family-card" href={product.href} key={product.href} onClick={() => trackProductEntry(product, index)}><img src={product.image} alt={product.alt || product.title} loading="lazy" decoding="async" fetchPriority="low" /><h3>{product.title}</h3><p>{product.copy}</p><span>— &nbsp; <Arrow /></span></a>)}</div>
     </section>
     <section className="products-intro home-product-bridge"><p className="products-kicker">{bridge.eyebrow}</p><h2>{bridge.title}</h2><p>{bridge.copy}</p><a href={bridge.href}>{bridge.label} <Arrow /></a></section>
   </>;

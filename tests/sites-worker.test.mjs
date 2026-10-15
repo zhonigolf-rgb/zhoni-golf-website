@@ -1300,3 +1300,23 @@ test("publishes the five-guide championship-season planning cluster", async () =
   assert.match(tiers, /recipient-tier-visual/);
   assert.match(tiers, /One design family\. Four different jobs/);
 });
+
+test("makes product families the measurable, lazy-loaded homepage entry path in every locale", async () => {
+  const homeRoutes = [siteRoutes.home, siteRoutes.koHome, siteRoutes.frCaHome, siteRoutes.jaHome, siteRoutes.deHome];
+  const gatewaySource = await readFile(new URL("../src/ProductPriorityGateway.jsx", import.meta.url), "utf8");
+  assert.match(gatewaySource, /product_family_click/);
+  assert.match(gatewaySource, /loading="lazy"/);
+  assert.match(gatewaySource, /decoding="async"/);
+
+  for (const route of homeRoutes) {
+    const relativePath = route.path === "/" ? "" : route.path.slice(1);
+    const document = await readFile(new URL(`../dist/client/${relativePath}index.html`, import.meta.url), "utf8");
+    assert.match(document, /home-product-priority/);
+    assert.match(document, /loading="lazy"/);
+    const graph = JSON.parse(document.match(/<script id="zhoni-page-schema" type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])["@graph"];
+    const productList = graph.find(entity => entity["@type"] === "ItemList" && entity["@id"]?.endsWith("#product-families"));
+    assert.ok(productList, `Expected homepage product ItemList for ${route.path}.`);
+    assert.equal(productList.itemListElement.length, 6);
+    assert.ok(productList.itemListElement.every(item => item.url.startsWith("https://zhonigolf.com/")));
+  }
+});

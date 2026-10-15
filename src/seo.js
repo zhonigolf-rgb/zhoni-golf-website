@@ -182,6 +182,7 @@ export function schemaForRoute(route, faqItems = []) {
   const brandId = `${SITE_ORIGIN}/#brand`;
   const websiteId = `${SITE_ORIGIN}/#website`;
   const guideRoutes = [siteRoutes.golfGiftGuide, siteRoutes.audienceGiftGuide, siteRoutes.brandingGuide, siteRoutes.artworkGuide, siteRoutes.headcoversGuide, siteRoutes.towelsGuide, siteRoutes.tournamentGuide, siteRoutes.corporateGuide, siteRoutes.packagingGuide, siteRoutes.headcoverMaterialsGuide, siteRoutes.headcoverTypesGuide, siteRoutes.productSpecificationGuide, siteRoutes.sampleApprovalGuide, siteRoutes.collectionPlanningGuide, siteRoutes.headcoverLogoGuide, siteRoutes.plushDesignGuide, siteRoutes.plushMaterialsGuide, siteRoutes.plushBrandingGuide, siteRoutes.plushSampleGuide, siteRoutes.capsStyleGuide, siteRoutes.capsMaterialsGuide, siteRoutes.capsBrandingGuide, siteRoutes.capsConstructionGuide, siteRoutes.capsProductionGuide, siteRoutes.productDevelopmentBriefGuide, siteRoutes.tournamentGiftBudgetGuide, siteRoutes.playerPackGuide, siteRoutes.recipientRolesGuide, siteRoutes.premiumGiftSetGuide, siteRoutes.eventBriefGuide, siteRoutes.majorTournamentCalendarGuide, siteRoutes.championshipHospitalityGuide, siteRoutes.golfEventGiftTiersGuide, siteRoutes.eventFormatsGiftGuide, siteRoutes.weatherReadyTournamentGuide, siteRoutes.quoteComparisonGuide, siteRoutes.quoteFactorsGuide, siteRoutes.moqGuide, siteRoutes.qualityChecklistGuide, siteRoutes.deliveryDateGuide, siteRoutes.postBriefGuide, siteRoutes.firstOrder, siteRoutes.exportReadiness];
+  const homeProductRoutes = [siteRoutes.headcovers, siteRoutes.plushHeadcovers, siteRoutes.caps, siteRoutes.towels, siteRoutes.accessories, siteRoutes.packaging];
   const graph = [
     {
       "@type": "Organization", "@id": companyId,
@@ -194,6 +195,23 @@ export function schemaForRoute(route, faqItems = []) {
     { "@type": "WebSite", "@id": websiteId, name: "ZHONI", url: SITE_ORIGIN, inLanguage: ["en", "fr-CA", "ko", "ja", "de"], publisher: { "@id": companyId }, about: { "@id": brandId } },
     { "@type": "WebPage", "@id": `${canonical}#webpage`, url: canonical, name: route.title, description: route.description, inLanguage: language, isPartOf: { "@id": websiteId }, about: { "@id": brandId } },
   ];
+
+  if (englishPath === siteRoutes.home.path) {
+    const localizedProducts = route.lang
+      ? homeProductRoutes.map(product => Object.values(siteRoutes).find(candidate => candidate.lang === route.lang && candidate.alternatePath === product.path)).filter(Boolean)
+      : homeProductRoutes;
+    graph.push({
+      "@type": "ItemList",
+      "@id": `${canonical}#product-families`,
+      name: route.title,
+      itemListElement: localizedProducts.map((product, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: product.title,
+        url: absolute(product.path),
+      })),
+    });
+  }
 
   if (route.path !== "/") {
     const languageNames = {
