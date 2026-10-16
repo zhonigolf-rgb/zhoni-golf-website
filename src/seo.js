@@ -1,6 +1,6 @@
-import { findRoute, siteRoutes } from "./siteRoutes";
+import { findRoute, siteRoutes } from "./siteRoutes.js";
 
-export const SITE_ORIGIN = (import.meta.env.VITE_SITE_URL ?? "https://zhonigolf.com").replace(/\/$/, "");
+export const SITE_ORIGIN = (import.meta.env?.VITE_SITE_URL ?? "https://zhonigolf.com").replace(/\/$/, "");
 const SAFE_SOURCE = /^[a-z0-9-]{3,120}$/;
 
 const breadcrumbNames = {
@@ -77,6 +77,15 @@ const defaultFaqEntities = [
   ["Can packaging be included in the project?", "Yes. Boxes, inserts, sleeves, cards, labels and presentation details can be considered alongside the selected products. Packaging requirements are reviewed as part of the complete project scope."],
   ["What types of projects are a good fit for ZHONI?", "ZHONI is relevant for clubs, tournaments, corporate teams and brands that need coordinated support across custom golf merchandise, manufacturing coordination, branding, quality checks, packaging and export preparation."],
 ];
+
+const productServiceDetails = {
+  "/custom-golf-headcovers/": { serviceType: "Custom golf headcover development", image: "/assets/images/zhoni-product-headcovers-v3.png", category: ["Custom golf headcovers", "Driver headcovers", "Putter covers", "Private-label golf products"] },
+  "/custom-plush-golf-headcovers/": { serviceType: "Custom plush golf headcover development", image: "/assets/images/zhoni-plush-novelty-headcovers-v1.jpg", category: ["Custom plush golf headcovers", "Mascot headcovers", "Novelty golf headcovers"] },
+  "/custom-golf-caps/": { serviceType: "Custom golf cap and visor development", image: "/assets/images/zhoni-product-caps-v3.png", category: ["Custom golf caps", "Custom golf hats", "Golf visors", "Private-label headwear"] },
+  "/custom-golf-towels/": { serviceType: "Custom magnetic golf towel development", image: "/assets/images/zhoni-product-magnetic-towel-v4.png", category: ["Custom magnetic golf towels", "Embroidered golf towels", "Golf tournament towels"] },
+  "/custom-golf-ball-markers-divot-tools/": { serviceType: "Custom golf ball marker and divot tool development", image: "/assets/images/zhoni-product-ball-markers-v3.png", category: ["Custom golf ball markers", "Custom divot tools", "Magnetic hat clip ball markers"] },
+  "/custom-golf-packaging/": { serviceType: "Custom golf gift box and product packaging development", image: "/assets/images/zhoni-product-packaging-v3.png", category: ["Custom golf gift boxes", "Golf product packaging", "Presentation boxes and inserts"] },
+};
 
 function absolute(path) {
   return `${SITE_ORIGIN}${path}`;
@@ -240,7 +249,8 @@ export function schemaForRoute(route, faqItems = []) {
 
   const servicePaths = [siteRoutes.headcovers, siteRoutes.plushHeadcovers, siteRoutes.caps, siteRoutes.towels, siteRoutes.accessories, siteRoutes.ballMarkers, siteRoutes.packaging, siteRoutes.corporateGifts, siteRoutes.tournamentGifts, siteRoutes.clubMemberPrograms, siteRoutes.privateLabelCollections].map(service => service.path);
   if (servicePaths.includes(englishPath)) {
-    graph.push({ "@type": "Service", name: route.title, description: route.description, provider: { "@id": companyId }, brand: { "@id": brandId }, url: canonical, areaServed: "International" });
+    const details = productServiceDetails[englishPath];
+    graph.push({ "@type": "Service", "@id": `${canonical}#service`, name: route.title, description: route.description, serviceType: details?.serviceType ?? route.title, category: details?.category, image: details?.image ? absolute(details.image) : undefined, mainEntityOfPage: { "@id": `${canonical}#webpage` }, provider: { "@id": companyId }, brand: { "@id": brandId }, url: canonical, areaServed: "International" });
   }
 
   if ([siteRoutes.golfGifts.path, siteRoutes.guides.path].includes(englishPath)) {
@@ -267,6 +277,8 @@ export function schemaForRoute(route, faqItems = []) {
 
 export function applySeo(route) {
   const canonical = absolute(route.path);
+  const englishPath = route.lang ? route.alternatePath : route.path;
+  const serviceImage = productServiceDetails[englishPath]?.image;
   document.documentElement.lang = route.lang ?? "en";
   document.title = route.title;
   setMeta("name", "description", route.description);
@@ -275,6 +287,11 @@ export function applySeo(route) {
   setMeta("property", "og:description", route.description);
   setMeta("property", "og:type", "website");
   setMeta("property", "og:url", canonical);
+  if (serviceImage) {
+    setMeta("property", "og:image", absolute(serviceImage));
+    setMeta("name", "twitter:card", "summary_large_image");
+    setMeta("name", "twitter:image", absolute(serviceImage));
+  }
   setCanonical(canonical);
   setLanguageAlternates(route);
 

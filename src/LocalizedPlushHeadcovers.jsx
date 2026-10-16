@@ -31,11 +31,15 @@ export function LocalizedPlushHeadcoverGuidePage({ content, topic, Header, Foote
 
 export function LocalizedPlushHeadcoverProductPage({ content, Header, Footer, Evidence, pageClass = "" }) {
   const product = content.product;
+  const productTitle = content.locale === "en" ? "Custom plush golf\nheadcovers, built\nas characters." : product.title;
+  const productIntro = content.locale === "en"
+    ? "Custom mascot, animal, object and novelty golf headcovers developed around recognisable form, protective lining, club fit, embroidery, sample approval and packaging."
+    : product.intro;
   return <main className={`zhoni-page category-page plush-product-page ${pageClass}`.trim()}>
     <Header active="products" />
     <section className="category-hero">
       <aside className="category-rail" aria-hidden="true"><strong>Z</strong><span>{product.rail}</span></aside>
-      <div className="category-intro"><p>{product.eyebrow}</p><h1><TextWithBreaks value={product.title} /></h1><p>{product.intro}</p><a href={content.quoteHref} data-analytics-placement="product_hero" data-product-interest="Custom plush golf headcovers">{product.heroCta} <Arrow /></a><small>{product.heroMeta}</small></div>
+      <div className="category-intro"><p>{product.eyebrow}</p><h1><TextWithBreaks value={productTitle} /></h1><p>{productIntro}</p><a href={content.quoteHref} data-analytics-placement="product_hero" data-product-interest="Custom plush golf headcovers">{product.heroCta} <Arrow /></a><small>{product.heroMeta}</small></div>
       <img src={content.images.hero} alt={product.heroAlt} />
     </section>
     <section className="plush-format-section"><div><p>{product.formats.label}</p><h2>{product.formats.title}</h2><p>{product.formats.copy}</p></div><div>{product.formats.items.map(([title, copy], index) => <article key={title}><b>{String(index + 1).padStart(2, "0")}</b><h3>{title}</h3><p>{copy}</p></article>)}</div></section>
@@ -46,6 +50,7 @@ export function LocalizedPlushHeadcoverProductPage({ content, Header, Footer, Ev
     {Evidence && <Evidence context="product-plush-headcovers" />}
     <section className="headcover-faq"><div><p>{product.faq.label}</p><h2>{product.faq.title}</h2></div><div>{product.faq.items.map(([question, answer], index) => <article key={question}><b>{String(index + 1).padStart(2, "0")}</b><h3>{question}</h3><p>{answer}</p></article>)}</div></section>
     <section className="category-guides"><p>{product.guides.label}</p><h2>{product.guides.title}</h2><div>{product.guides.items.map(({ label, href }, index) => <a href={href} key={href}><b>{String(index + 1).padStart(2, "0")}</b><span>{label}</span><Arrow /></a>)}</div></section>
+    {content.locale === "en" && <section className="category-guides product-related-routes"><p>RELATED CUSTOM GOLF PRODUCTS</p><h2>Continue from the character to the wider product range.</h2><div><a href="/custom-golf-headcovers/"><b>01</b><span>ALL CUSTOM GOLF HEADCOVERS</span><Arrow /></a><a href="/custom-golf-caps/"><b>02</b><span>CUSTOM GOLF CAPS &amp; VISORS</span><Arrow /></a><a href="/custom-golf-packaging/"><b>03</b><span>CUSTOM GOLF PACKAGING</span><Arrow /></a><a href="/products/"><b>+</b><span>VIEW ALL CUSTOM GOLF PRODUCTS</span><Arrow /></a></div></section>}
     <section className="headcover-brief-cta"><div><p>{product.close.label}</p><h2>{product.close.title}</h2><p>{product.close.copy}</p></div><a href={content.quoteHref} data-analytics-placement="product_final_cta" data-product-interest="Custom plush golf headcovers">{product.close.cta} <Arrow /></a></section>
     <Footer />
   </main>;

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url><loc>https://zhonigolf.com/</loc></url>
   <url><loc>https://zhonigolf.com/products/</loc></url>
-  <url><loc>https://zhonigolf.com/custom-golf-headcovers/</loc></url>
-  <url><loc>https://zhonigolf.com/custom-plush-golf-headcovers/</loc></url>
-  <url><loc>https://zhonigolf.com/custom-golf-caps/</loc></url>
-  <url><loc>https://zhonigolf.com/custom-golf-towels/</loc></url>
+  <url><loc>https://zhonigolf.com/custom-golf-headcovers/</loc><image:image><image:loc>https://zhonigolf.com/assets/images/zhoni-product-headcovers-v3.png</image:loc></image:image></url>
+  <url><loc>https://zhonigolf.com/custom-plush-golf-headcovers/</loc><image:image><image:loc>https://zhonigolf.com/assets/images/zhoni-plush-novelty-headcovers-v1.jpg</image:loc></image:image></url>
+  <url><loc>https://zhonigolf.com/custom-golf-caps/</loc><image:image><image:loc>https://zhonigolf.com/assets/images/zhoni-product-caps-v3.png</image:loc></image:image></url>
+  <url><loc>https://zhonigolf.com/custom-golf-towels/</loc><image:image><image:loc>https://zhonigolf.com/assets/images/zhoni-product-magnetic-towel-v4.png</image:loc></image:image></url>
   <url><loc>https://zhonigolf.com/custom-golf-accessories/</loc></url>
-  <url><loc>https://zhonigolf.com/custom-golf-ball-markers-divot-tools/</loc></url>
-  <url><loc>https://zhonigolf.com/custom-golf-packaging/</loc></url>
+  <url><loc>https://zhonigolf.com/custom-golf-ball-markers-divot-tools/</loc><image:image><image:loc>https://zhonigolf.com/assets/images/zhoni-product-ball-markers-v3.png</image:loc></image:image></url>
+  <url><loc>https://zhonigolf.com/custom-golf-packaging/</loc><image:image><image:loc>https://zhonigolf.com/assets/images/zhoni-product-packaging-v3.png</image:loc></image:image></url>
   <url><loc>https://zhonigolf.com/solutions/</loc></url>
   <url><loc>https://zhonigolf.com/solutions/golf-tournament-gifts/</loc></url>
   <url><loc>https://zhonigolf.com/solutions/corporate-golf-gifts/</loc></url>

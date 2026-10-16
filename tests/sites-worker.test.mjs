@@ -1280,7 +1280,7 @@ test("publishes a decision-ready headcover product page and specialized brief", 
   assert.match(app, /name="headcover_branding"/);
   assert.match(app, /name="headcover_closure"/);
   assert.match(app, /name="headcover_packaging"/);
-  assert.match(routes, /Driver, Putter, Knit & Plush/);
+  assert.match(routes, /Custom Golf Headcovers for Brands & Clubs \| ZHONI/);
 
   const schemaMatch = document.match(/<script id="zhoni-page-schema" type="application\/ld\+json">([\s\S]*?)<\/script>/);
   const graph = JSON.parse(schemaMatch[1])["@graph"];
