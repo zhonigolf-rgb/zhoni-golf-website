@@ -178,14 +178,15 @@ test("connects every golf caps buyer guide to the product, solutions, process an
 });
 
 test("keeps golf caps visible in shared SEO paths and prefills the inquiry form", async () => {
-  const [app, routes, robots] = await Promise.all([
+  const [app, routes, robots, inquiryPrefill] = await Promise.all([
     readFile(new URL("../src/App.jsx", import.meta.url), "utf8"),
     readFile(new URL("../src/siteRoutes.js", import.meta.url), "utf8"),
     readFile(new URL("../public/robots.txt", import.meta.url), "utf8"),
+    readFile(new URL("../src/inquiryPrefill.js", import.meta.url), "utf8"),
   ]);
 
   assert.match(routes, /caps and visors, magnetic towels, ball markers, divot tools, accessories and packaging/);
-  assert.match(app, /productAliases/);
+  assert.match(inquiryPrefill, /productAliases/);
   assert.match(app, /defaultValue=\{prefilledProduct\}/);
   assert.match(app, /Custom Golf Caps & Headwear/);
   assert.match(robots, /User-agent: \*\s+Allow: \/\s+\s*Sitemap: https:\/\/zhonigolf\.com\/sitemap\.xml/);
@@ -1132,10 +1133,11 @@ test("adds a transparent buyer evidence layer to English procurement routes", as
 });
 
 test("publishes complete club-member and private-label solution pages", async () => {
-  const [sitemap, app, llms] = await Promise.all([
+  const [sitemap, app, llms, inquiryPrefill] = await Promise.all([
     readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8"),
     readFile(new URL("../src/App.jsx", import.meta.url), "utf8"),
     readFile(new URL("../public/llms.txt", import.meta.url), "utf8"),
+    readFile(new URL("../src/inquiryPrefill.js", import.meta.url), "utf8"),
   ]);
   const cases = [
     {
@@ -1176,8 +1178,8 @@ test("publishes complete club-member and private-label solution pages", async ()
     assert.equal(breadcrumb.itemListElement[1].name, "Solutions");
   }
 
-  assert.match(app, /"club-member-programs": "Club member program"/);
-  assert.match(app, /"private-label-collections": "Private label collection"/);
+  assert.match(inquiryPrefill, /"club-member-programs": "Club member program"/);
+  assert.match(inquiryPrefill, /"private-label-collections": "Private label collection"/);
 
   const [collectionGuide, briefGuide] = await Promise.all([
     readFile(new URL("../dist/client/guides/coordinated-golf-accessory-collection/index.html", import.meta.url), "utf8"),

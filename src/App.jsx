@@ -7,6 +7,7 @@ import { LanguageSwitcher } from "./locale.jsx";
 import { LocalizedPlushHeadcoverGuidePage, LocalizedPlushHeadcoverProductPage } from "./LocalizedPlushHeadcovers.jsx";
 import { ProductPriorityGateway } from "./ProductPriorityGateway.jsx";
 import { BallMarkerProductPage } from "./BallMarkerProductPage.jsx";
+import { inquiryProjectOptions, resolveInquiryProject } from "./inquiryPrefill.js";
 import { majorTournamentDisclaimer, majorTournamentGuides } from "./MajorTournamentGuides.js";
 import enPlushHeadcovers from "./content/plush-headcovers/en.json";
 import "./showcase.css";
@@ -77,6 +78,15 @@ const homeProductFamilies = [
   { title: "Custom Ball Markers & Divot Tools", copy: "Ball markers, magnetic hat clips and divot tools developed as focused standalone products.", image: "/assets/images/zhoni-product-ball-markers-v3.png", href: "/custom-golf-ball-markers-divot-tools/" },
   { title: "Custom Golf Packaging", copy: "Presentation boxes, inserts, cards and protective packing matched to the selected product.", image: "/assets/images/zhoni-product-packaging-v3.png", href: "/custom-golf-packaging/" },
 ];
+
+const productRouteSources = new Set([
+  "custom-golf-headcovers",
+  "custom-plush-golf-headcovers",
+  "custom-golf-caps",
+  "custom-golf-towels",
+  "custom-golf-ball-markers-divot-tools",
+  "custom-golf-packaging",
+]);
 
 function ZhoniPageHeader({ active }) {
   const [menu, setMenu] = useState(false);
@@ -477,10 +487,8 @@ function CapabilitiesPage() {
 function QuotePage() {
   const [formStatus, setFormStatus] = useState("idle");
   const [formMessage, setFormMessage] = useState("");
-  const productAliases = { Headcovers: "Custom golf headcovers", "Golf Towels": "Custom golf towels", "Golf Accessories": "Golf accessories", "Custom Packaging": "Custom packaging", "Custom Golf Caps & Headwear": "Custom golf caps & headwear" };
-  const solutionAliases = { "club-member-programs": "Club member program", "private-label-collections": "Private label collection", "golf-tournament-gifts": "Tournament merchandise", "corporate-golf-gifts": "Corporate golf gifts" };
   const queryParams = typeof window === "undefined" ? new URLSearchParams() : new URLSearchParams(window.location.search);
-  const prefilledProduct = productAliases[queryParams.get("product")] ?? solutionAliases[queryParams.get("solution")] ?? "";
+  const prefilledProduct = resolveInquiryProject(queryParams);
   const isHeadcoverBrief = prefilledProduct === "Custom golf headcovers";
   const prefilledHeadcoverType = queryParams.get("headcover_type") ?? "";
   const whatsappLink = typeof window === "undefined" ? WHATSAPP_URL : createWhatsAppLink();
@@ -490,6 +498,7 @@ function QuotePage() {
     if (formStatus === "submitting") return;
     const form = event.currentTarget;
     const data = new FormData(form);
+    const productInterest = String(data.get("project_type") || prefilledProduct || "Not selected");
     data.set("source", inquirySourceForLocation());
     data.set("page_language", document.documentElement.lang || "en");
     data.set("page_path", window.location.pathname);
@@ -503,6 +512,7 @@ function QuotePage() {
     }
     setFormStatus("submitting");
     setFormMessage("Sending your project brief…");
+    track("form_submit_attempt", { form_name: "quote_page_project_brief", form_source: inquirySourceForLocation(), page_path: window.location.pathname, page_language: document.documentElement.lang || "en", product_interest: productInterest });
     const controller = new AbortController();
     const timeout = window.setTimeout(() => controller.abort(), 12000);
     try {
@@ -512,7 +522,7 @@ function QuotePage() {
       form.reset();
       setFormStatus("success");
       setFormMessage("Thank you—your project brief has been received. Our team will review the details and reply with the appropriate next step.");
-      track("generate_lead", { form_name: "quote_page_project_brief", form_source: inquirySourceForLocation(), page_path: window.location.pathname, page_location: window.location.href, page_language: document.documentElement.lang || "en", lead_type: "inquiry" });
+      track("generate_lead", { form_name: "quote_page_project_brief", form_source: inquirySourceForLocation(), page_path: window.location.pathname, page_location: window.location.href, page_language: document.documentElement.lang || "en", lead_type: "inquiry", product_interest: productInterest });
     } catch (error) {
       setFormStatus("error");
       setFormMessage(error.message || "Your brief was not sent. Please try again, or use WhatsApp for a direct project conversation.");
@@ -528,9 +538,9 @@ function QuotePage() {
       <div className="quote-rail" aria-hidden="true"><strong>Z</strong><span>CUSTOM GOLF MERCHANDISE</span><i>BRANDED FOR A HIGHER STANDARD</i></div>
       <div className="quote-ledger-main">
         <div className="quote-ledger-intro"><p>REQUEST A QUOTE</p><h1>Start with<br />the project brief.</h1><p>One product or a complete branded set—we review the details with you.</p></div>
-        <form className="quote-ledger-form" onSubmit={submitInquiry} onFocus={event => { if (!event.currentTarget.dataset.started) { event.currentTarget.dataset.started = "true"; track("form_start", { form_name: "quote_page_project_brief", form_source: inquirySourceForLocation(), page_path: window.location.pathname, page_language: document.documentElement.lang || "en" }); } }}>
+        <form className="quote-ledger-form" onSubmit={submitInquiry} onFocus={event => { if (!event.currentTarget.dataset.started) { event.currentTarget.dataset.started = "true"; track("form_start", { form_name: "quote_page_project_brief", form_source: inquirySourceForLocation(), page_path: window.location.pathname, page_language: document.documentElement.lang || "en", product_interest: prefilledProduct || "Not selected" }); } }}>
           <fieldset><legend><b>01</b><span>Contact<small>Tell us who to get in touch with.</small></span></legend><div className="quote-form-row"><label>FULL NAME <input required name="name" autoComplete="name" placeholder="Your name" /></label><label>BUSINESS EMAIL <input required type="email" name="email" autoComplete="email" placeholder="you@company.com" /></label></div></fieldset>
-          <fieldset><legend><b>02</b><span>Project<small>Share the essentials; we will guide the next conversation.</small></span></legend><div className="quote-form-row"><label>PROJECT TYPE <select required name="project_type" defaultValue={prefilledProduct}><option value="" disabled>Select product or category</option><option>Individual custom golf product</option><option>Custom golf headcovers</option><option>Custom golf caps &amp; headwear</option><option>Custom golf towels</option><option>Ball markers &amp; divot tools</option><option>Golf accessories</option><option>Golf gift set</option><option>Tournament merchandise</option><option>Corporate golf gifts</option><option>Club member program</option><option>Private label collection</option><option>Custom packaging</option></select></label><label>QUANTITY REQUIREMENT <input name="quantity_range" placeholder="e.g. 200 pieces" /></label></div><label className="quote-project-details">PROJECT DETAILS <textarea required name="message" rows="4" placeholder="Product, customisation ideas, event date, packaging needs or anything else we should know." /></label></fieldset>
+          <fieldset><legend><b>02</b><span>Project<small>Share the essentials; we will guide the next conversation.</small></span></legend><div className="quote-form-row"><label>PROJECT TYPE <select required name="project_type" defaultValue={prefilledProduct}><option value="" disabled>Select product or category</option>{inquiryProjectOptions.map(option => <option key={option}>{option}</option>)}</select></label><label>QUANTITY REQUIREMENT <input name="quantity_range" placeholder="e.g. 200 pieces" /></label></div><label className="quote-project-details">PROJECT DETAILS <textarea required name="message" rows="4" placeholder="Product, customisation ideas, event date, packaging needs or anything else we should know." /></label></fieldset>
           {isHeadcoverBrief && <fieldset className="headcover-brief-fields"><legend><b>03</b><span>Headcover specification<small>Share what you know; leave undecided items open.</small></span></legend><div className="quote-form-row"><label>HEADCOVER TYPE <select name="headcover_type" defaultValue={prefilledHeadcoverType}><option value="">Select or leave open</option><option>Driver / fairway / hybrid</option><option>Blade / mallet putter</option><option>Iron / alignment stick</option><option>Plush / novelty character</option><option>Knit / sock style</option><option>Mixed private-label set</option></select></label><label>CLUB / PUTTER REFERENCE <input name="club_reference" placeholder="Model, dimensions or intended fit" /></label></div><div className="quote-form-row"><label>MATERIAL DIRECTION <select name="headcover_material" defaultValue=""><option value="">Select or leave open</option><option>PU / leather-look</option><option>Woven textile / canvas</option><option>Neoprene / technical textile</option><option>Knit</option><option>Plush / sherpa</option><option>Mixed materials</option></select></label><label>LOGO / SURFACE CRAFT <select name="headcover_branding" defaultValue=""><option value="">Select or leave open</option><option>Flat embroidery</option><option>3D embroidery</option><option>Patch / appliqué</option><option>Print</option><option>Emboss / deboss</option><option>Need a recommendation</option></select></label></div><div className="quote-form-row"><label>OPENING / CLOSURE <select name="headcover_closure" defaultValue=""><option value="">Select or leave open</option><option>Fitted / sock neck</option><option>Magnetic</option><option>Hook-and-loop</option><option>Zipper</option><option>Drawcord</option><option>Need a recommendation</option></select></label><label>PACKAGING DIRECTION <select name="headcover_packaging" defaultValue=""><option value="">Select or leave open</option><option>Individual protective bag</option><option>Header-card retail bag</option><option>Paper box</option><option>Presentation gift box</option><option>Need a recommendation</option></select></label></div><label className="quote-project-details">REFERENCE NOTES <textarea name="headcover_reference_notes" rows="3" placeholder="Character or silhouette details, lining, number tags, colours, accessories, individual variants or other fit notes." /></label></fieldset>}
           <label className="honeypot" aria-hidden="true">Website<input name="company_website" tabIndex="-1" autoComplete="off" /></label><TurnstileField />
           <div className="quote-form-actions"><button type="submit" disabled={formStatus === "submitting"}>{formStatus === "submitting" ? "SENDING PROJECT BRIEF…" : "SEND PROJECT BRIEF"} <Arrow /></button></div>
@@ -704,9 +714,69 @@ function ProductCategoryPage({ type }) {
     ["What should be checked on a cap sample?", "Review front and side silhouette, crown depth, brim curve, fit range, symmetry, fabric and colour, logo size and position, closure, sweatband, labels, internal finishing and packing."],
     ["How should finished caps be packed?", "Packing should support the crown and reduce compression, abrasion and moisture exposure. The suitable individual protection, carton loading or gift-box route depends on the cap structure and delivery method."],
   ];
+  const decisionContent = isTowel ? {
+    label: "BUILD THE TOWEL SPECIFICATION",
+    title: "Utility, branding and attachment need to work together.",
+    copy: "A magnetic towel is more than fabric plus a logo. Format, absorbency, edge finish, attachment, decoration and packing should be reviewed as one product.",
+    specs: [
+      ["Towel format", "Waffle microfiber · terry-style or selected woven alternatives · tri-fold or rectangular formats · project-specific dimensions"],
+      ["Course attachment", "Integrated magnet · magnetic carabiner or clip route · grommet and hook · non-magnetic alternative where preferred"],
+      ["Brand application", "Embroidery · woven label · print or transfer where suitable · placement reviewed against folds, edge and magnet position"],
+      ["Material & performance", "Fabric weight · absorbency direction · hand feel · colour · drying behaviour · edge and seam construction"],
+      ["Packing", "Individual protective bag · belly band or card · coordinated player pack · presentation box · carton protection"],
+    ],
+    processLabel: "FROM TOWEL BRIEF TO PACKED ORDER",
+    processTitle: "Approve the useful details before production.",
+    process: [
+      ["01", "Use & format", "Confirm player, club, event or retail use; towel dimensions; fold; quantity; destination and required date."],
+      ["02", "Material & attachment", "Review fabric, weight, colour, edge, magnet or clip construction and how the towel will hang in use."],
+      ["03", "Artwork interpretation", "Set logo size, position, thread or print direction and check visibility when the towel is folded or attached."],
+      ["04", "Sample approval", "Review material feel, dimensions, attachment security, logo clarity, stitching, edge finish and packing."],
+      ["05", "Production & quality checks", "Check the approved specification, decoration, attachment, quantity, individual packing and carton plan before hand-off."],
+    ],
+    faqTitle: "Answers before the towel brief is submitted.",
+    faqs: [
+      ["What information is needed to quote custom golf towels?", "Share the towel format or dimensions, estimated quantity, preferred fabric, magnetic or clip direction, logo file, colours, packaging, destination and required in-hands date."],
+      ["What is the MOQ for a magnetic golf towel?", "MOQ depends on towel construction, material and colour availability, attachment, branding method, packaging and quantity per variation. It is confirmed after the requested format is reviewed."],
+      ["Is embroidery suitable for every towel design?", "Embroidery works well for many logos, but very small text, dense fills and fine detail may need simplification or another method. Logo scale, stitch density and towel texture should be assessed together."],
+      ["What should be checked on a towel sample?", "Check dimensions, fabric feel, absorbency direction, edge and seam finish, magnet or clip security, logo size and position, colour, fold presentation and individual packing."],
+      ["How long do sampling and production take?", "Timing depends on artwork readiness, fabric and attachment sourcing, sample route, quantity, packaging, destination and approval speed. Share the target date before commercial commitments are made."],
+      ["Can towels be packed with other golf products?", "Yes. A towel can be planned for a player pack or gift box, but its folded size, attachment and moisture-protective packing need to be coordinated with the insert and other products."],
+    ],
+  } : isPackaging ? {
+    label: "BUILD THE PACKAGING SPECIFICATION",
+    title: "Presentation and protection belong in the same brief.",
+    copy: "The box format, insert, print details, product dimensions and delivery route need to be developed together. A visual concept alone is not a packing specification.",
+    specs: [
+      ["Packaging format", "Rigid presentation box · folding carton · sleeve · pouch · product card · individual protective packing · coordinated outer carton"],
+      ["Structure & materials", "Board thickness and wrap · folding construction · paper or selected textile surfaces · opening style · reinforcement where required"],
+      ["Insert & product fit", "Paperboard platform · foam or moulded insert where appropriate · tissue · product cavity · finger access · movement control"],
+      ["Brand application", "Print · foil · emboss or deboss · label · sleeve · card and inside-lid message, reviewed against the chosen surface"],
+      ["Packing & transit", "Individual protection · carton loading · abrasion and compression risk · shipping marks · destination and agreed hand-off requirements"],
+    ],
+    processLabel: "FROM PRODUCT DIMENSIONS TO PACKED HAND-OFF",
+    processTitle: "Develop the pack around the actual contents.",
+    process: [
+      ["01", "Contents & presentation", "Confirm every product, quantity per set, intended opening sequence, audience, destination and required date."],
+      ["02", "Structure & insert", "Set internal dimensions, orientation, access, movement control, materials and protective requirements around real product measurements."],
+      ["03", "Artwork & finish", "Prepare dieline artwork, logo position, print or foil details, colour references, cards, labels and any required shipping marks."],
+      ["04", "Prototype or sample review", "Check fit, opening, product removal, insert retention, finish, colour, abrasion points and closure before production approval."],
+      ["05", "Packing validation", "Confirm assembly order, individual protection, carton quantity, transit considerations and the agreed final hand-off."],
+    ],
+    faqTitle: "Answers before the packaging brief is submitted.",
+    faqs: [
+      ["What do you need to quote custom golf packaging?", "Share the products and quantities per set, actual product dimensions where available, box references, logo files, finish direction, order quantity, destination and required date."],
+      ["What is the MOQ for a custom presentation box?", "MOQ depends on the structure, board and wrap material, insert route, printing or finishing, assembly and quantity per design. It is confirmed against the reviewed specification rather than a universal number."],
+      ["Can packaging be designed before the products are final?", "A visual direction can begin early, but final internal dimensions and insert geometry should follow confirmed product measurements. Developing the insert too soon creates avoidable fit and transit risk."],
+      ["Do we need a physical packaging sample?", "A sample is useful when fit, opening feel, insert retention, colour, foil, surface finish or transit protection matters. The suitable prototype or sample path depends on the project."],
+      ["What quality points should be checked?", "Review dimensions, squareness, closure, surface condition, colour and print registration, foil or emboss detail, insert fit, product removal, adhesive cleanliness and packing consistency."],
+      ["How long do packaging sampling and production take?", "Timing depends on structural development, product readiness, material and finish sourcing, sample rounds, assembly, order quantity and destination. Confirm the in-hands date at the beginning of the brief."],
+    ],
+  } : null;
+  const quoteHref = `/request-a-quote/?product=${encodeURIComponent(productBrief)}`;
   return <main className={`zhoni-page category-page${isCaps ? " caps-product-page" : ""}`}>
     <ZhoniPageHeader active="products" />
-    <section className="category-hero"><aside className="category-rail" aria-hidden="true"><strong>Z</strong><span>CUSTOM GOLF PRODUCTS</span></aside><div className="category-intro"><p>{content.eyebrow}</p><h1>{content.title}</h1><p>{content.intro}</p><a href={`/request-a-quote/?product=${encodeURIComponent(productBrief)}`}>{content.cta} <Arrow /></a><small>CLUBS · EVENTS · CORPORATE · PRIVATE LABEL</small></div><img src={content.image} alt={content.alt} /></section>
+    <section className="category-hero"><aside className="category-rail" aria-hidden="true"><strong>Z</strong><span>CUSTOM GOLF PRODUCTS</span></aside><div className="category-intro"><p>{content.eyebrow}</p><h1>{content.title}</h1><p>{content.intro}</p><a href={quoteHref} data-analytics-placement="product_hero" data-product-interest={productBrief}>{content.cta} <Arrow /></a><small>CLUBS · EVENTS · CORPORATE · PRIVATE LABEL</small></div><img src={content.image} alt={content.alt} /></section>
     <section className="category-ledger"><div><p>{isCaps ? "THE HEADWEAR SPECIFICATION LEDGER" : "THE PROCUREMENT PRODUCT LEDGER"}</p>{steps.map(([number, title, copy]) => <article key={number}><b>{number}</b><h2>{title}</h2><p>{copy}</p><span aria-hidden="true">→</span></article>)}</div><aside><p>PROJECT ESSENTIALS</p><ul>{projectEssentials.map(item => <li key={item}>{item}</li>)}</ul><small>MOQ, timing and applicable requirements are reviewed per project.</small></aside></section>
     {isCaps && <>
       <section className="headcover-types headwear-types"><div className="headcover-section-heading"><p>CHOOSE THE HEADWEAR DIRECTION</p><h2>Start with the wearer, climate and intended use.</h2><p>The silhouette is only the first decision. Crown structure, fabric, sweatband, closure, logo method and packing still need to work as one product.</p></div><div className="headcover-type-grid">{headwearDirections.map(([number, title, copy]) => <article key={title}><b>{number}</b><h3>{title}</h3><p>{copy}</p><a href={`/request-a-quote/?product=${encodeURIComponent(productBrief)}`}>START THIS BRIEF <Arrow /></a></article>)}</div></section>
@@ -722,6 +792,12 @@ function ProductCategoryPage({ type }) {
       <section className="headcover-process"><div><p>FROM REFERENCE TO PRODUCTION</p><h2>A confirmation path built around the actual construction.</h2></div><ol>{[["01","Brief & references","Confirm headcover formats, quantities, club or putter references, artwork, material direction and target date."],["02","Pattern & artwork review","Translate the visual direction into panels, dimensions, logo placement, lining and opening or closure details."],["03","Proof or sample","Review the appropriate visual proof, material reference or physical sample before production commitments."],["04","Production checks","Check agreed materials, branding, stitching, fit-related details, finish and packaging against the confirmed scope."],["05","Packing & hand-off","Pack individual pieces or sets and prepare the agreed project hand-off around destination requirements."]].map(([number,title,copy]) => <li key={number}><b>{number}</b><div><h3>{title}</h3><p>{copy}</p></div></li>)}</ol></section>
       <section className="headcover-faq"><div><p>COMMON BUYER QUESTIONS</p><h2>Answers before you prepare the brief.</h2></div><div>{headcoverFaqs.map(([question, answer], index) => <article key={question}><b>{String(index + 1).padStart(2, "0")}</b><h3>{question}</h3><p>{answer}</p></article>)}</div></section>
       <section className="headcover-brief-cta"><div><p>PREPARE A MORE USEFUL ENQUIRY</p><h2>Tell us the headcover type before the first reply.</h2><p>The enquiry form can carry your selected format, material, branding and closure direction so the review starts with fewer assumptions.</p></div><a href="/request-a-quote/?product=Headcovers">BUILD YOUR HEADCOVER BRIEF <Arrow /></a></section>
+    </>}
+    {decisionContent && <>
+      <section className="headcover-specs"><div><p>{decisionContent.label}</p><h2>{decisionContent.title}</h2><p>{decisionContent.copy}</p></div><dl>{decisionContent.specs.map(([term, description]) => <div key={term}><dt>{term}</dt><dd>{description}</dd></div>)}</dl></section>
+      <section className="headcover-process"><div><p>{decisionContent.processLabel}</p><h2>{decisionContent.processTitle}</h2></div><ol>{decisionContent.process.map(([number, title, copy]) => <li key={number}><b>{number}</b><div><h3>{title}</h3><p>{copy}</p></div></li>)}</ol></section>
+      <section className="headcover-faq"><div><p>COMMON BUYER QUESTIONS</p><h2>{decisionContent.faqTitle}</h2></div><div>{decisionContent.faqs.map(([question, answer], index) => <article key={question}><b>{String(index + 1).padStart(2, "0")}</b><h3>{question}</h3><p>{answer}</p></article>)}</div></section>
+      <section className="headcover-brief-cta"><div><p>PREPARE A MORE USEFUL ENQUIRY</p><h2>Bring the product decisions into the first conversation.</h2><p>Share the intended use, format, material direction, quantity, artwork, packaging, target date and destination. The form already carries this product category into your brief.</p></div><a href={quoteHref} data-analytics-placement="product_detail_cta" data-product-interest={productBrief}>BUILD THIS PRODUCT BRIEF <Arrow /></a></section>
     </>}
     <BuyerEvidenceLayer context={`product-${type}`} />
     <section className="category-guides"><p>RELATED BUYER GUIDES</p><h2>Make the next product decision with more context.</h2><div>{relatedGuides.map(([label, href], index) => <a key={href} href={href}><b>{String(index + 1).padStart(2, "0")}</b><span>{label}</span><Arrow /></a>)}<a href="/guides/"><b>+</b><span>VIEW ALL BUYER GUIDES</span><Arrow /></a></div></section>
@@ -1002,11 +1078,15 @@ export function App({ initialRoute = null, KoreanSiteComponent = KoreanSite, Can
       if (!link) return;
       let url = new URL(link.href, window.location.origin);
       const details = { page_path: window.location.pathname, page_location: window.location.href, page_language: document.documentElement.lang || "en", form_source: inquirySourceForLocation(), placement: link.dataset.analyticsPlacement || "site_link" };
-      if (url.hostname === "wa.me") track("whatsapp_click", details);
+      const canonicalProductRoute = productRouteSources.has(route.source) ? route : (route.alternatePath ? findRoute(route.alternatePath) : null);
+      const productInterest = link.dataset.productInterest || url.searchParams.get("product") || (productRouteSources.has(canonicalProductRoute?.source) ? canonicalProductRoute.source : undefined);
+      const enrichedDetails = { ...details, product_interest: productInterest, link_text: link.textContent?.replace(/\s+/g, " ").trim().slice(0, 100) };
+      if (url.hostname === "wa.me") track("whatsapp_click", enrichedDetails);
+      if (url.protocol === "mailto:") track("email_click", enrichedDetails);
       if (url.origin === window.location.origin && /^\/(?:(?:ko|fr-ca|ja|de)\/)?request-a-quote(?:\/|$)/.test(url.pathname)) {
         url = addInquirySource(url.href, route);
         link.href = url.href;
-        track("quote_cta_click", { ...details, form_source: url.searchParams.get("source") });
+        track("quote_cta_click", { ...enrichedDetails, form_source: url.searchParams.get("source") });
       }
     };
     document.addEventListener("click", trackContactClick);
@@ -1014,6 +1094,16 @@ export function App({ initialRoute = null, KoreanSiteComponent = KoreanSite, Can
   }, []);
   useEffect(() => {
     applySeo(route);
+    const canonicalProductRoute = productRouteSources.has(route.source) ? route : (route.alternatePath ? findRoute(route.alternatePath) : null);
+    if (!productRouteSources.has(canonicalProductRoute?.source)) return undefined;
+    const sendProductView = () => {
+      if (!window.__zhoniAnalyticsEnabled || window.__zhoniProductViewPath === route.path) return;
+      track("product_page_view", { page_path: route.path, page_language: route.lang || "en", product_interest: canonicalProductRoute.source });
+      window.__zhoniProductViewPath = route.path;
+    };
+    sendProductView();
+    window.addEventListener("zhoni:analytics-enabled", sendProductView);
+    return () => window.removeEventListener("zhoni:analytics-enabled", sendProductView);
   }, [route]);
   if (route.lang === "ko") return <Suspense fallback={<div className="locale-loading" role="status">ZHONI</div>}><KoreanSiteComponent routeKey={Object.keys(siteRoutes).find(key => siteRoutes[key] === route)} /><FloatingContactActions locale="ko" /></Suspense>;
   if (route.lang === "fr-CA") return <Suspense fallback={<div className="locale-loading" role="status">ZHONI</div>}><CanadianFrenchSiteComponent routeKey={Object.keys(siteRoutes).find(key => siteRoutes[key] === route)} /><FloatingContactActions locale="fr-CA" /></Suspense>;

@@ -1,0 +1,25 @@
+priority,product_cluster,primary_query,supporting_intent,target_page,page_role,content_status
+1,Magnetic golf towels,custom magnetic golf towels,"custom logo magnetic golf towel; magnetic golf towels bulk; personalised magnetic golf towel",/custom-golf-towels/,Primary commercial product page,Complete
+1,Magnetic golf towels,custom golf towels wholesale,"custom embroidered golf towels; bulk golf towels with logo; golf tournament towels custom",/custom-golf-towels/,Primary commercial product page,Complete
+1,Magnetic golf towels,magnetic vs clip golf towel,"best attachment for golf towel; magnetic golf towel buyer guide",/guides/custom-golf-towels-procurement-guide/,Decision-support guide,Existing
+1,Standard headcovers,custom golf headcovers,"custom driver headcovers; custom fairway wood covers; golf headcovers wholesale",/custom-golf-headcovers/,Primary commercial product page,Complete
+1,Standard headcovers,custom putter covers,"custom mallet putter cover; custom blade putter cover; putter headcovers bulk",/custom-golf-headcovers/,Commercial category section,Complete
+2,Standard headcovers,golf headcover materials,"PU leather golf headcover; neoprene golf headcover; knit golf headcover custom",/guides/custom-golf-headcover-materials/,Decision-support guide,Existing
+1,Plush headcovers,custom plush golf headcovers,"plush golf headcovers wholesale; custom novelty golf headcovers",/custom-plush-golf-headcovers/,Primary commercial product page,Complete
+1,Plush headcovers,custom mascot golf headcovers,"animal golf headcover custom; character golf headcover manufacturer; custom club mascot headcover",/custom-plush-golf-headcovers/,Primary commercial product page,Complete
+2,Plush headcovers,how to design a plush golf headcover,"plush headcover sample; plush headcover construction; plush headcover club fit",/guides/custom-plush-golf-headcover-design-guide/,Decision-support guide,Existing
+1,Golf caps,custom golf caps,"custom golf hats; custom golf caps wholesale; golf caps with logo",/custom-golf-caps/,Primary commercial product page,Complete
+1,Golf caps,custom golf visors,"golf visors with logo; custom embroidered golf visor; golf visors bulk",/custom-golf-caps/,Commercial category section,Complete
+1,Golf caps,custom rope golf hats,"custom rope caps; performance golf caps custom; golf tournament hats",/custom-golf-caps/,Commercial category section,Complete
+2,Golf caps,golf cap embroidery options,"3D embroidery golf caps; golf cap patch options; cap logo placement",/guides/custom-golf-cap-logo-placement/,Decision-support guide,Existing
+2,Golf caps,golf cap materials,"performance golf hat fabric; quick dry golf cap; cotton vs polyester golf cap",/guides/custom-golf-cap-materials/,Decision-support guide,Existing
+1,Ball markers & tools,custom golf ball markers,"custom ball markers bulk; golf ball markers with logo; personalised golf markers",/custom-golf-ball-markers-divot-tools/,Primary commercial product page,Complete
+1,Ball markers & tools,custom divot tools,"custom divot repair tools; divot tool with ball marker custom; golf divot tools bulk",/custom-golf-ball-markers-divot-tools/,Primary commercial product page,Complete
+1,Ball markers & tools,custom hat clip ball markers,"magnetic golf hat clip custom; golf cap marker with logo",/custom-golf-ball-markers-divot-tools/,Commercial category section,Complete
+2,Ball markers & tools,ball marker logo methods,"enamel vs engraved ball marker; custom marker finish options",/custom-golf-ball-markers-divot-tools/,Buyer FAQ and specification section,Complete
+1,Golf packaging,custom golf gift boxes,"golf gift box packaging; custom golf presentation box; golf gift packaging wholesale",/custom-golf-packaging/,Primary commercial product page,Complete
+1,Golf packaging,custom packaging for golf products,"golf headcover packaging; golf towel gift box; golf accessory packaging",/custom-golf-packaging/,Primary commercial product page,Complete
+2,Golf packaging,golf gift box insert design,"custom box insert for golf gifts; golf product packaging sample; packaging quality checklist",/guides/custom-golf-gift-packaging-procurement/,Decision-support guide,Existing
+2,Cross-product,custom golf products,"custom golf merchandise; branded golf products; custom golf accessories wholesale",/products/,Product discovery hub,Existing
+2,Cross-product,custom golf product MOQ,"custom golf product sample; custom golf product lead time; first custom golf order",/first-order-guide/,Procurement guide,Existing
+3,Cross-product,custom golf tournament gifts,"golf tournament merchandise; golf event gifts bulk; player pack golf gifts",/solutions/golf-tournament-gifts/,Solution page,Existing

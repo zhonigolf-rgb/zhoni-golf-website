@@ -35,18 +35,18 @@ export function LocalizedPlushHeadcoverProductPage({ content, Header, Footer, Ev
     <Header active="products" />
     <section className="category-hero">
       <aside className="category-rail" aria-hidden="true"><strong>Z</strong><span>{product.rail}</span></aside>
-      <div className="category-intro"><p>{product.eyebrow}</p><h1><TextWithBreaks value={product.title} /></h1><p>{product.intro}</p><a href={content.quoteHref}>{product.heroCta} <Arrow /></a><small>{product.heroMeta}</small></div>
+      <div className="category-intro"><p>{product.eyebrow}</p><h1><TextWithBreaks value={product.title} /></h1><p>{product.intro}</p><a href={content.quoteHref} data-analytics-placement="product_hero" data-product-interest="Custom plush golf headcovers">{product.heroCta} <Arrow /></a><small>{product.heroMeta}</small></div>
       <img src={content.images.hero} alt={product.heroAlt} />
     </section>
     <section className="plush-format-section"><div><p>{product.formats.label}</p><h2>{product.formats.title}</h2><p>{product.formats.copy}</p></div><div>{product.formats.items.map(([title, copy], index) => <article key={title}><b>{String(index + 1).padStart(2, "0")}</b><h3>{title}</h3><p>{copy}</p></article>)}</div></section>
     <section className="headcover-specs"><div><p>{product.specs.label}</p><h2>{product.specs.title}</h2><p>{product.specs.copy}</p></div><dl>{product.specs.items.map(([term, description]) => <div key={term}><dt>{term}</dt><dd>{description}</dd></div>)}</dl></section>
     <section className="plush-detail-visual"><figure><img src={content.images.construction} alt={product.detail.imageAlt} /><figcaption>{product.detail.caption}</figcaption></figure><div><p>{product.detail.label}</p><h2>{product.detail.title}</h2><p>{product.detail.copy}</p><ul>{product.detail.items.map(([title, copy]) => <li key={title}><b>{title}</b><span>{copy}</span></li>)}</ul></div></section>
     <section className="headcover-process"><div><p>{product.process.label}</p><h2>{product.process.title}</h2></div><ol>{product.process.items.map(([number, title, copy]) => <li key={number}><b>{number}</b><div><h3>{title}</h3><p>{copy}</p></div></li>)}</ol></section>
-    <aside className="plush-mid-cta"><div><p>{product.midCta.label}</p><h2>{product.midCta.title}</h2></div><a href={content.quoteHref}>{product.midCta.cta} <Arrow /></a></aside>
+    <aside className="plush-mid-cta"><div><p>{product.midCta.label}</p><h2>{product.midCta.title}</h2></div><a href={content.quoteHref} data-analytics-placement="product_mid_cta" data-product-interest="Custom plush golf headcovers">{product.midCta.cta} <Arrow /></a></aside>
     {Evidence && <Evidence context="product-plush-headcovers" />}
     <section className="headcover-faq"><div><p>{product.faq.label}</p><h2>{product.faq.title}</h2></div><div>{product.faq.items.map(([question, answer], index) => <article key={question}><b>{String(index + 1).padStart(2, "0")}</b><h3>{question}</h3><p>{answer}</p></article>)}</div></section>
     <section className="category-guides"><p>{product.guides.label}</p><h2>{product.guides.title}</h2><div>{product.guides.items.map(({ label, href }, index) => <a href={href} key={href}><b>{String(index + 1).padStart(2, "0")}</b><span>{label}</span><Arrow /></a>)}</div></section>
-    <section className="headcover-brief-cta"><div><p>{product.close.label}</p><h2>{product.close.title}</h2><p>{product.close.copy}</p></div><a href={content.quoteHref}>{product.close.cta} <Arrow /></a></section>
+    <section className="headcover-brief-cta"><div><p>{product.close.label}</p><h2>{product.close.title}</h2><p>{product.close.copy}</p></div><a href={content.quoteHref} data-analytics-placement="product_final_cta" data-product-interest="Custom plush golf headcovers">{product.close.cta} <Arrow /></a></section>
     <Footer />
   </main>;
 }

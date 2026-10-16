@@ -48,6 +48,7 @@ export function enableAnalytics() {
     document.head.appendChild(script);
   }
   window.__zhoniAnalyticsEnabled = true;
+  window.dispatchEvent(new CustomEvent("zhoni:analytics-enabled"));
 }
 
 export function trackAnalytics(eventName, details = {}) {
