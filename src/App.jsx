@@ -1103,6 +1103,37 @@ export function App({ initialRoute = null, KoreanSiteComponent = KoreanSite, Can
     return () => document.removeEventListener("click", trackContactClick);
   }, []);
   useEffect(() => {
+    const localizedQuoteForm = target => {
+      const form = target instanceof Element ? target.closest("form.quote-ledger-form") : null;
+      return form && /^\/(?:ko|fr-ca|ja|de)\/request-a-quote(?:\/|$)/.test(window.location.pathname) ? form : null;
+    };
+    const formDetails = form => ({
+      form_name: `${(document.documentElement.lang || "en").toLowerCase().replace(/-/g, "_")}_quote_page_project_brief`,
+      form_source: inquirySourceForLocation(),
+      page_language: document.documentElement.lang || "en",
+      page_path: window.location.pathname,
+      page_location: window.location.href,
+      product_interest: form.elements.namedItem("project_type")?.value || "Not selected",
+    });
+    const trackLocalizedStart = event => {
+      const form = localizedQuoteForm(event.target);
+      if (!form || form.dataset.started) return;
+      form.dataset.started = "true";
+      track("form_start", formDetails(form));
+    };
+    const trackLocalizedAttempt = event => {
+      const form = localizedQuoteForm(event.target);
+      if (!form || form.elements.namedItem("company_website")?.value) return;
+      track("form_submit_attempt", formDetails(form));
+    };
+    document.addEventListener("focusin", trackLocalizedStart);
+    document.addEventListener("submit", trackLocalizedAttempt);
+    return () => {
+      document.removeEventListener("focusin", trackLocalizedStart);
+      document.removeEventListener("submit", trackLocalizedAttempt);
+    };
+  }, []);
+  useEffect(() => {
     applySeo(route);
     const canonicalProductRoute = productRouteSources.has(route.source) ? route : (route.alternatePath ? findRoute(route.alternatePath) : null);
     if (!productRouteSources.has(canonicalProductRoute?.source)) return undefined;

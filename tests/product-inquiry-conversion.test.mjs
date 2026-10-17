@@ -12,6 +12,13 @@ const audit = await readFile(new URL("../tools/product-inquiry-audit.md", import
 const keywordMatrix = await readFile(new URL("../tools/product-keyword-page-matrix.csv", import.meta.url), "utf8");
 const seoAcceptance = await readFile(new URL("../tools/product-seo-acceptance.csv", import.meta.url), "utf8");
 const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
+const homepageSource = await readFile(new URL("../src/HomePage.jsx", import.meta.url), "utf8");
+const localizedQuoteSources = await Promise.all([
+  "KoreanSite.jsx",
+  "CanadianFrenchSite.jsx",
+  "JapaneseSite.jsx",
+  "GermanSite.jsx",
+].map(file => readFile(new URL(`../src/${file}`, import.meta.url), "utf8")));
 
 test("publishes decision-ready inquiry content for the six priority products", () => {
   assert.match(appSource, /BUILD THE TOWEL SPECIFICATION/);
@@ -32,6 +39,21 @@ test("prefills ball-marker enquiries and carries product context through convers
     assert.match(appSource, new RegExp(`['\"]${eventName}['\"]`));
   }
   assert.match(appSource, /product_interest/);
+});
+
+test("keeps homepage and localized inquiry funnels measurable after analytics consent", () => {
+  assert.match(homepageSource, /trackAnalytics\("email_click"/);
+  assert.match(homepageSource, /trackAnalytics\("form_submit_attempt"/);
+  assert.match(appSource, /trackLocalizedStart/);
+  assert.match(appSource, /trackLocalizedAttempt/);
+  assert.match(appSource, /toLowerCase\(\)\.replace\(\/-\/g, "_"\)/);
+  assert.match(appSource, /namedItem\("company_website"\)\?\.value/);
+  assert.match(appSource, /product_interest: form\.elements\.namedItem\("project_type"\)/);
+  for (const source of localizedQuoteSources) {
+    assert.match(source, /trackAnalytics\("generate_lead",\s*\{\s*\.\.\.analytics,\s*lead_type:/);
+    assert.match(source, /trackAnalytics\("inquiry_submit_error",\s*analytics\)/);
+    assert.match(source, /product_interest:data\.get\("project_type"\)/);
+  }
 });
 
 test("keeps the internal keyword matrix mapped to public site routes", () => {

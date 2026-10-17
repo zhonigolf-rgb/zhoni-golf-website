@@ -129,6 +129,7 @@ export function HomePage() {
       const url = new URL(link.href, window.location.origin);
       const details = { page_path: "/", page_location: window.location.href, page_language: "en", form_source: inquirySource(), placement: link.dataset.analyticsPlacement || "site_link" };
       if (url.hostname === "wa.me") trackAnalytics("whatsapp_click", details);
+      if (url.protocol === "mailto:") trackAnalytics("email_click", details);
       if (url.origin === window.location.origin && /^\/request-a-quote(?:\/|$)/.test(url.pathname)) {
         if (!url.searchParams.get("source")) url.searchParams.set("source", "homepage");
         link.href = url.href;
@@ -147,6 +148,7 @@ export function HomePage() {
     const data = new FormData(form);
     data.set("source", inquirySource()); data.set("page_language", "en"); data.set("page_path", "/"); data.set("page_url", window.location.href); data.set("referrer", document.referrer);
     if (data.get("company_website")) { form.reset(); setFormStatus("success"); setFormMessage("Thank you—your project brief has been received."); return; }
+    trackAnalytics("form_submit_attempt", { form_name: "homepage_custom_project", form_source: inquirySource(), page_path: "/", page_language: "en", product_interest: data.get("project_type") || "Not selected" });
     setFormStatus("submitting"); setFormMessage("Sending your project brief…");
     const controller = new AbortController(); const timeout = window.setTimeout(() => controller.abort(), 12000);
     try {
