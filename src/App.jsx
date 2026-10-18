@@ -6,7 +6,7 @@ import { addInquirySource, applySeo, inquirySourceForLocation } from "./seo.js";
 import { LanguageSwitcher } from "./locale.jsx";
 import { LocalizedPlushHeadcoverGuidePage, LocalizedPlushHeadcoverProductPage } from "./LocalizedPlushHeadcovers.jsx";
 import { ProductPriorityGateway } from "./ProductPriorityGateway.jsx";
-import { BallMarkerProductPage } from "./BallMarkerProductPage.jsx";
+import { BallMarkerManufacturingGuidePage, BallMarkerProductPage } from "./BallMarkerProductPage.jsx";
 import { inquiryProjectOptions, resolveInquiryProject } from "./inquiryPrefill.js";
 import { majorTournamentDisclaimer, majorTournamentGuides } from "./MajorTournamentGuides.js";
 import enPlushHeadcovers from "./content/plush-headcovers/en.json";
@@ -169,6 +169,7 @@ const buyerGuideCatalog = [
   { category: "sourcing", label: "SOURCING CONFIDENCE", title: "What Happens After a Custom Golf Project Brief", copy: "Understand the review, follow-up and next-step alignment after you submit a project brief.", href: siteRoutes.postBriefGuide.path },
   { category: "product", label: "PRODUCT & CUSTOMISATION", title: "Custom Golf Headcovers Procurement Guide", copy: "Plan club, tournament or brand headcovers around product direction, artwork, packaging and the intended hand-off.", href: siteRoutes.headcoversGuide.path },
   { category: "product", label: "PRODUCT & CUSTOMISATION", title: "Custom Golf Towels Procurement Guide", copy: "A practical route for planning towel use, branding details and the project context that informs the next discussion.", href: siteRoutes.towelsGuide.path },
+  { category: "product", label: "BALL MARKERS & DIVOT TOOLS", title: "Custom Golf Ball Marker Manufacturing Guide", copy: "Compare metal-forming routes, mould requirements, enamel, plating, magnets, hardware and the checks that belong in sample approval.", href: siteRoutes.ballMarkerManufacturingGuide.path },
   { category: "product", label: "PRODUCT & CUSTOMISATION", title: "Branding Methods for Premium Golf Merchandise", copy: "Compare embroidery, debossing, print and metal finishing against the chosen product and brand expression.", href: siteRoutes.brandingGuide.path },
   { category: "product", label: "PRODUCT & CUSTOMISATION", title: "How to Prepare Artwork for Custom Golf Products", copy: "Prepare logo files, colour direction, placement and reference material for a more useful artwork hand-off.", href: siteRoutes.artworkGuide.path },
   { category: "event", label: "EVENT & GIFT PLANNING", title: "How to Choose Custom Golf Gifts", copy: "Choose between gift sets and single products by matching the project to its audience, moment and intended outcome.", href: siteRoutes.golfGiftGuide.path },
@@ -1165,6 +1166,7 @@ export function App({ initialRoute = null, KoreanSiteComponent = KoreanSite, Can
   if (route === siteRoutes.audienceGiftGuide) return <><AudienceGolfGiftGuidePage /><FloatingContactActions /></>;
   if (route === siteRoutes.brandingGuide) return <><BrandingGuidePage /><FloatingContactActions /></>;
   if (route === siteRoutes.artworkGuide) return <><ArtworkGuidePage /><FloatingContactActions /></>;
+  if (route === siteRoutes.ballMarkerManufacturingGuide) return <><BallMarkerManufacturingGuidePage Header={ZhoniPageHeader} Footer={ZhoniPageFooter} /><FloatingContactActions /></>;
   if (route === siteRoutes.headcoversGuide) return <><ProcurementTopicGuide topic="headcovers" /><FloatingContactActions /></>;
   if (route === siteRoutes.towelsGuide) return <><ProcurementTopicGuide topic="towels" /><FloatingContactActions /></>;
   if (route === siteRoutes.tournamentGuide) return <><ProcurementTopicGuide topic="tournament" /><FloatingContactActions /></>;
