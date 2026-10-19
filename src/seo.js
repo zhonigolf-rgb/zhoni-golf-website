@@ -20,6 +20,7 @@ const breadcrumbNames = {
   "/guides/how-to-choose-golf-gifts-by-audience/": "Golf Gifts by Audience",
   "/guides/branding-methods-for-premium-golf-merchandise/": "Golf Branding Methods",
   "/guides/prepare-artwork-for-custom-golf-products/": "Prepare Golf Product Artwork",
+  "/guides/custom-golf-ball-marker-enamel-plating-mould-guide/": "Ball Marker Manufacturing Guide",
   "/guides/custom-golf-headcovers-procurement-guide/": "Custom Golf Headcovers Procurement Guide",
   "/guides/custom-golf-towels-procurement-guide/": "Custom Golf Towels Procurement Guide",
   "/guides/golf-tournament-player-packs/": "Golf Tournament Player Packs Guide",
@@ -265,7 +266,7 @@ export function schemaForRoute(route, faqItems = []) {
   }
 
   if (guideRoutes.some(guide => guide.path === englishPath)) {
-    graph.push({ "@type": "Article", "@id": `${canonical}#article`, headline: route.title, description: route.description, url: canonical, inLanguage: language, mainEntityOfPage: { "@id": `${canonical}#webpage` }, author: { "@id": companyId }, publisher: { "@id": companyId }, about: { "@id": brandId } });
+    graph.push({ "@type": "Article", "@id": `${canonical}#article`, headline: route.title, description: route.description, url: canonical, image: route.image ? absolute(route.image) : undefined, inLanguage: language, mainEntityOfPage: { "@id": `${canonical}#webpage` }, author: { "@id": companyId }, publisher: { "@id": companyId }, about: { "@id": brandId } });
   }
 
   const resolvedFaqItems = faqItems.length ? faqItems : (englishPath === siteRoutes.faq.path ? defaultFaqEntities : []);
@@ -279,7 +280,7 @@ export function schemaForRoute(route, faqItems = []) {
 export function applySeo(route) {
   const canonical = absolute(route.path);
   const englishPath = route.lang ? route.alternatePath : route.path;
-  const serviceImage = productServiceDetails[englishPath]?.image;
+  const serviceImage = productServiceDetails[englishPath]?.image ?? route.image;
   document.documentElement.lang = route.lang ?? "en";
   document.title = route.title;
   setMeta("name", "description", route.description);

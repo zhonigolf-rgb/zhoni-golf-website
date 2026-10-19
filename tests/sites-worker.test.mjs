@@ -1012,6 +1012,32 @@ test("publishes ball markers and divot tools as a product-first route in every l
   assert.doesNotMatch(app, /\["Gift Sets",[^\n]+zhoni-product-gift-sets-v3\.png/);
 });
 
+test("publishes an original, responsive ball marker manufacturing guide", async () => {
+  const route = siteRoutes.ballMarkerManufacturingGuide;
+  const document = await readFile(new URL(`../dist/client${route.path}index.html`, import.meta.url), "utf8");
+  const variants = [
+    "zhoni-ball-marker-manufacturing-stages-v1-480.avif",
+    "zhoni-ball-marker-manufacturing-stages-v1-960.webp",
+    "zhoni-ball-marker-manufacturing-stages-v1-1536.avif",
+    "zhoni-ball-marker-magnetic-hardware-qc-v1-480.webp",
+    "zhoni-ball-marker-magnetic-hardware-qc-v1-960.avif",
+    "zhoni-ball-marker-magnetic-hardware-qc-v1-1536.webp",
+  ];
+
+  for (const asset of variants) {
+    await access(new URL(`../public/assets/images/responsive/${asset}`, import.meta.url));
+    assert.match(document, new RegExp(asset.replaceAll(".", "\\.")));
+  }
+
+  assert.match(document, /Custom Golf Ball Marker Manufacturing:/);
+  assert.match(document, /TYPICAL PRODUCTION SEQUENCE/);
+  assert.match(document, /HARDWARE &amp; ASSEMBLY/);
+  assert.match(document, /"@type":"Article"/);
+  assert.match(document, /"@type":"FAQPage"/);
+  assert.match(document, /property="og:image" content="https:\/\/zhonigolf\.com\/assets\/images\/responsive\/zhoni-ball-marker-manufacturing-stages-v1-1536\.webp"/);
+  assert.doesNotMatch(document, /10PCS|free sample|PGA|ROYAL TROON/i);
+});
+
 test("keeps product-family imagery large in a responsive three-to-one column grid", async () => {
   const styles = await readFile(new URL("../src/products.css", import.meta.url), "utf8");
   assert.match(styles, /\.family-grid\s*\{\s*display:\s*grid;\s*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/);

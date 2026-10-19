@@ -23,6 +23,9 @@ export function renderRouteDocument(template, route, appMarkup = "", structuredD
     .replace(/\s*<meta property="og:description"[^>]*>/i, "")
     .replace(/\s*<meta property="og:type"[^>]*>/i, "")
     .replace(/\s*<meta property="og:url"[^>]*>/i, "")
+    .replace(/\s*<meta property="og:image"[^>]*>/i, "")
+    .replace(/\s*<meta name="twitter:card"[^>]*>/i, "")
+    .replace(/\s*<meta name="twitter:image"[^>]*>/i, "")
     .replace(/\s*<link rel="alternate"[^>]*>/gi, "")
     .replace(/\s*<script id="zhoni-page-schema"[^>]*>[\s\S]*?<\/script>/i, "")
     .replace(/<html lang="[^"]*">/i, `<html lang="${route.lang ?? "en"}">`)
@@ -34,6 +37,11 @@ export function renderRouteDocument(template, route, appMarkup = "", structuredD
     `<meta property="og:description" content="${description}" />`,
     '<meta property="og:type" content="website" />',
     `<meta property="og:url" content="${canonical}" />`,
+    ...(route.image ? [
+      `<meta property="og:image" content="${siteOrigin}${route.image}" />`,
+      '<meta name="twitter:card" content="summary_large_image" />',
+      `<meta name="twitter:image" content="${siteOrigin}${route.image}" />`,
+    ] : []),
     `<link rel="alternate" hreflang="en" href="${siteOrigin}${englishPath}" />`,
     ...localizedRoutes.map(candidate => `<link rel="alternate" hreflang="${candidate.lang}" href="${siteOrigin}${candidate.path}" />`),
     `<link rel="alternate" hreflang="x-default" href="${siteOrigin}${englishPath}" />`,
