@@ -5,7 +5,7 @@ import { trackAnalytics } from "./analytics.jsx";
 import { inquirySourceForLocation } from "./seo.js";
 import { CanadianFrenchExpansion } from "./CanadianFrenchExpansion.jsx";
 import { ProductPriorityGateway } from "./ProductPriorityGateway.jsx";
-import { BallMarkerProductPage } from "./BallMarkerProductPage.jsx";
+import { LocalizedBallMarkerProductPage as BallMarkerProductPage, LocalizedBallMarkerGuide } from "./LocalizedBallMarkerGuide.jsx";
 
 const WHATSAPP_URL = import.meta.env.VITE_WHATSAPP_URL ?? "https://wa.me/8617759190848";
 const Arrow = () => <span aria-hidden="true">↗</span>;
@@ -84,6 +84,7 @@ function FrenchQuote() {
 }
 
 export function CanadianFrenchSite({ routeKey }) {
+  if (routeKey === "frCaBallMarkerManufacturingGuide") return <LocalizedBallMarkerGuide locale="fr-CA" Header={FrenchHeader} Footer={FrenchFooter} />;
   const pages={frCaHome:<FrenchHome />,frCaProducts:<FrenchProducts />,frCaSolutions:<FrenchSolutions />,frCaProcess:<FrenchProcess />,frCaFaq:<FrenchFaq />,frCaAbout:<FrenchAbout />,frCaQuote:<FrenchQuote />,frCaBallMarkers:<BallMarkerProductPage locale="fr-CA" Header={FrenchHeader} Footer={FrenchFooter} />};
   return pages[routeKey] ?? <CanadianFrenchExpansion routeKey={routeKey} />;
 }

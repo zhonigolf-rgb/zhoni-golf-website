@@ -489,7 +489,7 @@ test("keeps completed Japanese routes in full parity with English", async () => 
   const japaneseRoutes = Object.values(siteRoutes).filter((route) => route.lang === "ja");
   const japaneseByEnglishPath = new Map(japaneseRoutes.map((route) => [route.alternatePath, route]));
 
-  assert.equal(englishRoutes.length, 64);
+  assert.equal(englishRoutes.length, 65);
   assert.equal(japaneseRoutes.length, englishRoutes.length);
 
   for (const englishRoute of englishRoutes) {
@@ -597,7 +597,7 @@ test("keeps completed German routes in full parity with English and indexes ever
   const germanRoutes = Object.values(siteRoutes).filter((route) => route.lang === "de");
   const germanByEnglishPath = new Map(germanRoutes.map((route) => [route.alternatePath, route]));
 
-  assert.equal(englishRoutes.length, 64);
+  assert.equal(englishRoutes.length, 65);
   assert.equal(germanRoutes.length, englishRoutes.length);
 
   for (const englishRoute of englishRoutes) {
@@ -612,7 +612,7 @@ test("keeps completed German routes in full parity with English and indexes ever
   }
 
   const germanGuideArticles = germanRoutes.filter((route) => route.path.startsWith("/de/guides/") && route.path !== "/de/guides/");
-  assert.equal(germanGuideArticles.length, 41);
+  assert.equal(germanGuideArticles.length, 42);
   for (const route of germanGuideArticles) {
     assert.match(hub, new RegExp(route.path.replaceAll("/", "\\/")), `Missing ${route.path} from German guide center.`);
     const document = await readFile(new URL(`../dist/client/${route.path.slice(1)}index.html`, import.meta.url), "utf8");
@@ -741,7 +741,7 @@ test("keeps the completed Korean routes in full parity with English", async () =
   const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
   const englishRoutes = Object.values(siteRoutes).filter(route => !route.lang && route.localeStage !== "pending");
   const koreanRoutes = Object.values(siteRoutes).filter(route => route.lang === "ko");
-  assert.equal(englishRoutes.length, 64);
+  assert.equal(englishRoutes.length, 65);
   assert.equal(koreanRoutes.length, englishRoutes.length);
 
   const koreanByEnglishPath = new Map(koreanRoutes.map(route => [route.alternatePath, route]));
@@ -923,7 +923,7 @@ test("keeps completed Canadian French routes in full parity with English", async
   const frenchRoutes = Object.values(siteRoutes).filter((route) => route.lang === "fr-CA");
   const frenchByEnglishPath = new Map(frenchRoutes.map((route) => [route.alternatePath, route]));
 
-  assert.equal(englishRoutes.length, 64);
+  assert.equal(englishRoutes.length, 65);
   assert.equal(frenchRoutes.length, englishRoutes.length);
 
   for (const englishRoute of englishRoutes) {
@@ -1036,6 +1036,32 @@ test("publishes an original, responsive ball marker manufacturing guide", async 
   assert.match(document, /"@type":"FAQPage"/);
   assert.match(document, /property="og:image" content="https:\/\/zhonigolf\.com\/assets\/images\/responsive\/zhoni-ball-marker-manufacturing-stages-v1-1536\.webp"/);
   assert.doesNotMatch(document, /10PCS|free sample|PGA|ROYAL TROON/i);
+});
+
+test("connects localized ball marker guides to the matching product and inquiry language", async () => {
+  const { ballMarkerLocales } = await import("../src/content/ball-marker-locales.js");
+  const routes = Object.values(siteRoutes).filter(route => route.lang && route.alternatePath === siteRoutes.ballMarkerManufacturingGuide.path);
+  assert.equal(routes.length, 4);
+  for (const route of routes) {
+    const copy = ballMarkerLocales[route.lang];
+    const prefix = route.lang === "fr-CA" ? "/fr-ca" : `/${route.lang}`;
+    const html = await readFile(new URL(`../dist/client${route.path}index.html`, import.meta.url), "utf8");
+    const product = await readFile(new URL(`../dist/client${prefix}/custom-golf-ball-markers-divot-tools/index.html`, import.meta.url), "utf8");
+    const hub = await readFile(new URL(`../dist/client${prefix}/guides/index.html`, import.meta.url), "utf8");
+    const quote = await readFile(new URL(`../dist/client${prefix}/request-a-quote/index.html`, import.meta.url), "utf8");
+    const schema = JSON.parse(html.match(/<script id="zhoni-page-schema" type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
+    assert.equal(schema["@graph"].find(node => node["@type"] === "FAQPage").mainEntity.length, 6);
+    assert.equal(schema["@graph"].find(node => node["@type"] === "Article").inLanguage, route.lang);
+    assert.ok(html.includes(`product=${encodeURIComponent(copy.product)}`));
+    assert.ok(quote.includes(copy.product.replaceAll("&", "&amp;")), "CTA value must match a localized quote option");
+    assert.ok(hub.includes(route.path));
+    assert.ok(product.includes(route.path));
+    for (const [title] of copy.stages) assert.ok(product.includes(title.replaceAll("&", "&amp;")));
+    for (const alternate of routes) assert.ok(html.includes(`hreflang="${alternate.lang}" href="https://zhonigolf.com${alternate.path}"`));
+    const body = html.split('<div id="root">')[1];
+    const links = [...body.matchAll(/href="(\/[^"#]*)"/g)].map(match => match[1]);
+    assert.ok(links.every(href => href.startsWith(`${prefix}/`)), "Body links must stay in the active language");
+  }
 });
 
 test("keeps product-family imagery large in a responsive three-to-one column grid", async () => {

@@ -6,7 +6,7 @@ import { inquirySourceForLocation } from "./seo.js";
 import { LocalizedBuyerEvidence } from "./LocalizedBuyerEvidence.jsx";
 import { GermanExpansion } from "./GermanExpansion.jsx";
 import { ProductPriorityGateway } from "./ProductPriorityGateway.jsx";
-import { BallMarkerProductPage } from "./BallMarkerProductPage.jsx";
+import { LocalizedBallMarkerProductPage as BallMarkerProductPage, LocalizedBallMarkerGuide } from "./LocalizedBallMarkerGuide.jsx";
 
 const WHATSAPP_URL = import.meta.env.VITE_WHATSAPP_URL ?? "https://wa.me/8617759190848";
 const Arrow = () => <span aria-hidden="true">↗</span>;
@@ -78,6 +78,7 @@ function Quote() {
 }
 
 export function GermanSite({ routeKey }) {
+  if (routeKey === "deBallMarkerManufacturingGuide") return <LocalizedBallMarkerGuide locale="de" Header={Header} Footer={Footer} />;
   const pages = { deHome:<Home />, deProducts:<Products />, deSolutions:<Solutions />, deProcess:<Process />, deFaq:<Faq />, deAbout:<About />, deQuote:<Quote />, deBallMarkers:<BallMarkerProductPage locale="de" Header={Header} Footer={Footer} /> };
   return pages[routeKey] ?? <GermanExpansion routeKey={routeKey} />;
 }

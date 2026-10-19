@@ -6,7 +6,7 @@ import { inquirySourceForLocation } from "./seo.js";
 import { LocalizedBuyerEvidence } from "./LocalizedBuyerEvidence.jsx";
 import { JapaneseExpansion } from "./JapaneseExpansion.jsx";
 import { ProductPriorityGateway } from "./ProductPriorityGateway.jsx";
-import { BallMarkerProductPage } from "./BallMarkerProductPage.jsx";
+import { LocalizedBallMarkerProductPage as BallMarkerProductPage, LocalizedBallMarkerGuide } from "./LocalizedBallMarkerGuide.jsx";
 
 const WHATSAPP_URL = import.meta.env.VITE_WHATSAPP_URL ?? "https://wa.me/8617759190848";
 const Arrow = () => <span aria-hidden="true">↗</span>;
@@ -78,6 +78,7 @@ function Quote() {
 }
 
 export function JapaneseSite({ routeKey }) {
+  if (routeKey === "jaBallMarkerManufacturingGuide") return <LocalizedBallMarkerGuide locale="ja" Header={Header} Footer={Footer} />;
   const pages = { jaHome:<Home />, jaProducts:<Products />, jaSolutions:<Solutions />, jaProcess:<Process />, jaFaq:<Faq />, jaAbout:<About />, jaQuote:<Quote />, jaBallMarkers:<BallMarkerProductPage locale="ja" Header={Header} Footer={Footer} /> };
   return pages[routeKey] ?? <JapaneseExpansion routeKey={routeKey} />;
 }

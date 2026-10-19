@@ -5,7 +5,7 @@ import { trackAnalytics } from "./analytics.jsx";
 import { inquirySourceForLocation } from "./seo.js";
 import { ProductPriorityGateway } from "./ProductPriorityGateway.jsx";
 import { KoreanExpansion } from "./KoreanExpansion.jsx";
-import { BallMarkerProductPage } from "./BallMarkerProductPage.jsx";
+import { LocalizedBallMarkerProductPage as BallMarkerProductPage, LocalizedBallMarkerGuide } from "./LocalizedBallMarkerGuide.jsx";
 
 const WHATSAPP_URL = import.meta.env.VITE_WHATSAPP_URL ?? "https://wa.me/8617759190848";
 const Arrow = () => <span aria-hidden="true">↗</span>;
@@ -80,6 +80,7 @@ function KoreanQuote() {
 }
 
 export function KoreanSite({ routeKey }) {
+  if (routeKey === "koBallMarkerManufacturingGuide") return <LocalizedBallMarkerGuide locale="ko" Header={KoreanHeader} Footer={KoreanFooter} />;
   const pages={koHome:<KoreanHome />,koProducts:<KoreanProducts />,koSolutions:<KoreanSolutions />,koProcess:<KoreanProcess />,koFaq:<KoreanFAQ />,koAbout:<KoreanAbout />,koQuote:<KoreanQuote />,koBallMarkers:<BallMarkerProductPage locale="ko" Header={KoreanHeader} Footer={KoreanFooter} />};
   return pages[routeKey] ?? <KoreanExpansion routeKey={routeKey} />;
 }

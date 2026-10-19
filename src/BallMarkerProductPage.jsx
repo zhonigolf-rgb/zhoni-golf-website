@@ -1,6 +1,6 @@
 const Arrow = () => <span aria-hidden="true">↗</span>;
 
-const BallMarkerGuideImage = ({ name, alt, eager = false }) => <picture>
+export const BallMarkerGuideImage = ({ name, alt, eager = false }) => <picture>
   <source type="image/avif" srcSet={`/assets/images/responsive/${name}-480.avif 480w, /assets/images/responsive/${name}-960.avif 960w, /assets/images/responsive/${name}-1536.avif 1536w`} sizes="(max-width: 850px) 100vw, 50vw" />
   <source type="image/webp" srcSet={`/assets/images/responsive/${name}-480.webp 480w, /assets/images/responsive/${name}-960.webp 960w, /assets/images/responsive/${name}-1536.webp 1536w`} sizes="(max-width: 850px) 100vw, 50vw" />
   <img src={`/assets/images/responsive/${name}-960.webp`} alt={alt} loading={eager ? "eager" : "lazy"} decoding="async" fetchPriority={eager ? "high" : "auto"} />
@@ -47,19 +47,24 @@ const content = {
   },
 };
 
-export function BallMarkerProductPage({ locale = "en", Header, Footer }) {
-  const page = content[locale] ?? content.en;
+export function BallMarkerProductPage({ locale = "en", Header, Footer, translation }) {
+  const page = { ...(content[locale] ?? content.en), ...(translation ? {
+    manufacturingLabel: translation.labels[2], manufacturingTitle: translation.processTitle,
+    manufacturingIntro: translation.processIntro,
+    manufacturing: translation.stages.map(([title, copy], index) => [String(index + 1).padStart(2, "0"), title, copy]),
+  } : {}) };
   const base = locale === "en" ? "" : `/${locale === "fr-CA" ? "fr-ca" : locale}`;
   const quote = `${base}/request-a-quote/?product=${encodeURIComponent(page.product)}`;
   return <main className="zhoni-page category-page ball-marker-product-page">
     <Header active="products" />
     <section className="category-hero"><div className="category-rail"><strong>Z</strong><span>{page.rail}</span></div><div className="category-intro"><p>{page.eyebrow}</p><h1>{page.title}</h1><p>{page.intro}</p><a href={quote} data-analytics-placement="product_hero" data-product-interest={page.product}>{page.cta} <Arrow /></a><small>PRODUCT · CONSTRUCTION · BRANDING · PACKAGING</small></div><img src="/assets/images/zhoni-product-ball-markers-v3.png" alt={page.imageAlt} /></section>
-    <section className="category-ledger"><div><p>PRODUCT DEVELOPMENT ROUTE</p>{page.steps.map(([number,title,copy])=><article key={number}><b>{number}</b><h2>{title}</h2><p>{copy}</p><span>→</span></article>)}</div><aside><p>{page.essentials}</p><ul>{page.essentialsList.map(item=><li key={item}>{item}</li>)}</ul><small>{page.note}</small></aside></section>
-    <section className="plush-format-section"><div><p>PRODUCT FORMATS</p><h2>{page.formatsTitle}</h2><p>{page.formatsIntro}</p></div><div>{page.formats.map(([number,title,copy])=><article key={number}><b>{number}</b><h3>{title}</h3><p>{copy}</p></article>)}</div></section>
+    <section className="category-ledger"><div><p>{translation?.labels[16] ?? "PRODUCT DEVELOPMENT ROUTE"}</p>{page.steps.map(([number,title,copy])=><article key={number}><b>{number}</b><h2>{title}</h2><p>{copy}</p><span>→</span></article>)}</div><aside><p>{page.essentials}</p><ul>{page.essentialsList.map(item=><li key={item}>{item}</li>)}</ul><small>{page.note}</small></aside></section>
+    <section className="plush-format-section"><div><p>{translation?.labels[17] ?? "PRODUCT FORMATS"}</p><h2>{page.formatsTitle}</h2><p>{page.formatsIntro}</p></div><div>{page.formats.map(([number,title,copy])=><article key={number}><b>{number}</b><h3>{title}</h3><p>{copy}</p></article>)}</div></section>
     {page.specs && <section className="headcover-specs"><div><p>BUILD THE PRODUCT SPECIFICATION</p><h2>Material, finish and function must agree.</h2><p>Every option is reviewed against the selected format, artwork, handling, quantity and presentation rather than treated as a universal specification.</p></div><dl>{page.specs.map(([term, description]) => <div key={term}><dt>{term}</dt><dd>{description}</dd></div>)}</dl></section>}
     {page.manufacturing && <section className="headcover-process ball-marker-manufacturing"><div><p>{page.manufacturingLabel}</p><h2>{page.manufacturingTitle}</h2><p>{page.manufacturingIntro}</p></div><ol>{page.manufacturing.map(([number,title,copy]) => <li key={number}><b>{number}</b><div><h3>{title}</h3><p>{copy}</p></div></li>)}</ol></section>}
     {page.process && <section className="headcover-process"><div><p>{page.processLabel}</p><h2>{page.processTitle}</h2></div><ol>{page.process.map(([number,title,copy]) => <li key={number}><b>{number}</b><div><h3>{title}</h3><p>{copy}</p></div></li>)}</ol></section>}
     {page.faqs && <section className="headcover-faq"><div><p>COMMON BUYER QUESTIONS</p><h2>{page.faqTitle}</h2></div><div>{page.faqs.map(([question, answer], index) => <article key={question}><b>{String(index + 1).padStart(2, "0")}</b><h3>{question}</h3><p>{answer}</p></article>)}</div></section>}
+    {translation && <section className="category-guides"><p>{translation.labels[14]}</p><h2>{translation.relatedTitle}</h2><div><a href={`${base}/guides/custom-golf-ball-marker-enamel-plating-mould-guide/`}><b>01</b><span>{translation.guideLabel}</span><Arrow /></a><a href={`${base}/guides/branding-methods-for-premium-golf-merchandise/`}><b>02</b><span>{translation.related[0]}</span><Arrow /></a><a href={`${base}/guides/prepare-artwork-for-custom-golf-products/`}><b>03</b><span>{translation.related[1]}</span><Arrow /></a><a href={`${base}/guides/custom-golf-merchandise-quality-checklist/`}><b>04</b><span>{translation.related[2]}</span><Arrow /></a></div></section>}
     {locale === "en" && <>
       <section className="category-guides"><p>RELATED BUYER GUIDES</p><h2>Prepare the manufacturing, artwork and quality decisions.</h2><div><a href="/guides/custom-golf-ball-marker-enamel-plating-mould-guide/"><b>01</b><span>BALL MARKER MANUFACTURING</span><Arrow /></a><a href="/guides/branding-methods-for-premium-golf-merchandise/"><b>02</b><span>BRANDING METHODS</span><Arrow /></a><a href="/guides/prepare-artwork-for-custom-golf-products/"><b>03</b><span>PREPARE ARTWORK</span><Arrow /></a><a href="/guides/custom-golf-merchandise-quality-checklist/"><b>04</b><span>QUALITY CHECKLIST</span><Arrow /></a></div></section>
       <section className="category-guides product-related-routes"><p>RELATED CUSTOM GOLF PRODUCTS</p><h2>Continue with practical products for the same hand-off.</h2><div><a href="/custom-golf-towels/"><b>01</b><span>CUSTOM MAGNETIC GOLF TOWELS</span><Arrow /></a><a href="/custom-golf-caps/"><b>02</b><span>CUSTOM GOLF CAPS & VISORS</span><Arrow /></a><a href="/custom-golf-packaging/"><b>03</b><span>CUSTOM GOLF PACKAGING</span><Arrow /></a><a href="/products/"><b>+</b><span>VIEW ALL CUSTOM GOLF PRODUCTS</span><Arrow /></a></div></section>
