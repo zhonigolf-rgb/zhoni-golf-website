@@ -1,11 +1,12 @@
 import { BallMarkerGuideImage, BallMarkerProductPage } from "./BallMarkerProductPage.jsx";
 import { ballMarkerLocales } from "./content/ball-marker-locales.js";
+import { ballMarkerProductLocales } from "./content/ball-marker-product-locales.js";
 import { LocalizedBuyerEvidence } from "./LocalizedBuyerEvidence.jsx";
 
 const Arrow = () => <span aria-hidden="true">↗</span>;
 
 export function LocalizedBallMarkerProductPage(props) {
-  return <BallMarkerProductPage {...props} translation={ballMarkerLocales[props.locale]} />;
+  return <BallMarkerProductPage {...props} translation={{ ...ballMarkerLocales[props.locale], productDetails: ballMarkerProductLocales[props.locale] }} />;
 }
 
 export function LocalizedBallMarkerGuide({ locale, Header, Footer }) {

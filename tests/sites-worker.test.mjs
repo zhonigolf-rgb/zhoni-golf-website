@@ -1040,6 +1040,7 @@ test("publishes an original, responsive ball marker manufacturing guide", async 
 
 test("connects localized ball marker guides to the matching product and inquiry language", async () => {
   const { ballMarkerLocales } = await import("../src/content/ball-marker-locales.js");
+  const { ballMarkerProductLocales } = await import("../src/content/ball-marker-product-locales.js");
   const routes = Object.values(siteRoutes).filter(route => route.lang && route.alternatePath === siteRoutes.ballMarkerManufacturingGuide.path);
   assert.equal(routes.length, 4);
   for (const route of routes) {
@@ -1056,6 +1057,19 @@ test("connects localized ball marker guides to the matching product and inquiry 
     assert.ok(quote.includes(copy.product.replaceAll("&", "&amp;")), "CTA value must match a localized quote option");
     assert.ok(hub.includes(route.path));
     assert.ok(product.includes(route.path));
+    const details = ballMarkerProductLocales[route.lang];
+    const productSchema = JSON.parse(product.match(/<script id="zhoni-page-schema" type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
+    const productFaq = productSchema["@graph"].find(node => node["@type"] === "FAQPage");
+    assert.equal(productFaq.inLanguage, route.lang);
+    assert.deepEqual(productFaq.mainEntity.map(item => [item.name, item.acceptedAnswer.text]), details.faqs);
+    const specs = product.match(/<section class="headcover-specs">([\s\S]*?)<\/section>/)[1];
+    assert.equal([...specs.matchAll(/<dt>/g)].length, 5);
+    for (const [term] of details.specs) assert.ok(specs.includes(term.replaceAll("&", "&amp;")));
+    const sampleProcess = product.match(/<section class="headcover-process">([\s\S]*?)<\/section>/)[1];
+    assert.equal([...sampleProcess.matchAll(/<li>/g)].length, 5);
+    assert.ok(sampleProcess.includes(details.processTitle));
+    for (const [, title] of details.process) assert.ok(sampleProcess.includes(title.replaceAll("&", "&amp;")));
+    assert.doesNotMatch(product, /BUILD THE PRODUCT SPECIFICATION|COMMON BUYER QUESTIONS|SAMPLE &amp; QUALITY PATH|NEXT STEP/);
     for (const [title] of copy.stages) assert.ok(product.includes(title.replaceAll("&", "&amp;")));
     for (const alternate of routes) assert.ok(html.includes(`hreflang="${alternate.lang}" href="https://zhonigolf.com${alternate.path}"`));
     const body = html.split('<div id="root">')[1];
