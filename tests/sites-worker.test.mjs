@@ -1051,7 +1051,7 @@ test("connects localized ball marker guides to the matching product and inquiry 
     const hub = await readFile(new URL(`../dist/client${prefix}/guides/index.html`, import.meta.url), "utf8");
     const quote = await readFile(new URL(`../dist/client${prefix}/request-a-quote/index.html`, import.meta.url), "utf8");
     const schema = JSON.parse(html.match(/<script id="zhoni-page-schema" type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
-    assert.equal(schema["@graph"].find(node => node["@type"] === "FAQPage").mainEntity.length, 6);
+    assert.equal(schema["@graph"].find(node => node["@type"] === "FAQPage").mainEntity.length, 11);
     assert.equal(schema["@graph"].find(node => node["@type"] === "Article").inLanguage, route.lang);
     assert.ok(html.includes(`product=${encodeURIComponent(copy.product)}`));
     assert.ok(quote.includes(copy.product.replaceAll("&", "&amp;")), "CTA value must match a localized quote option");
@@ -1076,6 +1076,27 @@ test("connects localized ball marker guides to the matching product and inquiry 
     const links = [...body.matchAll(/href="(\/[^"#]*)"/g)].map(match => match[1]);
     assert.ok(links.every(href => href.startsWith(`${prefix}/`)), "Body links must stay in the active language");
   }
+});
+
+test("publishes product-specific procurement answers in all five languages", async () => {
+  const { procurementAnswers, procurementGuideProducts } = await import("../src/content/procurement-answers.js");
+  const routes = Object.values(siteRoutes).filter(route => procurementGuideProducts[route.alternatePath ?? route.path]);
+  assert.equal(routes.length, 20);
+  for (const route of routes) {
+    const copy = procurementAnswers[route.lang ?? "en"];
+    const product = procurementGuideProducts[route.alternatePath ?? route.path];
+    const document = await readFile(new URL(`../dist/client${route.path}index.html`, import.meta.url), "utf8");
+    assert.equal(document.split(`data-procurement-product="${product}"`).length - 1, 1, route.path);
+    const graph = JSON.parse(document.match(/<script id="zhoni-page-schema" type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])["@graph"];
+    const faq = graph.find(item => item["@type"] === "FAQPage");
+    for (const [index, question] of copy.questions.entries()) {
+      const entity = faq.mainEntity.find(item => item.name === question);
+      assert.ok(entity, `Missing procurement FAQ on ${route.path}: ${question}`);
+      assert.equal(entity.acceptedAnswer.text, copy.products[product][index]);
+    }
+  }
+  const unrelated = await readFile(new URL("../dist/client/guides/custom-golf-headcovers-procurement-guide/index.html", import.meta.url), "utf8");
+  assert.doesNotMatch(unrelated, /data-procurement-product=/);
 });
 
 test("keeps product-family imagery large in a responsive three-to-one column grid", async () => {

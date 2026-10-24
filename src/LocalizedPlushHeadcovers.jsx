@@ -1,3 +1,4 @@
+import { ProcurementAnswers } from "./ProcurementAnswers.jsx";
 const Arrow = () => <span aria-hidden="true">↗</span>;
 
 function TextWithBreaks({ value }) {
@@ -23,7 +24,7 @@ export function LocalizedPlushHeadcoverGuidePage({ content, topic, Header, Foote
     {Evidence && <Evidence context={`guide-plush-${topic}`} />}
     <section className="guide-decision"><div><p>{shared.preparationLabel}</p><h2>{shared.preparationTitle}</h2><p>{shared.preparationCopy}</p></div><aside><p>{shared.checklistLabel}</p><h3>{shared.checklistTitle}</h3><ul>{guide.checklist.map(item => <li key={item}>{item}</li>)}</ul></aside></section>
     <section className="guide-faq"><p>{shared.faqLabel}</p><h2>{shared.faqTitle}</h2><div>{guide.faqs.map(([question, answer], index) => <article key={question}><b>{String(index + 1).padStart(2, "0")}</b><h3>{question}</h3><p>{answer}</p></article>)}</div></section>
-    <section className="guide-products"><p>{shared.relatedLabel}</p><h2>{shared.relatedTitle}</h2><div>{content.guides.related.map(({ label, href }) => <a href={href} key={label}>{label}<Arrow /></a>)}</div></section>
+    <ProcurementAnswers /><section className="guide-products"><p>{shared.relatedLabel}</p><h2>{shared.relatedTitle}</h2><div>{content.guides.related.map(({ label, href }) => <a href={href} key={label}>{label}<Arrow /></a>)}</div></section>
     <section className="guide-close"><div><p>{shared.closeLabel}</p><h2>{shared.closeTitle}</h2><a href={content.quoteHref}>{shared.closeCta} <Arrow /></a></div><img src={content.images.hero} alt={shared.closeAlt} /></section>
     <Footer />
   </main>;

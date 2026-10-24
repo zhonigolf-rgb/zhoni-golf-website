@@ -1,3 +1,4 @@
+import { ProcurementAnswers } from "./ProcurementAnswers.jsx";
 import { Fragment, lazy, Suspense, useEffect, useRef, useState } from "react";
 import { findRoute, siteRoutes } from "./siteRoutes";
 import { trackAnalytics } from "./analytics.jsx";
@@ -450,7 +451,7 @@ function ProcurementTopicGuide({ topic }) {
     <section className="guide-table"><table><thead><tr><th>WHAT TO DEFINE</th><th>USEFUL STARTING POINT</th><th>WHY IT MATTERS</th></tr></thead><tbody>{content.rows.map(row => <tr key={row[0]}>{row.map(cell => <td key={cell}>{cell}</td>)}</tr>)}</tbody></table></section>
     <section className="guide-decision"><div><p>PROJECT BRIEF CHECKLIST</p><h2>Useful inputs before requesting a quote.</h2><p>A clear brief supports a more relevant product, branding and packaging conversation. MOQ, timing, confirmation steps and commercial requirements remain project-specific.</p></div><aside><p>START HERE</p><h3>A practical specification checklist.</h3><ul>{content.checklist.map(item => <li key={item}>{item}</li>)}</ul></aside></section>
     {content.faqs && <section className="guide-faq"><p>COMMON BUYER QUESTIONS</p><h2>Answers that make the headwear brief more precise.</h2><div>{content.faqs.map(([question, answer], index) => <article key={question}><b>{String(index + 1).padStart(2, "0")}</b><h3>{question}</h3><p>{answer}</p></article>)}</div></section>}
-    <section className="guide-products"><p>CONTINUE THE RESEARCH</p><h2>Explore the connected project routes.</h2><div>{[...content.related, ["All Buyer Guides", siteRoutes.guides.path]].map(([label, href]) => <a href={href} key={label}>{label}<Arrow /></a>)}</div></section>
+    <ProcurementAnswers /><section className="guide-products"><p>CONTINUE THE RESEARCH</p><h2>Explore the connected project routes.</h2><div>{[...content.related, ["All Buyer Guides", siteRoutes.guides.path]].map(([label, href]) => <a href={href} key={label}>{label}<Arrow /></a>)}</div></section>
     <section className="guide-close"><div><p>READY TO DISCUSS THE PROJECT?</p><h2>Start with the direction you have.</h2><a href={`/request-a-quote/?source=${encodeURIComponent(`guide-${topic}`)}`}>SHARE YOUR PROJECT BRIEF <Arrow /></a></div><img src="/assets/images/zhoni-golf-product-development-v2.png" alt="ZHONI golf merchandise product development and branding details" /></section><ZhoniPageFooter />
   </main>;
 }

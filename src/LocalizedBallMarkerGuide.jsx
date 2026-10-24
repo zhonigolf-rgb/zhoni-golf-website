@@ -1,3 +1,4 @@
+import { ProcurementAnswers } from "./ProcurementAnswers.jsx";
 import { BallMarkerGuideImage, BallMarkerProductPage } from "./BallMarkerProductPage.jsx";
 import { ballMarkerLocales } from "./content/ball-marker-locales.js";
 import { ballMarkerProductLocales } from "./content/ball-marker-product-locales.js";
@@ -35,7 +36,7 @@ export function LocalizedBallMarkerGuide({ locale, Header, Footer }) {
     <section className="guide-decision"><div><p>{c.labels[11]}</p><h2>{c.hardwareTitle}</h2><p>{c.hardwareCopy}</p></div><aside><p>{c.labels[12]}</p><h3>{c.checklistTitle}</h3><ul>{c.checklist.map(item => <li key={item}>{item}</li>)}</ul></aside></section>
     <LocalizedBuyerEvidence locale={locale} context="guide-ball-marker-manufacturing" />
     <section className="headcover-faq"><div><p>{locale === "de" ? "HÄUFIGE FRAGEN VON EINKÄUFERN" : c.labels[13]}</p><h2>{c.faqTitle}</h2></div><div>{c.faqs.map(([question, answer], index) => <article key={question}><b>{String(index + 1).padStart(2, "0")}</b><h3>{question}</h3><p>{answer}</p></article>)}</div></section>
-    <section className="guide-products"><p>{c.labels[14]}</p><h2>{c.relatedTitle}</h2><div>{links.map(([title, href]) => <a key={href} href={href}>{title}<Arrow /></a>)}</div></section>
+    <ProcurementAnswers /><section className="guide-products"><p>{c.labels[14]}</p><h2>{c.relatedTitle}</h2><div>{links.map(([title, href]) => <a key={href} href={href}>{title}<Arrow /></a>)}</div></section>
     <section className="guide-close"><div><p>{c.labels[15]}</p><h2>{c.closing}</h2><a href={quote} data-analytics-placement="guide_final_cta" data-product-interest={c.product}>{c.cta} <Arrow /></a></div><BallMarkerGuideImage name="zhoni-ball-marker-magnetic-hardware-qc-v1" alt={c.alts[1]} /></section>
     <Footer />
   </main>;

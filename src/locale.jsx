@@ -7,6 +7,10 @@ export function setServerPathname(pathname) {
   serverPathname = pathname || "/";
 }
 
+export function currentSiteRoute() {
+  return findRoute(typeof window === "undefined" ? serverPathname : window.location.pathname);
+}
+
 const localeOptions = [
   { code: "en", label: "English", short: "EN", home: "/" },
   { code: "fr-CA", label: "Français (Canada)", short: "FR", home: "/fr-ca/" },

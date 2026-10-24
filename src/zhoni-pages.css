@@ -58,6 +58,7 @@
 @media(max-width:560px){.program-solution-hero>div{padding:4rem 1.25rem}.program-solution-hero figure{height:330px}.program-solution-ledger>div:last-child{grid-template-columns:1fr}.program-solution-ledger article,.program-solution-ledger article+article,.program-solution-ledger article:nth-child(3){min-height:0;padding:1.5rem 0;border-right:0;border-bottom:1px solid var(--line)}.program-solution-ledger h3{margin:1.3rem 0 .6rem}.program-brief-check aside{padding:1.5rem}}
 
 /* Headcover product specification */
+.procurement-answers{background:var(--soft)}.procurement-answers>div>p.procurement-answers-boundary{margin:1.5rem 0 0;max-width:35rem;font:400 1rem/1.65 var(--sans);letter-spacing:0;color:inherit}
 .headcover-types,.headcover-specs,.headcover-process,.headcover-faq,.headcover-brief-cta{padding:clamp(4rem,7vw,7.5rem) clamp(2rem,8vw,9rem)}
 .headcover-section-heading>p,.headcover-specs>div>p,.headcover-process>div>p,.headcover-faq>div>p,.headcover-brief-cta p:first-child{margin:0;font:500 .58rem/1.4 "DM Mono",monospace;letter-spacing:.18em;color:#766750}
 .headcover-section-heading h2,.headcover-specs h2,.headcover-process h2,.headcover-faq h2,.headcover-brief-cta h2{margin:.9rem 0 1.2rem;font-size:clamp(2.8rem,4.6vw,5.2rem)}
