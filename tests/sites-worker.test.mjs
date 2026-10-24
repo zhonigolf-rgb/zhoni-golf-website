@@ -1080,12 +1080,27 @@ test("connects localized ball marker guides to the matching product and inquiry 
 
 test("publishes product-specific procurement answers in all five languages", async () => {
   const { procurementAnswers, procurementGuideProducts } = await import("../src/content/procurement-answers.js");
+  const { guideAnswerIntros } = await import("../src/content/guide-answer-intros.js");
   const routes = Object.values(siteRoutes).filter(route => procurementGuideProducts[route.alternatePath ?? route.path]);
   assert.equal(routes.length, 20);
   for (const route of routes) {
     const copy = procurementAnswers[route.lang ?? "en"];
     const product = procurementGuideProducts[route.alternatePath ?? route.path];
     const document = await readFile(new URL(`../dist/client${route.path}index.html`, import.meta.url), "utf8");
+    const introCopy = guideAnswerIntros[route.lang ?? "en"].products[product];
+    const intro = document.match(/<section class="guide-intro guide-answer-intro"[^>]*>([\s\S]*?)<\/section>/)?.[1];
+    assert.ok(intro, `Expected a direct answer on ${route.path}`);
+    const encodeHtml = value => value.replaceAll("&", "&amp;").replaceAll("'", "&#x27;").replaceAll('"', "&quot;");
+    assert.ok(intro.includes(encodeHtml(introCopy.answer)), route.path);
+    assert.ok(document.indexOf('data-guide-answer=') < document.indexOf('data-procurement-product='));
+    const link = intro.match(/href="([^"]+)"/)[1];
+    const target = findRoute(link);
+    assert.ok(target, `Product link must resolve on ${route.path}`);
+    assert.equal(target.lang ?? "en", route.lang ?? "en");
+    assert.ok(!link.includes("/guides/"));
+    const comparison = document.match(/<section class="guide-table guide-answer-comparison"[^>]*>([\s\S]*?)<\/section>/)[1];
+    assert.equal([...comparison.matchAll(/scope="row"/g)].length, 3);
+    for (const row of introCopy.rows) for (const value of row) assert.ok(comparison.includes(encodeHtml(value)), route.path);
     assert.equal(document.split(`data-procurement-product="${product}"`).length - 1, 1, route.path);
     const graph = JSON.parse(document.match(/<script id="zhoni-page-schema" type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])["@graph"];
     const faq = graph.find(item => item["@type"] === "FAQPage");

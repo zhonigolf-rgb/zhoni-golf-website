@@ -1,3 +1,4 @@
+import { GuideAnswerIntro } from "./GuideAnswerIntro.jsx";
 import { ProcurementAnswers } from "./ProcurementAnswers.jsx";
 const Arrow = () => <span aria-hidden="true">↗</span>;
 
@@ -19,7 +20,7 @@ export function LocalizedPlushHeadcoverGuidePage({ content, topic, Header, Foote
       <div><p>{guide.eyebrow}</p><h1>{guide.title}</h1><p>{guide.intro}</p><small>{shared.heroMeta}</small></div>
       <img src={content.images.hero} alt={shared.heroAlt} />
     </section>
-    <section className="guide-intro"><p>{shared.shortAnswerLabel}</p><h2>{shared.shortAnswerTitle}</h2><p>{shared.shortAnswerCopy}</p></section>
+    <GuideAnswerIntro fallback={<section className="guide-intro"><p>{shared.shortAnswerLabel}</p><h2>{shared.shortAnswerTitle}</h2><p>{shared.shortAnswerCopy}</p></section>} />
     <section className="guide-table"><table><thead><tr>{shared.tableHeaders.map(header => <th key={header}>{header}</th>)}</tr></thead><tbody>{guide.rows.map(row => <tr key={row[0]}>{row.map(cell => <td key={cell}>{cell}</td>)}</tr>)}</tbody></table></section>
     {Evidence && <Evidence context={`guide-plush-${topic}`} />}
     <section className="guide-decision"><div><p>{shared.preparationLabel}</p><h2>{shared.preparationTitle}</h2><p>{shared.preparationCopy}</p></div><aside><p>{shared.checklistLabel}</p><h3>{shared.checklistTitle}</h3><ul>{guide.checklist.map(item => <li key={item}>{item}</li>)}</ul></aside></section>

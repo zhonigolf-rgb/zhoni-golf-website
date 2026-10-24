@@ -1,3 +1,4 @@
+import { GuideAnswerIntro } from "./GuideAnswerIntro.jsx";
 import { ProcurementAnswers } from "./ProcurementAnswers.jsx";
 import { BallMarkerGuideImage, BallMarkerProductPage } from "./BallMarkerProductPage.jsx";
 import { ballMarkerLocales } from "./content/ball-marker-locales.js";
@@ -26,7 +27,7 @@ export function LocalizedBallMarkerGuide({ locale, Header, Footer }) {
   return <main className={`zhoni-page guide-page ball-marker-guide-page ${locale === "fr-CA" ? "fr-ca" : locale}-page`}>
     <Header active="guides" />
     <section className="guide-hero"><div><p>{c.labels[0]}</p><h1>{c.title}</h1><p>{c.intro}</p><a href={quote} data-analytics-placement="guide_hero" data-product-interest={c.product}>{c.cta} <Arrow /></a></div><BallMarkerGuideImage name="zhoni-ball-marker-manufacturing-stages-v1" alt={c.alts[0]} eager /></section>
-    <section className="guide-intro"><p>{c.labels[1]}</p><h2>{c.shortTitle}</h2><p>{c.shortAnswer}</p></section>
+    <GuideAnswerIntro fallback={<section className="guide-intro"><p>{c.labels[1]}</p><h2>{c.shortTitle}</h2><p>{c.shortAnswer}</p></section>} />
     <section className="headcover-process"><div><p>{c.labels[2]}</p><h2>{c.processTitle}</h2><p>{c.processIntro}</p></div><ol>{c.stages.map(([title, copy], index) => <li key={title}><b>{String(index + 1).padStart(2, "0")}</b><div><h3>{title}</h3><p>{copy}</p></div></li>)}</ol></section>
     <section className="guide-intro"><p>{c.labels[3]}</p><h2>{c.constructionTitle}</h2></section>
     {table(c.construction, c.labels[4])}

@@ -1,3 +1,4 @@
+import { GuideAnswerIntro } from "./GuideAnswerIntro.jsx";
 import { ProcurementAnswers } from "./ProcurementAnswers.jsx";
 import { Fragment, lazy, Suspense, useEffect, useRef, useState } from "react";
 import { findRoute, siteRoutes } from "./siteRoutes";
@@ -447,7 +448,7 @@ function ProcurementTopicGuide({ topic }) {
   const isCapGuide = topic.startsWith("caps");
   return <main className={`zhoni-page guide-page${isCapGuide ? " cap-guide-page" : ""}`}><ZhoniPageHeader active="solutions" />
     <section className="guide-hero"><div><p>{content.eyebrow}</p><h1>{content.title}</h1><p>{content.intro}</p><small>BUYER GUIDE · PROJECT PLANNING · CUSTOM GOLF MERCHANDISE</small></div><img src={content.image} alt={content.alt} /></section>
-    <section className="guide-intro"><p>PROCUREMENT STARTING POINT</p><h2>Build the brief around the decision that matters.</h2><p>Product, branding, packaging, quantity and delivery context work together. Share what is known, then review the appropriate route for the project rather than assuming one standard answer.</p></section>
+    <GuideAnswerIntro fallback={<section className="guide-intro"><p>PROCUREMENT STARTING POINT</p><h2>Build the brief around the decision that matters.</h2><p>Product, branding, packaging, quantity and delivery context work together. Share what is known, then review the appropriate route for the project rather than assuming one standard answer.</p></section>} />
     <section className="guide-table"><table><thead><tr><th>WHAT TO DEFINE</th><th>USEFUL STARTING POINT</th><th>WHY IT MATTERS</th></tr></thead><tbody>{content.rows.map(row => <tr key={row[0]}>{row.map(cell => <td key={cell}>{cell}</td>)}</tr>)}</tbody></table></section>
     <section className="guide-decision"><div><p>PROJECT BRIEF CHECKLIST</p><h2>Useful inputs before requesting a quote.</h2><p>A clear brief supports a more relevant product, branding and packaging conversation. MOQ, timing, confirmation steps and commercial requirements remain project-specific.</p></div><aside><p>START HERE</p><h3>A practical specification checklist.</h3><ul>{content.checklist.map(item => <li key={item}>{item}</li>)}</ul></aside></section>
     {content.faqs && <section className="guide-faq"><p>COMMON BUYER QUESTIONS</p><h2>Answers that make the headwear brief more precise.</h2><div>{content.faqs.map(([question, answer], index) => <article key={question}><b>{String(index + 1).padStart(2, "0")}</b><h3>{question}</h3><p>{answer}</p></article>)}</div></section>}
