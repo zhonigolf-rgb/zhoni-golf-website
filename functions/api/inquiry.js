@@ -80,7 +80,7 @@ export async function onRequestPost(context) {
   const fields = {
     name: textValue(form, "name", 120), email: textValue(form, "email", 254).toLowerCase(), projectType: textValue(form, "project_type", 140), quantityRange: textValue(form, "quantity_range", 80), targetDate: textValue(form, "target_date", 32), destination: textValue(form, "destination", 180), message: textValue(form, "message", 5000), source: cleanSource(textValue(form, "source", 120)), pageLanguage: cleanLanguage(textValue(form, "page_language", 16)), pagePath: textValue(form, "page_path", 500), pageUrl: textValue(form, "page_url", 2000), referrer: textValue(form, "referrer", 2000),
   };
-  if (!fields.name || !isBusinessEmail(fields.email) || !fields.projectType || !fields.message) return json({ ok: false, error: "Please complete your name, business email, project type and project details." }, 400);
+  if (!fields.name || !isBusinessEmail(fields.email) || !fields.message) return json({ ok: false, error: "Please complete your name, business email and project details." }, 400);
 
   const attachment = form.get("brand_assets");
   const attachments = [];
@@ -92,7 +92,7 @@ export async function onRequestPost(context) {
 
   const payload = {
     from: env.INQUIRY_FROM_EMAIL, to: [env.INQUIRY_TO_EMAIL], ...(env.INQUIRY_BACKUP_EMAIL ? { bcc: [env.INQUIRY_BACKUP_EMAIL] } : {}), reply_to: fields.email,
-    subject: `New ZHONI project brief — ${fields.projectType}`, html: buildEmailHtml(fields),
+    subject: `New ZHONI project brief — ${fields.projectType || "General inquiry"}`, html: buildEmailHtml(fields),
     text: `New ZHONI website project brief\n\nName: ${fields.name}\nBusiness email: ${fields.email}\nProject type: ${fields.projectType}\nQuantity range: ${fields.quantityRange}\nTarget date: ${fields.targetDate}\nDestination: ${fields.destination}\nInquiry source: ${fields.source}\nPage language: ${fields.pageLanguage}\nSource page: ${fields.pagePath}\nPage URL: ${fields.pageUrl}\n\nProject details:\n${fields.message}`,
     ...(attachments.length ? { attachments } : {}),
   };

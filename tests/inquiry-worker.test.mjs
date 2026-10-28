@@ -31,3 +31,28 @@ test("provides a usable direct-contact fallback when Turnstile is not configured
     error: "Online inquiry is temporarily unavailable. Please email sales@zhonigolf.com or use WhatsApp.",
   });
 });
+
+test("accepts a blank or free-text product category while retaining contact and message validation", async () => {
+  const originalFetch = globalThis.fetch;
+  const deliveries = [];
+  globalThis.fetch = async (url, options) => {
+    if (String(url).includes("/siteverify")) return Response.json({ success: true });
+    deliveries.push(JSON.parse(options.body));
+    return Response.json({ id: "test-delivery" });
+  };
+  try {
+    const env = configuredEnv({ TURNSTILE_SECRET_KEY: "test-secret" });
+    for (const projectType of ["", "Custom towel and cap combination"]) {
+      const response = await onRequestPost({ request: inquiryRequest({ project_type: projectType, "cf-turnstile-response": "test-token" }), env });
+      assert.equal(response.status, 200);
+      assert.equal((await response.json()).ok, true);
+    }
+    assert.match(deliveries[0].subject, /General inquiry/);
+    assert.match(deliveries[1].text, /Custom towel and cap combination/);
+    const invalid = await onRequestPost({ request: inquiryRequest({ project_type: "", message: "", "cf-turnstile-response": "test-token" }), env });
+    assert.equal(invalid.status, 400);
+    assert.equal(deliveries.length, 2);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});

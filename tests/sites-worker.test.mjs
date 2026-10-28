@@ -1054,7 +1054,8 @@ test("connects localized ball marker guides to the matching product and inquiry 
     assert.equal(schema["@graph"].find(node => node["@type"] === "FAQPage").mainEntity.length, 11);
     assert.equal(schema["@graph"].find(node => node["@type"] === "Article").inLanguage, route.lang);
     assert.ok(html.includes(`product=${encodeURIComponent(copy.product)}`));
-    assert.ok(quote.includes(copy.product.replaceAll("&", "&amp;")), "CTA value must match a localized quote option");
+    assert.match(quote, /<input[^>]*name="project_type"/);
+    assert.doesNotMatch(quote, /<select[^>]*name="project_type"/);
     assert.ok(hub.includes(route.path));
     assert.ok(product.includes(route.path));
     const details = ballMarkerProductLocales[route.lang];
