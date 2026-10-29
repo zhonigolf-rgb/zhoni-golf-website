@@ -1144,6 +1144,29 @@ test("connects the ten product planning directions to optional inquiries in five
   assert.equal(resolveInquiryPlan(new URLSearchParams(), ""), "");
 });
 
+test("publishes product-specific procurement checklists in every product language", async () => {
+  const { productPlanGroups } = await import("../src/content/product-plans.js");
+  const { procurementChecklists } = await import("../src/content/procurement-checklists.js");
+  const routes = Object.values(siteRoutes).filter(route => productPlanGroups[route.alternatePath ?? route.path]);
+  assert.equal(routes.length, 20);
+  for (const route of routes) {
+    const copy = procurementChecklists[route.lang ?? "en"];
+    const family = productPlanGroups[route.alternatePath ?? route.path][0][0];
+    const document = await readFile(new URL(`../dist/client${route.path}index.html`, import.meta.url), "utf8");
+    const block = document.match(/<section class="procurement-checklist"[\s\S]*?<\/section>/)?.[0];
+    assert.ok(block, route.path);
+    assert.ok(block.includes(`data-procurement-checklist="${family}"`), route.path);
+    assert.equal([...block.matchAll(/<details(?:\s|>)/g)].length, 3, route.path);
+    assert.equal([...block.matchAll(/<details open="">/g)].length, 1, route.path);
+    for (const text of [copy.title, copy.intro, ...copy.labels, ...copy.families[family], copy.confirmation, copy.evidence]) {
+      const escaped = text.replaceAll("&", "&amp;").replaceAll("'", "&#x27;").replaceAll('"', "&quot;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+      assert.ok(block.includes(escaped), `${route.path}: ${text.slice(0, 60)}`);
+    }
+  }
+  const styles = await readFile(new URL("../src/zhoni-pages.css", import.meta.url), "utf8");
+  assert.ok(styles.includes(".procurement-checklist summary:focus-visible"));
+});
+
 test("keeps product-family imagery large in a responsive three-to-one column grid", async () => {
   const styles = await readFile(new URL("../src/products.css", import.meta.url), "utf8");
   assert.match(styles, /\.family-grid\s*\{\s*display:\s*grid;\s*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/);
