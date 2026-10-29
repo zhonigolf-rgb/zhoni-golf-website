@@ -1115,6 +1115,35 @@ test("publishes product-specific procurement answers in all five languages", asy
   assert.doesNotMatch(unrelated, /data-procurement-product=/);
 });
 
+test("connects the ten product planning directions to optional inquiries in five languages", async () => {
+  const { productPlanGroups, productPlanCopy, resolveInquiryPlan } = await import("../src/content/product-plans.js");
+  const routes = Object.values(siteRoutes).filter(route => productPlanGroups[route.alternatePath ?? route.path]);
+  assert.equal(routes.length, 20);
+  let count = 0;
+  for (const route of routes) {
+    const locale = route.lang ?? "en";
+    const ids = productPlanGroups[route.alternatePath ?? route.path];
+    const document = await readFile(new URL(`../dist/client${route.path}index.html`, import.meta.url), "utf8");
+    assert.equal(document.split('class="product-plan-options"').length - 1, 1, route.path);
+    const matches = [...document.matchAll(/<a href="([^"]+)" data-analytics-placement="product_plan"/g)];
+    assert.equal(matches.length, ids.length);
+    for (const [index, match] of matches.entries()) {
+      const url = new URL(match[1].replaceAll("&amp;", "&"), "https://zhonigolf.com");
+      assert.equal(findRoute(url.pathname).lang ?? "en", locale);
+      assert.equal(url.searchParams.get("plan"), ids[index]);
+      assert.equal(url.searchParams.get("source"), `product-plan-${ids[index].toLowerCase()}`);
+      const value = resolveInquiryPlan(url.searchParams, "", locale);
+      assert.ok(value.includes(ids[index]));
+      assert.ok(value.includes(productPlanCopy[locale].plans[ids[index]][0]));
+      assert.ok(value.length <= 140);
+      count++;
+    }
+  }
+  assert.equal(count, 50);
+  assert.equal(resolveInquiryPlan(new URLSearchParams("plan=UNKNOWN"), "Custom golf towels"), "Custom golf towels");
+  assert.equal(resolveInquiryPlan(new URLSearchParams(), ""), "");
+});
+
 test("keeps product-family imagery large in a responsive three-to-one column grid", async () => {
   const styles = await readFile(new URL("../src/products.css", import.meta.url), "utf8");
   assert.match(styles, /\.family-grid\s*\{\s*display:\s*grid;\s*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/);

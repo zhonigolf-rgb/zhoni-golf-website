@@ -1,3 +1,5 @@
+import { ProductPlanOptions } from "./ProductPlanOptions.jsx";
+import { resolveInquiryPlan } from "./content/product-plans.js";
 import { GuideAnswerIntro } from "./GuideAnswerIntro.jsx";
 import { ProcurementAnswers } from "./ProcurementAnswers.jsx";
 import { Fragment, lazy, Suspense, useEffect, useRef, useState } from "react";
@@ -491,8 +493,8 @@ function QuotePage() {
   const [formStatus, setFormStatus] = useState("idle");
   const [formMessage, setFormMessage] = useState("");
   const queryParams = typeof window === "undefined" ? new URLSearchParams() : new URLSearchParams(window.location.search);
-  const prefilledProduct = resolveInquiryProject(queryParams);
-  const isHeadcoverBrief = prefilledProduct === "Custom golf headcovers";
+  const prefilledProduct = resolveInquiryPlan(queryParams, resolveInquiryProject(queryParams));
+  const isHeadcoverBrief = resolveInquiryProject(queryParams) === "Custom golf headcovers";
   const prefilledHeadcoverType = queryParams.get("headcover_type") ?? "";
   const whatsappLink = typeof window === "undefined" ? WHATSAPP_URL : createWhatsAppLink();
 
@@ -788,7 +790,7 @@ function ProductCategoryPage({ type }) {
   const quoteHref = `/request-a-quote/?product=${encodeURIComponent(productBrief)}`;
   return <main className={`zhoni-page category-page${isCaps ? " caps-product-page" : ""}`}>
     <ZhoniPageHeader active="products" />
-    <section className="category-hero"><aside className="category-rail" aria-hidden="true"><strong>Z</strong><span>CUSTOM GOLF PRODUCTS</span></aside><div className="category-intro"><p>{content.eyebrow}</p><h1>{content.title}</h1><p>{content.intro}</p><a href={quoteHref} data-analytics-placement="product_hero" data-product-interest={productBrief}>{content.cta} <Arrow /></a><small>CLUBS · EVENTS · CORPORATE · PRIVATE LABEL</small></div><img src={content.image} alt={content.alt} /></section>
+    <section className="category-hero"><aside className="category-rail" aria-hidden="true"><strong>Z</strong><span>CUSTOM GOLF PRODUCTS</span></aside><div className="category-intro"><p>{content.eyebrow}</p><h1>{content.title}</h1><p>{content.intro}</p><a href={quoteHref} data-analytics-placement="product_hero" data-product-interest={productBrief}>{content.cta} <Arrow /></a><small>CLUBS · EVENTS · CORPORATE · PRIVATE LABEL</small></div><img src={content.image} alt={content.alt} /></section><ProductPlanOptions />
     <section className="category-ledger"><div><p>{isCaps ? "THE HEADWEAR SPECIFICATION LEDGER" : "THE PROCUREMENT PRODUCT LEDGER"}</p>{steps.map(([number, title, copy]) => <article key={number}><b>{number}</b><h2>{title}</h2><p>{copy}</p><span aria-hidden="true">→</span></article>)}</div><aside><p>PROJECT ESSENTIALS</p><ul>{projectEssentials.map(item => <li key={item}>{item}</li>)}</ul><small>MOQ, timing and applicable requirements are reviewed per project.</small></aside></section>
     {isCaps && <>
       <section className="headcover-types headwear-types"><div className="headcover-section-heading"><p>CHOOSE THE HEADWEAR DIRECTION</p><h2>Start with the wearer, climate and intended use.</h2><p>The silhouette is only the first decision. Crown structure, fabric, sweatband, closure, logo method and packing still need to work as one product.</p></div><div className="headcover-type-grid">{headwearDirections.map(([number, title, copy]) => <article key={title}><b>{number}</b><h3>{title}</h3><p>{copy}</p><a href={`/request-a-quote/?product=${encodeURIComponent(productBrief)}`}>START THIS BRIEF <Arrow /></a></article>)}</div></section>

@@ -1,3 +1,4 @@
+import { ProductPlanOptions } from "./ProductPlanOptions.jsx";
 import { GuideAnswerIntro } from "./GuideAnswerIntro.jsx";
 import { ProcurementAnswers } from "./ProcurementAnswers.jsx";
 const Arrow = () => <span aria-hidden="true">↗</span>;
@@ -43,7 +44,7 @@ export function LocalizedPlushHeadcoverProductPage({ content, Header, Footer, Ev
       <aside className="category-rail" aria-hidden="true"><strong>Z</strong><span>{product.rail}</span></aside>
       <div className="category-intro"><p>{product.eyebrow}</p><h1><TextWithBreaks value={productTitle} /></h1><p>{productIntro}</p><a href={content.quoteHref} data-analytics-placement="product_hero" data-product-interest="Custom plush golf headcovers">{product.heroCta} <Arrow /></a><small>{product.heroMeta}</small></div>
       <img src={content.images.hero} alt={product.heroAlt} />
-    </section>
+    </section><ProductPlanOptions />
     <section className="plush-format-section"><div><p>{product.formats.label}</p><h2>{product.formats.title}</h2><p>{product.formats.copy}</p></div><div>{product.formats.items.map(([title, copy], index) => <article key={title}><b>{String(index + 1).padStart(2, "0")}</b><h3>{title}</h3><p>{copy}</p></article>)}</div></section>
     <section className="headcover-specs"><div><p>{product.specs.label}</p><h2>{product.specs.title}</h2><p>{product.specs.copy}</p></div><dl>{product.specs.items.map(([term, description]) => <div key={term}><dt>{term}</dt><dd>{description}</dd></div>)}</dl></section>
     <section className="plush-detail-visual"><figure><img src={content.images.construction} alt={product.detail.imageAlt} /><figcaption>{product.detail.caption}</figcaption></figure><div><p>{product.detail.label}</p><h2>{product.detail.title}</h2><p>{product.detail.copy}</p><ul>{product.detail.items.map(([title, copy]) => <li key={title}><b>{title}</b><span>{copy}</span></li>)}</ul></div></section>
