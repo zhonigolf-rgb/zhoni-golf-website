@@ -6,7 +6,8 @@ import { trackAnalytics } from "./analytics.jsx";
 import { inquirySourceForLocation } from "./seo.js";
 import { LocalizedBuyerEvidence } from "./LocalizedBuyerEvidence.jsx";
 import { JapaneseExpansion } from "./JapaneseExpansion.jsx";
-import { ProductPriorityGateway } from "./ProductPriorityGateway.jsx";
+import { LocalizedFocusHome, LocalizedFocusProducts, LocalizedProductMenu } from "./LocalizedProductFocus.jsx";
+import { productFocusLocales } from "./content/product-focus-locales.js";
 import { LocalizedBallMarkerProductPage as BallMarkerProductPage, LocalizedBallMarkerGuide } from "./LocalizedBallMarkerGuide.jsx";
 
 const WHATSAPP_URL = import.meta.env.VITE_WHATSAPP_URL ?? "https://wa.me/8617759190848";
@@ -17,34 +18,23 @@ function Header({ active }) {
   return <header className={`zhoni-header ja-header ${menu ? "zhoni-header-open" : ""}`}>
     <a className="zhoni-wordmark" href="/ja/"><strong>ZHONI</strong><small>CUSTOM GOLF MERCHANDISE</small></a>
     <button className="zhoni-menu" onClick={() => setMenu(value => !value)} aria-expanded={menu}>{menu ? "閉じる" : "メニュー"}</button>
-    <nav aria-label="メインナビゲーション"><a className={active === "products" ? "active" : ""} href="/ja/products/">製品</a><a className={active === "solutions" ? "active" : ""} href="/ja/solutions/">ソリューション</a><a className={active === "guides" ? "active" : ""} href="/ja/guides/">購入ガイド</a><a className={active === "process" ? "active" : ""} href="/ja/our-process/">進め方</a><a className={active === "faq" ? "active" : ""} href="/ja/faq/">FAQ</a><a className={active === "about" ? "active" : ""} href="/ja/about/">会社情報</a></nav>
+    <nav aria-label="メインナビゲーション"><LocalizedProductMenu locale="ja" active={active === "products"} /><a className={active === "solutions" ? "active" : ""} href="/ja/solutions/">ソリューション</a><a className={active === "guides" ? "active" : ""} href="/ja/guides/">購入ガイド</a><a className={active === "process" ? "active" : ""} href="/ja/our-process/">進め方</a><a className={active === "faq" ? "active" : ""} href="/ja/faq/">FAQ</a><a className={active === "about" ? "active" : ""} href="/ja/about/">会社情報</a></nav>
     <LanguageSwitcher />
     <a className="zhoni-header-cta" href="/ja/request-a-quote/">プロジェクト相談 <Arrow /></a>
   </header>;
 }
 
 function Footer() {
-  return <footer className="site-footer"><div className="site-footer-main"><a className="zhoni-wordmark" href="/ja/"><strong>ZHONI</strong><small>CUSTOM GOLF MERCHANDISE</small></a><div className="site-footer-copy"><p>クラブ、大会、企業、ブランド向けのカスタムゴルフ用品とパッケージ。</p><span>ギフトセット · ヘッドカバー · キャップ · タオル · アクセサリー · パッケージ</span><div className="site-footer-contact"><b>直接のお問い合わせ</b><a href="mailto:sales@zhonigolf.com">sales@zhonigolf.com</a><a href={WHATSAPP_URL}>WhatsApp +86 177 5919 0848 <Arrow /></a></div></div><nav aria-label="フッターナビゲーション"><a href="/ja/products/">製品</a><a href="/ja/solutions/">ソリューション</a><a href="/ja/guides/">購入ガイド</a><a href="/ja/capabilities/">対応範囲</a><a href="/ja/our-process/">進め方</a><a href="/ja/faq/">FAQ</a><a href="/ja/about/">会社情報</a><a href="/ja/request-a-quote/">お問い合わせ <Arrow /></a></nav></div><div className="site-footer-base"><span>ZHONI · CUSTOM GOLF MERCHANDISE</span><span>運営法人: Xiamen Jindongyu Trading Co., Ltd.</span></div></footer>;
+  return <footer className="site-footer"><div className="site-footer-main"><a className="zhoni-wordmark" href="/ja/"><strong>ZHONI</strong><small>CUSTOM GOLF MERCHANDISE</small></a><div className="site-footer-copy"><p>{productFocusLocales["ja"].footer}</p><span>{productFocusLocales["ja"].footerRange}</span><div className="site-footer-contact"><b>直接のお問い合わせ</b><a href="mailto:sales@zhonigolf.com">sales@zhonigolf.com</a><a href={WHATSAPP_URL}>WhatsApp +86 177 5919 0848 <Arrow /></a></div></div><nav aria-label="フッターナビゲーション"><a href="/ja/products/">製品</a><a href="/ja/solutions/">ソリューション</a><a href="/ja/guides/">購入ガイド</a><a href="/ja/capabilities/">対応範囲</a><a href="/ja/our-process/">進め方</a><a href="/ja/faq/">FAQ</a><a href="/ja/about/">会社情報</a><a href="/ja/request-a-quote/">お問い合わせ <Arrow /></a></nav></div><div className="site-footer-base"><span>ZHONI · CUSTOM GOLF MERCHANDISE</span><span>運営法人: Xiamen Jindongyu Trading Co., Ltd.</span></div></footer>;
 }
 
-const productFamilies = [
-  ["ヘッドカバー", "クラブ保護、フィット、素材、ロゴ表現を一体で検討します。", "/assets/images/zhoni-product-headcovers-v3.png", "/ja/custom-golf-headcovers/"],
-  ["ぬいぐるみゴルフヘッドカバー", "マスコット、動物、キャラクターを識別しやすい形状とクラブ保護機能へ落とし込みます。", "/assets/images/zhoni-plush-novelty-headcovers-v1.jpg", "/ja/custom-plush-golf-headcovers/"],
-  ["キャップ＆バイザー", "着用環境、フィット、生地、刺繍位置に合わせて設計します。", "/assets/images/zhoni-product-caps-v3.png", "/ja/custom-golf-caps/"],
-  ["マグネットタオル", "コースでの使いやすさと刺繍、マグネット構造を確認します。", "/assets/images/zhoni-product-magnetic-towel-v4.png", "/ja/custom-golf-towels/"],
-  ["アクセサリー", "バッグタグ、ポーチ、ティーホルダーを用途別に構成します。", "/assets/images/zhoni-product-accessories-v3.png", "/ja/custom-golf-accessories/"],
-  ["ボールマーカー＆グリーンフォーク", "素材、仕上げ、ロゴ、マグネットと渡し方に合わせて設計します。", "/assets/images/zhoni-product-ball-markers-v3.png", "/ja/custom-golf-ball-markers-divot-tools/"],
-  ["ギフトセット", "受け取る人、贈る場面、製品の役割を一つの体験にまとめます。", "/assets/images/zhoni-product-gift-sets-v3.png", "/ja/solutions/"],
-  ["パッケージ", "箱、インサート、カード、保護梱包を製品と納品条件に合わせます。", "/assets/images/zhoni-product-packaging-v3.png", "/ja/custom-golf-packaging/"],
-];
 
 function Home() {
-  const homepageProducts = productFamilies.filter((_, index) => index !== 4 && index !== 6).map(([title, copy, image, href]) => ({ title, copy, image, href }));
-  return <main className="home-page ja-page"><Header /><section className="zhoni-hero"><div className="zhoni-hero-copy"><p>CUSTOM GOLF PRODUCTS · B2B</p><h1>カスタムゴルフヘッドカバー、<br />キャップ、タオル、アクセサリー。</h1><p>必要な製品一つから始め、用途に応じてロゴ、パッケージ、大会・企業向けギフトプログラムへ展開します。</p><div><a href="/ja/products/">製品を見る <Arrow /></a><a href="/ja/request-a-quote/">相談を始める <Arrow /></a></div></div><img src="/assets/images/zhoni-golf-collection-hero-v2.png" alt="ZHONIのカスタムゴルフ製品" /></section><ProductPriorityGateway eyebrow="製品から始める" title="買い手が探しているカスタムゴルフ製品へ直接アクセス。" intro="各製品ページで構造、素材、ロゴ方法、発注準備を確認してから、より大きなプログラムへ展開できます。" products={homepageProducts} allProducts={{ label: "すべての製品を見る", href: "/ja/products/" }} bridge={{ eyebrow: "製品からプログラムへ", title: "選んだ製品を大会、企業、クラブ向けソリューションへ。", copy: "対象、渡し方、パッケージを一体で考える場合は、ギフトセットやイベントプログラムとして構成します。", label: "ソリューションを見る", href: "/ja/solutions/" }} /><section className="gift-atlas"><p>ZHONI PROJECT ROUTE</p><h2>一つの製品から、統一されたコレクションまで。</h2><p className="atlas-intro">誰が、いつ、何のために受け取るかを確認し、製品、ブランド表現、パッケージの方向を整理します。</p>{[["01","製品を選ぶ","ヘッドカバー、キャップ、タオル、アクセサリー、ギフトセットから検討します。","製品を見る","/ja/products/"],["02","用途を整理する","大会、企業ギフト、クラブ会員、プライベートブランドの目的を定めます。","ソリューション","/ja/solutions/"],["03","仕様と承認を確認する","素材、ロゴ、色、パッケージ、必要な確認段階を整理します。","進め方","/ja/our-process/"],["04","概要を共有する","数量、希望日、納品先、ブランド資料をお送りください。","相談する","/ja/request-a-quote/"]].map(([number,title,copy,label,href]) => <article key={number}><b>{number}</b><div><h3>{title}</h3><p>{copy}</p></div><a href={href}>{label} <Arrow /></a></article>)}</section><Footer /></main>;
+  return <LocalizedFocusHome locale="ja" Header={Header} Footer={Footer}></LocalizedFocusHome>;
 }
 
 function Products() {
-  return <main className="products-hub ja-page"><Header active="products" /><section className="products-hero"><img src="/assets/images/zhoni-golf-collection-hero-v2.png" alt="ZHONIカスタムゴルフ用品" /><div className="products-hero-copy"><p className="products-kicker">カスタムゴルフ用品</p><h1>単品ではなく、<br />つながるコレクションへ。</h1><p>用途、受け取る人、ブランド表現、渡し方に合わせて製品を組み立てます。</p><a href="/ja/request-a-quote/">プロジェクト相談 <Arrow /></a></div></section><section className="family-index"><div className="family-heading"><p className="products-kicker">製品カテゴリー</p><h2>Product Families</h2><p>製品が違っても、<br />ブランド体験は一つに。</p></div><div className="family-grid">{productFamilies.filter((_,index)=>index!==6).map(([title,copy,image,href]) => <a className="family-card" href={href} key={title}><img src={image} alt={title} /><h3>{title}</h3><p>{copy}</p><span>— &nbsp; <Arrow /></span></a>)}</div></section><section className="program-bridge"><div><p>クラブ · 大会 · 企業 · プライベートブランド</p><h2>選んだ製品をギフトやプログラムへ展開。</h2></div><a href="/ja/solutions/">ソリューションを見る <Arrow /></a></section><LocalizedBuyerEvidence locale="ja" context="products" /><section className="products-intro"><p className="products-kicker">COORDINATED APPROACH</p><h2>製品、ブランド表現、パッケージを同じ基準で確認。</h2><p>MOQ、価格、サンプル、納期は製品構造、カスタム範囲、数量、パッケージ、納品先によって変わります。</p><a href="/ja/our-process/">進行プロセスを見る <Arrow /></a></section><Footer /></main>;
+  return <LocalizedFocusProducts locale="ja" Header={Header} Footer={Footer}><LocalizedBuyerEvidence locale="ja" context="products" /></LocalizedFocusProducts>;
 }
 
 function Solutions() {
@@ -64,7 +54,7 @@ function Faq() {
 }
 
 function About() {
-  return <main className="zhoni-page about-page ja-page"><Header active="about" /><section className="zhoni-about-hero"><img src="/assets/images/zhoni-golf-collection-hero-v2.png" alt="ZHONIカスタムゴルフギフトコレクション" /><div><p>ABOUT ZHONI</p><h1>目的が明確な<br />ゴルフプロジェクトのために。</h1><p>ZHONIは、クラブ、大会、企業、ブランド向けのカスタムゴルフ用品、ギフトセット、パッケージプロジェクトを支援します。</p><a href="/ja/request-a-quote/">プロジェクト相談 <Arrow /></a></div></section><section className="relationship"><div><p>運営体制</p><h2>明確な運営主体と、<br />一貫したプロジェクト管理。</h2></div><div className="relationship-copy"><p>ZHONIはXiamen Jindongyu Trading Co., Ltd.が運営するカスタムゴルフ用品ブランドです。製品方向、カスタム仕様、パッケージ、商業条件をプロジェクト単位で調整します。</p><p>すべての案件に同じ回答を当てはめません。製品範囲、MOQ、スケジュール、必要書類は、実際の概要に基づいて確認します。</p></div><div className="relationship-map"><article><b>ZHONI</b><span>カスタムゴルフ用品ブランド</span><small>製品方向 · カスタム仕様 · 顧客プロジェクト</small></article><i>運営法人</i><article><b>Xiamen Jindongyu<br />Trading Co., Ltd.</b><span>法的運営主体</span><small>商取引 · 契約 · 運営体制</small></article></div></section><Footer /></main>;
+  return <main className="zhoni-page about-page ja-page"><Header active="about" /><section className="zhoni-about-hero"><img src="/assets/images/zhoni-golf-collection-hero-v2.png" alt="ZHONIカスタムゴルフギフトコレクション" /><div><p>ABOUT ZHONI</p><h1>{productFocusLocales["ja"].title}</h1><p>ZHONI: {productFocusLocales["ja"].intro}</p><a href="/ja/request-a-quote/">プロジェクト相談 <Arrow /></a></div></section><section className="relationship"><div><p>運営体制</p><h2>明確な運営主体と、<br />一貫したプロジェクト管理。</h2></div><div className="relationship-copy"><p>ZHONIはXiamen Jindongyu Trading Co., Ltd.が運営するカスタムゴルフ用品ブランドです。製品方向、カスタム仕様、パッケージ、商業条件をプロジェクト単位で調整します。</p><p>すべての案件に同じ回答を当てはめません。製品範囲、MOQ、スケジュール、必要書類は、実際の概要に基づいて確認します。</p></div><div className="relationship-map"><article><b>ZHONI</b><span>カスタムゴルフ用品ブランド</span><small>製品方向 · カスタム仕様 · 顧客プロジェクト</small></article><i>運営法人</i><article><b>Xiamen Jindongyu<br />Trading Co., Ltd.</b><span>法的運営主体</span><small>商取引 · 契約 · 運営体制</small></article></div></section><Footer /></main>;
 }
 
 function Quote() {

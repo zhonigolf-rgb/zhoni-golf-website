@@ -302,7 +302,8 @@ test("publishes Japanese product and solution detail pages with complete buyer p
   }
 
   const solutionsHub = await readFile(new URL("../dist/client/ja/solutions/index.html", import.meta.url), "utf8");
-  for (const key of productKeys) assert.match(japanese, new RegExp(siteRoutes[key].path.replaceAll("/", "\\/")));
+  const productsHub = await readFile(new URL("../dist/client/ja/products/index.html", import.meta.url), "utf8");
+  for (const key of productKeys) assert.match(productsHub, new RegExp(siteRoutes[key].path.replaceAll("/", "\\/")));
   for (const key of solutionKeys) {
     const route = siteRoutes[key];
     assert.match(solutionsHub, new RegExp(route.path.replaceAll("/", "\\/")));
@@ -828,7 +829,9 @@ test("publishes Canadian French product and solution detail pages with reciproca
   for (const path of ["/fr-ca/products/", "/fr-ca/solutions/", "/fr-ca/our-process/", "/fr-ca/request-a-quote/"]) {
     assert.match(expansion, new RegExp(path.replaceAll("/", "\\/")));
   }
-  for (const key of keys) assert.match(site + expansion, new RegExp(siteRoutes[key].path.replaceAll("/", "\\/")));
+  const productsHub = await readFile(new URL("../dist/client/fr-ca/products/index.html", import.meta.url), "utf8");
+  const solutionsHub = await readFile(new URL("../dist/client/fr-ca/solutions/index.html", import.meta.url), "utf8");
+  for (const key of keys) assert.match(productsHub + solutionsHub, new RegExp(siteRoutes[key].path.replaceAll("/", "\\/")));
   assert.match(expansion, /encodeURIComponent\(c\.brief\)/);
   assert.match(expansion, /Quantité/);
   assert.match(expansion, /destination/i);
@@ -1531,7 +1534,7 @@ test("makes product families the measurable, lazy-loaded homepage entry path in 
     const graph = JSON.parse(document.match(/<script id="zhoni-page-schema" type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])["@graph"];
     const productList = graph.find(entity => entity["@type"] === "ItemList" && entity["@id"]?.endsWith("#product-families"));
     assert.ok(productList, `Expected homepage product ItemList for ${route.path}.`);
-    assert.equal(productList.itemListElement.length, route.path === "/" ? 3 : 6);
+    assert.equal(productList.itemListElement.length, 3);
     assert.ok(productList.itemListElement.every(item => item.url.startsWith("https://zhonigolf.com/")));
   }
 });
@@ -1564,6 +1567,49 @@ test("prioritizes three English core products while preserving supporting routes
   for (const path of [...corePaths, ...supportPaths]) {
     assert.equal(findRoute(path)?.path, path);
     await access(new URL(`../dist/client${path}index.html`, import.meta.url));
+  }
+});
+
+test("synchronizes the three-product positioning across four localized entry paths", async () => {
+  const { productFocusLocales, localizedFocusProducts } = await import("../src/content/product-focus-locales.js");
+  const escape = text => text.replaceAll("&", "&amp;").replaceAll("'", "&#x27;").replaceAll('"', "&quot;");
+  for (const [locale, copy] of Object.entries(productFocusLocales)) {
+    assert.equal(new Set(["/", "/products/", "/about/"].map(suffix => findRoute(`${copy.prefix}${suffix}`).title)).size, 3);
+    assert.equal(copy.core.length, 3);
+    assert.equal(copy.checks.length, 3);
+    assert.equal(copy.support.length, 4);
+    for (const suffix of ["/", "/products/", "/about/"]) {
+      const path = `${copy.prefix}${suffix}`;
+      const doc = await readFile(new URL(`../dist/client${path}index.html`, import.meta.url), "utf8");
+      assert.match(doc, new RegExp(`<html[^>]*lang="${locale}"`));
+      assert.ok(doc.includes(`<h1>${escape(copy.title)}</h1>`), path);
+      assert.ok(doc.includes(`data-product-menu-locale="${locale}"`), path);
+      assert.ok(doc.includes(escape(copy.footer)), path);
+      if (suffix === "/about/") continue;
+      const core = doc.match(/<div id="core-products"[\s\S]*?<\/section>/)?.[0];
+      const support = doc.match(/<section class="english-supporting-products"[\s\S]*?<\/section>/)?.[0];
+      assert.ok(core && support, path);
+      assert.equal([...core.matchAll(/class="family-card"/g)].length, 3);
+      for (const product of localizedFocusProducts(locale)) {
+        assert.ok(core.includes(`href="${product.href}"`));
+        assert.ok(core.includes(escape(product.title)));
+        assert.equal(findRoute(product.href).lang, locale);
+      }
+      for (const product of localizedFocusProducts(locale, true)) {
+        assert.ok(support.includes(`href="${product.href}"`));
+        assert.equal(findRoute(product.href).lang, locale);
+      }
+      assert.ok(doc.indexOf(core) < doc.indexOf(support));
+      assert.ok(doc.includes(`${copy.prefix}/request-a-quote/`));
+      if (suffix === "/") {
+        assert.ok(doc.indexOf('data-product-focus="expertise"') < doc.indexOf(support));
+        assert.ok(doc.indexOf('data-product-focus="process"') < doc.indexOf(support));
+        assert.ok(doc.indexOf(support) < doc.indexOf('data-product-focus="program"'));
+        const graph = JSON.parse(doc.match(/<script id="zhoni-page-schema" type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])["@graph"];
+        const list = graph.find(entity => entity["@id"]?.endsWith("#product-families"));
+        assert.deepEqual(list.itemListElement.map(item => new URL(item.url).pathname), localizedFocusProducts(locale).map(p => p.href));
+      }
+    }
   }
 });
 
