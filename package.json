@@ -7,6 +7,8 @@
     "dev": "vite",
     "build": "vite build && vite build --ssr src/entry-server.jsx --outDir dist/ssr --emptyOutDir && node scripts/prerender-routes.mjs && node scripts/prepare-sites-build.mjs",
     "preview": "vite preview",
+    "verify": "node scripts/verify-release.mjs",
+    "verify:quick": "node scripts/verify-release.mjs --quick",
     "test:sites": "node --test tests/sites-worker.test.mjs",
     "i18n:sync": "node scripts/localization/sync.mjs",
     "i18n:check": "node scripts/localization/check.mjs",

@@ -1,5 +1,6 @@
 import { ProductPriorityGateway } from "./ProductPriorityGateway.jsx";
 import { trackAnalytics } from "./analytics.jsx";
+import { productEntryDetails } from "./product-navigation.js";
 import "./english-product-focus.css";
 
 export const englishFocusTitle = "Custom Golf Towels, Caps & Plush Headcovers";
@@ -58,6 +59,6 @@ export function EnglishSupportingProducts() {
   return <section className="english-supporting-products" data-english-product-focus="supporting">
     <p className="products-kicker">COMPLETE YOUR COLLECTION</p><h2>Add only what the project needs.</h2>
     <p>These supporting categories remain available for individual enquiries or coordinated sets. Materials, MOQ, availability and timing are confirmed for the selected scope.</p>
-    <div>{englishSupportingProducts.map((p,index) => <a href={p.href} key={p.href} onClick={() => trackAnalytics("product_family_click", {item_name:p.title,item_url:p.href,item_position:index+1,page_language:"en",page_path:window.location.pathname,placement:"supporting_products"})}><h3>{p.title}</h3><p>{p.copy}</p><span aria-hidden="true">↗</span></a>)}</div>
+    <div>{englishSupportingProducts.map((p,index) => <a href={p.href} key={p.href} onClick={() => trackAnalytics("product_family_click", productEntryDetails(p, {position:index+1,language:"en",pagePath:window.location.pathname,placement:"supporting_products"}))}><h3>{p.title}</h3><p>{p.copy}</p><span aria-hidden="true">↗</span></a>)}</div>
   </section>;
 }

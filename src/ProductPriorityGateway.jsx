@@ -1,4 +1,5 @@
 import { trackAnalytics } from "./analytics.jsx";
+import { productEntryDetails } from "./product-navigation.js";
 
 const Arrow = () => <span aria-hidden="true">↗</span>;
 
@@ -21,13 +22,11 @@ function ProductFamilyImage({ product }) {
 }
 
 function trackProductEntry(product, position) {
-  trackAnalytics("product_family_click", {
-    item_name: product.title,
-    item_url: product.href,
-    item_position: position + 1,
-    page_language: document.documentElement.lang || "en",
-    page_path: window.location.pathname,
-  });
+  trackAnalytics("product_family_click", productEntryDetails(product, {
+    position: position + 1, language: document.documentElement.lang || "en",
+    pagePath: window.location.pathname,
+    placement: window.location.pathname.endsWith("/products/") ? "product_hub_core" : "homepage_core",
+  }));
 }
 
 export function ProductPriorityGateway({ eyebrow, title, intro, products, allProducts, bridge }) {

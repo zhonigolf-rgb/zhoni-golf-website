@@ -1,5 +1,6 @@
 import { ProductPriorityGateway } from "./ProductPriorityGateway.jsx";
 import { trackAnalytics } from "./analytics.jsx";
+import { productEntryDetails } from "./product-navigation.js";
 import { productFocusLocales, localizedFocusProducts } from "./content/product-focus-locales.js";
 import "./english-product-focus.css";
 import "./localized-product-focus.css";
@@ -23,7 +24,7 @@ function Core({ locale }) {
 
 function Supporting({ locale }) {
   const c = productFocusLocales[locale];
-  return <section className="english-supporting-products" data-product-focus="supporting"><p className="products-kicker">{c.supportLabel}</p><h2>{c.supportTitle}</h2><p>{c.supportIntro}</p><div>{localizedFocusProducts(locale,true).map((p,index) => <a key={p.href} href={p.href} onClick={() => trackAnalytics("product_family_click",{item_name:p.title,item_url:p.href,item_position:index+1,page_language:locale,page_path:window.location.pathname,placement:"supporting_products"})}><h3>{p.title}</h3><p>{p.copy}</p><span aria-hidden="true">↗</span></a>)}</div></section>;
+  return <section className="english-supporting-products" data-product-focus="supporting"><p className="products-kicker">{c.supportLabel}</p><h2>{c.supportTitle}</h2><p>{c.supportIntro}</p><div>{localizedFocusProducts(locale,true).map((p,index) => <a key={p.href} href={p.href} onClick={() => trackAnalytics("product_family_click", productEntryDetails(p, {position:index+1,language:locale,pagePath:window.location.pathname,placement:"supporting_products"}))}><h3>{p.title}</h3><p>{p.copy}</p><span aria-hidden="true">↗</span></a>)}</div></section>;
 }
 
 function Hero({ locale }) {

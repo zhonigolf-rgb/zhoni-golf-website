@@ -1,6 +1,7 @@
 import { currentSiteRoute } from "./locale.jsx";
 import { productPlanGroups, productPlanCopy, planCategoryIndex } from "./content/product-plans.js";
 import { procurementChecklists } from "./content/procurement-checklists.js";
+import { CoreProductResearch } from "./CoreProductResearch.jsx";
 
 export function ProductPlanOptions() {
   const route = currentSiteRoute();
@@ -27,5 +28,6 @@ export function ProductPlanOptions() {
       </details>)}
       <p className="procurement-evidence-note">{checklist.evidence}</p>
     </section>
+    <CoreProductResearch />
   </section>;
 }
