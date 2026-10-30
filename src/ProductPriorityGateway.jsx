@@ -41,6 +41,6 @@ export function ProductPriorityGateway({ eyebrow, title, intro, products, allPro
       </div>
       <div className="family-grid">{products.map((product, index) => <a className="family-card" href={product.href} key={product.href} onClick={() => trackProductEntry(product, index)}><ProductFamilyImage product={product} /><h3>{product.title}</h3><p>{product.copy}</p><span>— &nbsp; <Arrow /></span></a>)}</div>
     </section>
-    <section className="products-intro home-product-bridge"><p className="products-kicker">{bridge.eyebrow}</p><h2>{bridge.title}</h2><p>{bridge.copy}</p><a href={bridge.href}>{bridge.label} <Arrow /></a></section>
+    {bridge && <section className="products-intro home-product-bridge"><p className="products-kicker">{bridge.eyebrow}</p><h2>{bridge.title}</h2><p>{bridge.copy}</p><a href={bridge.href}>{bridge.label} <Arrow /></a></section>}
   </>;
 }

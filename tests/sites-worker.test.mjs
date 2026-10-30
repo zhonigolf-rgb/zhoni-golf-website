@@ -185,7 +185,8 @@ test("keeps golf caps visible in shared SEO paths and prefills the inquiry form"
     readFile(new URL("../src/inquiryPrefill.js", import.meta.url), "utf8"),
   ]);
 
-  assert.match(routes, /caps and visors, magnetic towels, ball markers, divot tools, accessories and packaging/);
+  assert.match(siteRoutes.home.description, /magnetic golf towels, caps and visors, and plush headcovers/);
+  assert.match(siteRoutes.products.description, /ball markers, divot tools, accessories and packaging as supporting products/);
   assert.match(inquiryPrefill, /productAliases/);
   assert.match(app, /defaultValue=\{prefilledProduct\}/);
   assert.match(app, /Custom Golf Caps & Headwear/);
@@ -967,15 +968,12 @@ test("keeps inquiry contact details beneath the form action and prevents compact
   assert.match(pageStyles, /\.quote-entity-contact a\{[^}]*white-space:nowrap/);
 });
 
-test("uses distinct product-specific images for every products hub family", async () => {
-  const app = await readFile(new URL("../src/App.jsx", import.meta.url), "utf8");
+test("uses distinct product-specific images for the three core products", async () => {
+  const app = await readFile(new URL("../src/EnglishProductFocus.jsx", import.meta.url), "utf8");
   const assets = [
-    "zhoni-product-headcovers-v3.png",
+    "zhoni-plush-novelty-headcovers-v1.jpg",
     "zhoni-product-caps-v3.png",
     "zhoni-product-magnetic-towel-v4.png",
-    "zhoni-product-accessories-v3.png",
-    "zhoni-product-ball-markers-v3.png",
-    "zhoni-product-packaging-v3.png",
   ];
 
   for (const asset of assets) {
@@ -1006,7 +1004,7 @@ test("publishes ball markers and divot tools as a product-first route in every l
     assert.match(document, new RegExp(`product=${encodeURIComponent(projectType.replaceAll("&amp;", "&"))}`.replaceAll("%", "%")));
   }
 
-  const primary = app.indexOf('className="button button-primary" href="/products/"');
+  const primary = app.indexOf('className="button button-primary" href="#core-products"');
   const secondary = app.indexOf('className="button button-secondary" href="/request-a-quote/"');
   assert.ok(primary >= 0 && secondary > primary, "Expected products before the secondary quote CTA.");
   assert.doesNotMatch(app, /\["Gift Sets",[^\n]+zhoni-product-gift-sets-v3\.png/);
@@ -1533,8 +1531,39 @@ test("makes product families the measurable, lazy-loaded homepage entry path in 
     const graph = JSON.parse(document.match(/<script id="zhoni-page-schema" type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])["@graph"];
     const productList = graph.find(entity => entity["@type"] === "ItemList" && entity["@id"]?.endsWith("#product-families"));
     assert.ok(productList, `Expected homepage product ItemList for ${route.path}.`);
-    assert.equal(productList.itemListElement.length, 6);
+    assert.equal(productList.itemListElement.length, route.path === "/" ? 3 : 6);
     assert.ok(productList.itemListElement.every(item => item.url.startsWith("https://zhonigolf.com/")));
+  }
+});
+
+test("prioritizes three English core products while preserving supporting routes", async () => {
+  const corePaths = ["/custom-golf-towels/", "/custom-golf-caps/", "/custom-plush-golf-headcovers/"];
+  const supportPaths = ["/custom-golf-headcovers/", "/custom-golf-ball-markers-divot-tools/", "/custom-golf-accessories/", "/custom-golf-packaging/"];
+  for (const path of ["/", "/products/"]) {
+    const doc = await readFile(new URL(`../dist/client${path}index.html`, import.meta.url), "utf8");
+    const core = doc.match(/<div id="core-products"[\s\S]*?<\/section>/)?.[0];
+    const support = doc.match(/<section class="english-supporting-products"[\s\S]*?<\/section>/)?.[0];
+    assert.ok(core && support, path);
+    assert.equal([...core.matchAll(/class="family-card"/g)].length, 3, path);
+    assert.equal([...support.matchAll(/<h3>/g)].length, 4, path);
+    for (const url of corePaths) assert.ok(core.includes(`href="${url}"`), `${path}: ${url}`);
+    for (const url of supportPaths) assert.ok(support.includes(`href="${url}"`), `${path}: ${url}`);
+    assert.ok(doc.indexOf(core) < doc.indexOf(support));
+    assert.match(doc, /CORE PRODUCTS[\s\S]*SUPPORTING PRODUCTS/);
+    if (path === "/") {
+      assert.match(doc, /<h1>Custom Golf Towels, Caps &amp; Plush Headcovers<\/h1>/);
+      assert.ok(doc.indexOf('data-english-product-focus="expertise"') < doc.indexOf('id="process"'));
+      assert.ok(doc.indexOf('id="process"') < doc.indexOf('id="solutions"'));
+      assert.ok(doc.indexOf(support) < doc.indexOf('id="solutions"'));
+    }
+  }
+  const about = await readFile(new URL("../dist/client/about/index.html", import.meta.url), "utf8");
+  assert.match(about, /ZHONI focuses on custom golf towels, caps and visors, and plush headcovers/);
+  const styles = await readFile(new URL("../src/english-product-focus.css", import.meta.url), "utf8");
+  assert.match(styles, /\.header\.header-open \.nav\.nav-open\{display:flex/);
+  for (const path of [...corePaths, ...supportPaths]) {
+    assert.equal(findRoute(path)?.path, path);
+    await access(new URL(`../dist/client${path}index.html`, import.meta.url));
   }
 });
 

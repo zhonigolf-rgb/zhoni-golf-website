@@ -9,7 +9,7 @@ import { TurnstileField } from "./turnstile.jsx";
 import { addInquirySource, applySeo, inquirySourceForLocation } from "./seo.js";
 import { LanguageSwitcher } from "./locale.jsx";
 import { LocalizedPlushHeadcoverGuidePage, LocalizedPlushHeadcoverProductPage } from "./LocalizedPlushHeadcovers.jsx";
-import { ProductPriorityGateway } from "./ProductPriorityGateway.jsx";
+import { EnglishCoreProducts, EnglishSupportingProducts, EnglishProductExpertise, EnglishProductMenu, englishHeroSlides as slides } from "./EnglishProductFocus.jsx";
 import { BallMarkerManufacturingGuidePage, BallMarkerProductPage } from "./BallMarkerProductPage.jsx";
 import { inquiryProjectOptions, resolveInquiryProject } from "./inquiryPrefill.js";
 import { majorTournamentDisclaimer, majorTournamentGuides } from "./MajorTournamentGuides.js";
@@ -27,36 +27,14 @@ const KoreanSite = lazy(() => import("./KoreanSite.jsx").then(module => ({ defau
 const CanadianFrenchSite = lazy(() => import("./CanadianFrenchSite.jsx").then(module => ({ default: module.CanadianFrenchSite })));
 const JapaneseSite = lazy(() => import("./JapaneseSite.jsx").then(module => ({ default: module.JapaneseSite })));
 const GermanSite = lazy(() => import("./GermanSite.jsx").then(module => ({ default: module.GermanSite })));
-const slides = [
-  ["CUSTOM GOLF PRODUCTS FOR CLUBS, EVENTS & BRANDS", "Custom golf headcovers, caps, towels and accessories.", "Start with the product your program needs. Add coordinated branding, packaging or a complete tournament and corporate gift solution when the brief calls for it.", "/assets/videos/zhoni-custom-golf-collection-showcase.mp4"],
-  ["CUSTOM GOLF PRODUCT DEVELOPMENT", "Where materials become a branded collection.", "Begin with the product direction, materials and brand details that help every selected piece feel considered together.", "/assets/videos/zhoni-custom-golf-product-development.mp4"],
-  ["CUSTOM GOLF TOWEL EMBROIDERY", "The details people notice up close.", "A considered brand application can bring texture, colour and a recognisable signature to the collection.", "/assets/videos/zhoni-golf-towel-embroidery-detail.mp4"],
-  ["GOLF TOURNAMENT GIFTS", "Made for the moment your guests remember.", "A considered player experience from the first hand-off to the final presentation detail.", "/assets/videos/zhoni-golf-tournament-gift-delivery.mp4"],
-];
 const products = ["Headcovers", "Golf Caps", "Golf Towels", "Pouches", "Bag Tags", "Ball Markers", "Divot Tools", "Golf Balls", "Custom Packaging"];
 const solutions = [["Tournament Player Pack", "Player-ready essentials built around your event identity."], ["Corporate Golf Gift Set", "A considered golf experience for clients, teams or partners."], ["Club Member Gift", "A coordinated collection for member moments and milestones."], ["Private-Label Collection", "A product system for branded golf merchandise programs."]];
-const faqs = [["What golf products can be customised?", "We can develop coordinated ranges including headcovers, caps and visors, towels, pouches, bag tags, ball markers, divot tools, golf balls, accessories and packaging. Available options depend on the product and project brief."], ["Can you create a complete custom golf gift set?", "Yes. We can help structure a collection around your event, recipient profile, budget direction and branding system—from individual products through to presentation packaging."], ["What is the MOQ for custom golf products?", "Minimums vary by product, construction, material, decoration method and packaging. Share your product direction and estimated quantity for the applicable MOQ."], ["Can different golf products use the same branding?", "Yes. We can coordinate logo use, colours and design details across a group of selected products so the finished collection reads as one system."], ["How do sampling and production timing work?", "Timing depends on the selected products, customisation, quantities, artwork readiness and delivery destination. Include your event date in the enquiry so the project can be assessed properly."]];
+const faqs = [["What golf products can be customised?", "Our core range is custom golf towels, caps and visors, and plush headcovers. Other headcovers, ball markers, divot tools, accessories and packaging remain available as supporting products or separate enquiries. Options are confirmed for the selected brief."], ["Can you create a complete custom golf gift set?", "Yes. We can help structure a collection around your event, recipient profile, budget direction and branding system—from individual products through to presentation packaging."], ["What is the MOQ for custom golf products?", "Minimums vary by product, construction, material, decoration method and packaging. Share your product direction and estimated quantity for the applicable MOQ."], ["Can different golf products use the same branding?", "Yes. We can coordinate logo use, colours and design details across a group of selected products so the finished collection reads as one system."], ["How do sampling and production timing work?", "Timing depends on the selected products, customisation, quantities, artwork readiness and delivery destination. Include your event date in the enquiry so the project can be assessed properly."]];
 
 const Arrow = () => <span aria-hidden="true">↗</span>;
 const Button = ({ children, secondary = false }) => <a className={`button ${secondary ? "button-secondary" : "button-primary"}`} href="/request-a-quote/">{children} <Arrow /></a>;
 const InquiryDirectContact = ({ whatsappLink = WHATSAPP_URL }) => <div className="inquiry-submit-contact"><b>DIRECT CONTACT</b><a href="mailto:sales@zhonigolf.com"><span>EMAIL</span><strong>sales@zhonigolf.com</strong></a><a href={whatsappLink} target="_blank" rel="noopener noreferrer"><span>WHATSAPP</span><strong>+86 177 5919 0848</strong><Arrow /></a></div>;
 
-const productFamilyRoutes = {
-  Headcovers: "/custom-golf-headcovers/",
-  "Golf Caps": "/custom-golf-caps/",
-  "Golf Towels": "/custom-golf-towels/",
-  Pouches: "/custom-golf-accessories/",
-  "Bag Tags": "/custom-golf-accessories/",
-  "Ball Markers": "/custom-golf-ball-markers-divot-tools/",
-  "Divot Tools": "/custom-golf-ball-markers-divot-tools/",
-  "Golf Balls": "/custom-golf-accessories/",
-  "Custom Packaging": "/custom-golf-packaging/",
-  "Caps & Headwear": "/custom-golf-caps/",
-  Towels: "/custom-golf-towels/",
-  Accessories: "/custom-golf-accessories/",
-  "Ball Markers & Tools": "/custom-golf-ball-markers-divot-tools/",
-  Packaging: "/custom-golf-packaging/",
-};
 
 const solutionRoutes = {
   "Tournament Player Pack": "/solutions/golf-tournament-gifts/",
@@ -65,23 +43,7 @@ const solutionRoutes = {
   "Private-Label Collection": "/solutions/private-label-golf-collections/",
 };
 
-const productFamilies = [
-  ["Headcovers", "Signature protection for clubs, series and occasions.", "/assets/images/zhoni-product-headcovers-v3.png", "Custom forest green driver, fairway, hybrid and putter headcovers with gold Z monograms"],
-  ["Caps & Headwear", "Custom caps and visors that extend the brand beyond the round.", "/assets/images/zhoni-product-caps-v3.png", "Custom forest green golf cap and visor with gold Z branding"],
-  ["Towels", "Magnetic course utility with a more considered finish.", "/assets/images/zhoni-product-magnetic-towel-v4.png", "Custom magnetic forest green waffle golf towel with gold Z embroidery attached to a golf cart rail"],
-  ["Accessories", "Pouches, bag tags and small pieces that carry the identity.", "/assets/images/zhoni-product-accessories-v3.png", "Custom golf pouch, bag tag and tee pouch with gold Z branding"],
-  ["Ball Markers & Tools", "Small-format pieces for player packs and club moments.", "/assets/images/zhoni-product-ball-markers-v3.png", "Custom antique brass golf ball marker, hat clip and divot repair tool with engraved Z branding"],
-  ["Packaging", "Boxes, inserts and finishing details that complete the hand-off.", "/assets/images/zhoni-product-packaging-v3.png", "Custom golf presentation box with fitted insert, tissue and gold Z foil detail"],
-];
 
-const homeProductFamilies = [
-  { title: "Custom Golf Headcovers", copy: "Driver, fairway, hybrid and putter covers planned around fit, material and logo application.", image: "/assets/images/zhoni-product-headcovers-v3.png", href: "/custom-golf-headcovers/" },
-  { title: "Custom Plush Golf Headcovers", copy: "Mascot, animal and novelty character covers developed for recognisable form and practical club fit.", image: "/assets/images/zhoni-plush-novelty-headcovers-v1.jpg", href: "/custom-plush-golf-headcovers/" },
-  { title: "Custom Golf Caps & Visors", copy: "Cap structure, fabric, closure and embroidery selected for clubs, teams and branded programs.", image: "/assets/images/zhoni-product-caps-v3.png", href: "/custom-golf-caps/" },
-  { title: "Custom Magnetic Golf Towels", copy: "Waffle towels, magnetic attachments and embroidery designed for useful on-course handling.", image: "/assets/images/zhoni-product-magnetic-towel-v4.png", href: "/custom-golf-towels/" },
-  { title: "Custom Ball Markers & Divot Tools", copy: "Ball markers, magnetic hat clips and divot tools developed as focused standalone products.", image: "/assets/images/zhoni-product-ball-markers-v3.png", href: "/custom-golf-ball-markers-divot-tools/" },
-  { title: "Custom Golf Packaging", copy: "Presentation boxes, inserts, cards and protective packing matched to the selected product.", image: "/assets/images/zhoni-product-packaging-v3.png", href: "/custom-golf-packaging/" },
-];
 
 const productRouteSources = new Set([
   "custom-golf-headcovers",
@@ -97,14 +59,14 @@ function ZhoniPageHeader({ active }) {
   return <header className={`zhoni-header ${menu ? "zhoni-header-open" : ""}`}>
     <a className="zhoni-wordmark" href="/"><strong>ZHONI</strong><small>CUSTOM GOLF MERCHANDISE</small></a>
     <button className="zhoni-menu" onClick={() => setMenu(value => !value)} aria-expanded={menu}>{menu ? "CLOSE" : "MENU"}</button>
-    <nav><a className={active === "products" ? "active" : ""} href="/products/">PRODUCTS</a><a className={active === "solutions" ? "active" : ""} href="/solutions/">SOLUTIONS</a><a className={active === "guides" ? "active" : ""} href="/guides/">BUYER GUIDES</a><a className={active === "process" ? "active" : ""} href="/our-process/">OUR PROCESS</a><a className={active === "faq" ? "active" : ""} href="/faq/">FAQ</a><a className={active === "about" ? "active" : ""} href="/about/">ABOUT</a></nav>
+    <nav><EnglishProductMenu active={active === "products"} /><a className={active === "solutions" ? "active" : ""} href="/solutions/">SOLUTIONS</a><a className={active === "guides" ? "active" : ""} href="/guides/">BUYER GUIDES</a><a className={active === "process" ? "active" : ""} href="/our-process/">OUR PROCESS</a><a className={active === "faq" ? "active" : ""} href="/faq/">FAQ</a><a className={active === "about" ? "active" : ""} href="/about/">ABOUT</a></nav>
     <LanguageSwitcher />
     <a className="zhoni-header-cta" href="/request-a-quote/">SHARE YOUR BRIEF <Arrow /></a>
   </header>;
 }
 
 function SiteFooter() {
-  return <footer className="site-footer"><div className="site-footer-main"><a className="zhoni-wordmark" href="/"><strong>ZHONI</strong><small>CUSTOM GOLF MERCHANDISE</small></a><div className="site-footer-copy"><p>Custom golf merchandise, coordinated gift sets and packaging for clubs, events and brands.</p><span>GIFT SETS · HEADCOVERS · TOWELS · MARKERS · PACKAGING</span><div className="site-footer-contact"><b>DIRECT CONTACT</b><a href="mailto:sales@zhonigolf.com">sales@zhonigolf.com</a><a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">WhatsApp +86 177 5919 0848 <Arrow /></a></div></div><nav aria-label="Footer navigation"><a href="/products/">Products</a><a href="/solutions/">Solutions</a><a href="/guides/">Buyer Guides</a><a href="/our-process/">Process</a><a href="/capabilities/">Capabilities</a><a href="/about/">About</a><a href="/request-a-quote/">Contact <Arrow /></a></nav></div><div className="site-footer-base"><span>ZHONI · CUSTOM GOLF MERCHANDISE</span><span>Operated by Xiamen Jindongyu Trading Co., Ltd.</span></div></footer>;
+  return <footer className="site-footer"><div className="site-footer-main"><a className="zhoni-wordmark" href="/"><strong>ZHONI</strong><small>CUSTOM GOLF MERCHANDISE</small></a><div className="site-footer-copy"><p>Custom golf towels, caps and plush headcovers, with supporting accessories and packaging for clubs, brands and events.</p><span>TOWELS · CAPS & VISORS · PLUSH HEADCOVERS</span><div className="site-footer-contact"><b>DIRECT CONTACT</b><a href="mailto:sales@zhonigolf.com">sales@zhonigolf.com</a><a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">WhatsApp +86 177 5919 0848 <Arrow /></a></div></div><nav aria-label="Footer navigation"><a href="/products/">Products</a><a href="/solutions/">Solutions</a><a href="/guides/">Buyer Guides</a><a href="/our-process/">Process</a><a href="/capabilities/">Capabilities</a><a href="/about/">About</a><a href="/request-a-quote/">Contact <Arrow /></a></nav></div><div className="site-footer-base"><span>ZHONI · CUSTOM GOLF MERCHANDISE</span><span>Operated by Xiamen Jindongyu Trading Co., Ltd.</span></div></footer>;
 }
 
 function ZhoniPageFooter() {
@@ -330,10 +292,10 @@ function FloatingContactActions({ hidden = false, locale = "en" }) {
 
 function AboutPage() {
   return <main className="zhoni-page about-page"><ZhoniPageHeader active="about" />
-    <section className="zhoni-about-hero"><img src="/assets/images/zhoni-golf-collection-hero-v2.png" alt="ZHONI custom golf gift box, golf ball and coordinated accessories" /><div><p>ABOUT ZHONI</p><h1>Built for considered<br />golf projects.</h1><p>ZHONI works with clubs, tournaments, brands and business teams on custom golf merchandise, gift sets and packaging.</p><a href="/request-a-quote/">START A PROJECT <Arrow /></a></div></section>
+    <section className="zhoni-about-hero"><img src="/assets/images/zhoni-golf-collection-hero-v2.png" alt="ZHONI custom golf gift box, golf ball and coordinated accessories" /><div><p>ABOUT ZHONI</p><h1>Custom golf towels,<br />caps &amp; plush headcovers.</h1><p>ZHONI focuses on custom golf towels, caps and visors, and plush headcovers for clubs, brands and tournaments. Other products and gift packaging support the range when the brief calls for them.</p><a href="/request-a-quote/">START A PROJECT <Arrow /></a></div></section>
     <section className="relationship"><div><p>OUR BRAND RELATIONSHIP</p><h2>A clear structure.<br />A stronger partnership.</h2></div><div className="relationship-copy"><p>ZHONI is the custom golf merchandise practice operated by Xiamen Jindongyu Trading Co., Ltd. We use a project-led approach to coordinate product direction, customization, packaging and commercial readiness.</p><p>We do not assume a single standard answer for every brief. Product scope, timing, MOQ and applicable requirements are reviewed around the project you are planning.</p></div><div className="relationship-map"><article><b>ZHONI</b><span>Custom golf merchandise practice</span><small>Product direction · Customization · Client projects</small></article><i>Dedicated practice of</i><article><b>Xiamen Jindongyu<br />Trading Co., Ltd.</b><span>Legal operating entity</span><small>Commercial, contractual and operational framework</small></article></div></section>
-    <section className="coordinate"><div><p>WHAT WE COORDINATE</p><h2>From idea to<br />on-course impact.</h2></div><p>We bring together product choices, brand application, packaging and project planning so the final collection feels coherent to the people receiving it.</p><div className="coordinate-grid">{[["01","Product direction","Select products, materials and finishes around the outcome you need."],["02","Customization","Apply logos, graphics, colour and details across the selected collection."],["03","Packaging","Plan gift sets and presentation packaging around the hand-off moment."],["04","Project readiness","Review quantities, dates, destinations and specifications before commercial commitments."]].map(([number,title,copy]) => <article key={number}><b>{number}</b><h3>{title}</h3><p>{copy}</p></article>)}</div></section>
-    <section className="zhoni-closing"><img src="/assets/images/zhoni-golf-tournament-gift-delivery-v2.png" alt="ZHONI custom golf merchandise presented as a coordinated tournament gift" /><div><p>THOUGHTFUL PRODUCTS FOR MEANINGFUL MOMENTS</p><h2>Golf merchandise<br />that carries further.</h2><p>For club events, corporate programs and private-label projects, start by sharing the occasion and the people you are designing for.</p><a href="/request-a-quote/">TELL US ABOUT YOUR PROJECT <Arrow /></a></div></section><ZhoniPageFooter />
+    <section className="coordinate"><div><p>WHAT WE COORDINATE</p><h2>Three core products.<br />Distinct development needs.</h2></div><p>Our core range brings together textile selection, logo application and sewn construction. Towels need attachment review, caps need fit review, and plush headcovers need character and club-fit review. Supporting accessories and packaging are optional, not a requirement to order.</p><div className="coordinate-grid">{[["01","Product direction","Start with a towel, cap or plush headcover; define its use, material and construction."],["02","Customization","Apply logos, graphics, colour and details across the selected collection."],["03","Packaging","Add protective or gift packaging to suit the chosen product and destination."],["04","Project readiness","Review quantities, dates, destinations and specifications before commercial commitments."]].map(([number,title,copy]) => <article key={number}><b>{number}</b><h3>{title}</h3><p>{copy}</p></article>)}</div></section>
+    <section className="zhoni-closing"><img src="/assets/images/zhoni-golf-tournament-gift-delivery-v2.png" alt="ZHONI custom golf merchandise presented as a coordinated tournament gift" /><div><p>THOUGHTFUL PRODUCTS FOR MEANINGFUL MOMENTS</p><h2>Golf merchandise<br />that carries further.</h2><p>Start with a towel, cap or plush headcover. Share the intended use, quantity, logo references, destination and target date; add other products only where they improve the brief.</p><a href="/request-a-quote/">TELL US ABOUT YOUR PROJECT <Arrow /></a></div></section><ZhoniPageFooter />
   </main>;
 }
 
@@ -943,7 +905,7 @@ function ProductsHub() {
       <a className="products-brand" href="/"><strong>ZHONI</strong><small>CUSTOM GOLF MERCHANDISE</small></a>
       <button className="products-menu" onClick={() => setMenu(!menu)} aria-expanded={menu}>MENU</button>
       <nav className={menu ? "products-nav products-nav-open" : "products-nav"}>
-        <a aria-current="page" href="/products/">Products</a><a href="/solutions/">Solutions</a><a href="/guides/">Buyer Guides</a><a href="/our-process/">Our Approach</a><a href="/faq/">FAQ</a><a href="/request-a-quote/">Contact</a>
+        <EnglishProductMenu active /><a href="/solutions/">Solutions</a><a href="/guides/">Buyer Guides</a><a href="/our-process/">Our Approach</a><a href="/faq/">FAQ</a><a href="/about/">About</a>
       </nav>
       <LanguageSwitcher />
       <a className="products-quote" href="/request-a-quote/">REQUEST A QUOTE <Arrow /></a>
@@ -951,19 +913,12 @@ function ProductsHub() {
 
     <section className="products-hero">
       <img src="/assets/images/zhoni-golf-collection-hero-v2.png" alt="A coordinated ZHONI custom golf merchandise collection with headcover, towel, ball markers and presentation box" />
-      <div className="products-hero-copy"><p className="products-kicker">CUSTOM GOLF MERCHANDISE</p><h1>The golf collection<br />designed beyond<br />the clubhouse.</h1><p>Considered merchandise for clubs, tournaments, corporate programs and private-label brands.</p><a href="/request-a-quote/">START A PROJECT <Arrow /></a></div>
-      <p className="products-hero-note">MORE THAN MERCHANDISE.<br />A MORE MEANINGFUL GAME.</p>
+      <div className="products-hero-copy"><p className="products-kicker">CORE PRODUCTS &amp; SUPPORTING RANGE</p><h1>Custom golf towels,<br />caps &amp; plush<br />headcovers.</h1><p>Start with our three core product families. Other headcovers, metal accessories and packaging remain available for individual enquiries or coordinated sets.</p><a href="#core-products">EXPLORE CORE PRODUCTS <Arrow /></a></div>
+      <p className="products-hero-note">ONE PRODUCT FIRST.<br />A COLLECTION WHEN NEEDED.</p>
     </section>
 
-    <section className="family-index" aria-label="Golf merchandise product families">
-      <div className="family-heading"><p className="products-kicker">OUR RANGE</p><h2>Product Families</h2><p>Different purposes.<br />A more remarkable whole.</p></div>
-      <div className="family-grid">
-        {productFamilies.map(([title, copy, image, alt]) => <a className="family-card" href={productFamilyRoutes[title]} key={title}>
-          <img src={image} alt={alt} />
-          <h3>{title}</h3><p>{copy}</p><span aria-hidden="true">— &nbsp; <Arrow /></span>
-        </a>)}
-      </div>
-    </section>
+    <EnglishCoreProducts />
+    <EnglishSupportingProducts />
     <BuyerEvidenceLayer context="products" />
 
     <section className="program-bridge">
@@ -993,7 +948,7 @@ function TournamentGiftsPage() {
     <header className={headerClass}>
       <a className="solution-brand" href="/"><strong>ZHONI</strong><small>CUSTOM GOLF MERCHANDISE</small></a>
       <button className="solution-menu" onClick={() => setMenu(open => !open)} aria-expanded={menu}>{menu ? "CLOSE" : "MENU"}</button>
-      <nav className="solution-nav"><a href="/products/">Products</a><a href="/solutions/">Solutions</a><a href="/guides/">Buyer Guides</a><a href="/our-process/">Our Process</a><a href="/custom-golf-packaging/">Craft &amp; Packaging</a><a href="/faq/">FAQ</a></nav>
+      <nav className="solution-nav"><EnglishProductMenu /><a href="/solutions/">Solutions</a><a href="/guides/">Buyer Guides</a><a href="/our-process/">Our Process</a><a href="/about/">About</a><a href="/faq/">FAQ</a></nav>
       <LanguageSwitcher />
       <a className="solution-quote" href="/request-a-quote/">GET A QUOTE <Arrow /></a>
     </header>
@@ -1261,7 +1216,7 @@ export function App({ initialRoute = null, KoreanSiteComponent = KoreanSite, Can
     <header className={`header ${scrolled ? "header-scrolled" : ""} ${menu ? "header-open" : ""}`}>
       <a className="brand" href="/"><strong>ZHONI</strong><small>CUSTOM GOLF MERCHANDISE</small></a>
       <button className="menu" onClick={() => setMenu(!menu)} aria-expanded={menu}>{menu ? "CLOSE" : "MENU"}</button>
-      <nav className={menu ? "nav nav-open" : "nav"}><a href="/products/">Products</a><a href="/solutions/">Solutions</a><a href="/guides/">Buyer Guides</a><a href="/our-process/">Our Process</a><a href="/custom-golf-packaging/">Craft &amp; Packaging</a><a href="/faq/">FAQ</a></nav>
+      <nav className={menu ? "nav nav-open" : "nav"}><EnglishProductMenu /><a href="/solutions/">Solutions</a><a href="/guides/">Buyer Guides</a><a href="/our-process/">Our Process</a><a href="/about/">About</a><a href="/faq/">FAQ</a></nav>
       <LanguageSwitcher variant="dark" />
       <Button>GET A QUOTE</Button>
     </header>
@@ -1269,22 +1224,23 @@ export function App({ initialRoute = null, KoreanSiteComponent = KoreanSite, Can
     <section className="hero" id="top" ref={heroRef}>
       <div className="hero-image"><picture><source type="image/avif" srcSet="/assets/images/responsive/zhoni-golf-collection-hero-v2-640.avif 640w, /assets/images/responsive/zhoni-golf-collection-hero-v2-1024.avif 1024w, /assets/images/responsive/zhoni-golf-collection-hero-v2-1672.avif 1672w" sizes="100vw" /><source type="image/webp" srcSet="/assets/images/responsive/zhoni-golf-collection-hero-v2-640.webp 640w, /assets/images/responsive/zhoni-golf-collection-hero-v2-1024.webp 1024w, /assets/images/responsive/zhoni-golf-collection-hero-v2-1672.webp 1672w" sizes="100vw" /><img src="/assets/images/zhoni-golf-collection-hero-v2.png" width="1672" height="941" alt="" loading="eager" decoding="async" fetchPriority="high" /></picture>{heroVideoEnabled && <video ref={heroVideoRef} key={active[3]} autoPlay muted loop playsInline preload="metadata" poster="/assets/images/responsive/zhoni-golf-collection-hero-v2-1672.webp" aria-hidden="true" onError={() => setHeroVideoEnabled(false)}><source src={active[3]} type="video/mp4" /></video>}</div>
       <div className="shade" />
-      <div className="shell hero-copy"><p className="eyebrow">{active[0]}</p><h1>{active[1]}</h1><p className="lead">{active[2]}</p><div className="actions"><a className="button button-primary" href="/products/">EXPLORE PRODUCTS <Arrow /></a><a className="button button-secondary" href="/request-a-quote/">START A CUSTOM PROJECT <Arrow /></a></div></div>
+      <div className="shell hero-copy"><p className="eyebrow">{active[0]}</p><h1>{active[1]}</h1><p className="lead">{active[2]}</p><div className="actions"><a className="button button-primary" href="#core-products">EXPLORE CORE PRODUCTS <Arrow /></a><a className="button button-secondary" href="/request-a-quote/">START A CUSTOM PROJECT <Arrow /></a></div></div>
     </section>
 
-    <ProductPriorityGateway eyebrow="START WITH THE PRODUCT" title="Choose the custom golf product buyers are already looking for." intro="Compare construction, branding and purchasing requirements before building a wider program." products={homeProductFamilies} allProducts={{ label: "VIEW ALL CUSTOM GOLF PRODUCTS", href: "/products/" }} bridge={{ eyebrow: "WHEN ONE PRODUCT BECOMES A PROGRAM", title: "Turn selected products into tournament, corporate or club solutions.", copy: "Gift sets and event programs remain the next step when the audience, hand-off and packaging need to work together.", label: "EXPLORE PROJECT SOLUTIONS", href: "/solutions/" }} />
+    <EnglishCoreProducts /><EnglishProductExpertise />
 
-    <section className="intro shell"><p className="eyebrow green">MORE THAN PRODUCTS. A STRONGER CONNECTION.</p><div className="two-col"><h2>A coordinated golf collection tells your story long after the round.</h2><div><p>We help clubs, events and brands create custom golf merchandise that people are proud to use—on the course and beyond it.</p><a className="link" href="/our-process/">OUR APPROACH <Arrow /></a></div></div></section>
 
-    <section className="solutions shell" id="solutions"><div className="section-head"><div><p className="eyebrow green">PROJECT-LED SOLUTIONS</p><h2>Choose a purchasing outcome, not just a product.</h2></div><p>Each route can combine product selection, branding direction and packaging into one clear project.</p></div><div className="solution-grid">{solutions.map(([title, copy], i) => <a className="solution" href={solutionRoutes[title] || "/solutions/"} key={title}><span>{String(i + 1).padStart(2, "0")}</span><h3>{title}</h3><p>{copy}</p><b>START A PROJECT <Arrow /></b></a>)}</div></section>
+
+    <section className="process shell" id="process"><p className="eyebrow green">HOW IT WORKS</p><h2>From product brief to sample approval.</h2><div className="steps">{[["Tell us the brief", "Product interest, quantity, event date, audience and any packaging needs."], ["Define the product", "Review materials, construction, fit or attachment, and logo placement."], ["Review the sample", "Check a physical sample against the agreed specification before production."], ["Produce & deliver", "Confirm delivery requirements as part of the project scope."]].map(([title, copy], i) => <div key={title}><b>0{i + 1}</b><h3>{title}</h3><p>{copy}</p></div>)}</div></section>
+    <EnglishSupportingProducts />
+    <section className="solutions shell" id="solutions"><div className="section-head"><div><p className="eyebrow green">WHEN PRODUCTS BECOME A PROGRAM</p><h2>Use the products in a club, brand or event program.</h2></div><p>Start with a core product. Add related pieces and packaging only where they serve your audience.</p></div><div className="solution-grid">{solutions.map(([title, copy], i) => <a className="solution" href={solutionRoutes[title] || "/solutions/"} key={title}><span>{String(i + 1).padStart(2, "0")}</span><h3>{title}</h3><p>{copy}</p><b>START A PROJECT <Arrow /></b></a>)}</div></section>
 
     <section className="showcase shell"><div className="section-head"><div><p className="eyebrow green">PROJECT DIRECTION IN PRACTICE</p><h2>See the decisions behind a coordinated collection.</h2></div><p>These representative visuals illustrate the product, branding, hand-off and packaging directions that should be defined in a real project brief.</p></div><div className="showcase-grid"><figure><img src="/assets/images/zhoni-golf-product-development-v2.png" alt="Illustrative material and logo direction for a custom golf collection" loading="lazy" decoding="async" fetchPriority="low" /><figcaption><b>01</b><span>Material, colour and brand direction to review</span></figcaption></figure><figure><img src="/assets/images/zhoni-golf-collection-hero-v2.png" alt="Illustrative coordinated golf towel and accessory collection" loading="lazy" decoding="async" fetchPriority="low" /><figcaption><b>02</b><span>Logo execution and collection consistency</span></figcaption></figure><figure><img src="/assets/images/zhoni-golf-tournament-gift-delivery-v2.png" alt="Illustrative tournament gift-set hand-off setting" loading="lazy" decoding="async" fetchPriority="low" /><figcaption><b>03</b><span>Recipient and event hand-off context</span></figcaption></figure><figure><img src="/assets/images/zhoni-custom-golf-packaging-v2.png" alt="Illustrative custom golf presentation packaging direction" loading="lazy" decoding="async" fetchPriority="low" /><figcaption><b>04</b><span>Packaging and presentation direction</span></figcaption></figure></div></section>
 
     <section className="evidence" id="craft"><img src="/assets/images/zhoni-golf-product-development-v2.png" alt="ZHONI custom golf material and monogram development" loading="lazy" decoding="async" fetchPriority="low" /><article className="dark"><p className="eyebrow">CUSTOM GOLF MERCHANDISE</p><h2>Material choices that make a stronger impression.</h2><p>Choose a product direction, then align material, colour, logo application and finishing details across the collection.</p><a className="link light" href="/request-a-quote/">EXPLORE CUSTOMISATION <Arrow /></a></article><article className="cream"><p className="eyebrow green">FROM CONCEPT TO DELIVERY</p><h2>A project path built for confident approval.</h2><ol><li>Share product direction, estimated quantity and event date.</li><li>Align the collection, branding and packaging requirements.</li><li>Review the relevant design and proof process.</li></ol><a className="link" href="/request-a-quote/">START YOUR PROJECT <Arrow /></a></article><img src="/assets/images/zhoni-custom-golf-packaging-v2.png" alt="A ZHONI custom golf gift set in coordinated presentation packaging" loading="lazy" decoding="async" fetchPriority="low" /></section>
 
-    <section className="packaging"><div className="shell"><p className="eyebrow">CUSTOM PACKAGING</p><h2>Packaging is part of the gift—not an afterthought.</h2><p>Boxes, sleeves, inserts, cards and labels can bring the collection together into a distinct presentation moment.</p><a className="button ivory" href="/request-a-quote/">EXPLORE PACKAGING <Arrow /></a></div></section>
 
-    <section className="process shell" id="process"><p className="eyebrow green">HOW IT WORKS</p><h2>Clear steps for a more considered project.</h2><div className="steps">{[["Tell us the brief", "Product interest, quantity, event date, audience and any packaging needs."], ["Shape the collection", "Coordinate the product mix, branding direction and presentation."], ["Approve the direction", "Move forward after the relevant design and proof stages are aligned."], ["Produce & deliver", "Confirm delivery requirements as part of the project scope."]].map(([title, copy], i) => <div key={title}><b>0{i + 1}</b><h3>{title}</h3><p>{copy}</p></div>)}</div></section>
+
 
     <section className="faq shell" id="faq"><div><p className="eyebrow green">PURCHASING QUESTIONS</p><h2>Answers for the project you are planning.</h2><p>Specific, project-relevant answers make it easier to evaluate the next step.</p></div><div className="faq-list">{faqs.map(([question, answer], i) => <article key={question}><button onClick={() => setFaq(faq === i ? -1 : i)} aria-expanded={faq === i}><span>{question}</span><b>{faq === i ? "−" : "+"}</b></button><p hidden={faq !== i}>{answer}</p></article>)}</div></section>
 
