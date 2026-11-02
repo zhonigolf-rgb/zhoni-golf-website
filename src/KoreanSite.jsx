@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { ProcurementArticlePage } from "./ProcurementArticlePage.jsx";
+import procurementArticlesKo from "./content/procurement-articles/ko.json";
 import { resolveInquiryPlan } from "./content/product-plans.js";
 import { LanguageSwitcher } from "./locale.jsx";
 import { TurnstileField } from "./turnstile.jsx";
@@ -64,6 +66,7 @@ function KoreanQuote() {
 }
 
 export function KoreanSite({ routeKey }) {
+  if (["koTowelsGuide", "koCapsStyleGuide", "koPlushDesignGuide"].includes(routeKey)) return <ProcurementArticlePage content={procurementArticlesKo} Header={KoreanHeader} Footer={KoreanFooter} />;
   if (routeKey === "koBallMarkerManufacturingGuide") return <LocalizedBallMarkerGuide locale="ko" Header={KoreanHeader} Footer={KoreanFooter} />;
   const pages={koHome:<KoreanHome />,koProducts:<KoreanProducts />,koSolutions:<KoreanSolutions />,koProcess:<KoreanProcess />,koFaq:<KoreanFAQ />,koAbout:<KoreanAbout />,koQuote:<KoreanQuote />,koBallMarkers:<BallMarkerProductPage locale="ko" Header={KoreanHeader} Footer={KoreanFooter} />};
   return pages[routeKey] ?? <KoreanExpansion routeKey={routeKey} />;

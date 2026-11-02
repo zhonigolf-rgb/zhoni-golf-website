@@ -5,6 +5,7 @@ import worker from "../worker/index.js";
 import { onRequest as pagesMiddleware } from "../functions/_middleware.js";
 import { renderRouteDocument } from "../scripts/prerender-routes.mjs";
 import { findRoute, siteRoutes } from "../src/siteRoutes.js";
+import { procurementArticleKey } from "../src/content/procurement-article-meta.js";
 
 test("serves existing static assets without a fallback", async () => {
   const calls = [];
@@ -217,7 +218,7 @@ test("publishes a decision-ready custom golf caps product page", async () => {
 test("publishes a complete five-guide custom golf cap knowledge cluster with original visuals", async () => {
   const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
   const guides = [
-    [siteRoutes.capsStyleGuide, "zhoni-cap-guide-styles-v1.png", "Which custom golf cap style is most versatile?"],
+    [siteRoutes.capsStyleGuide, "zhoni-cap-guide-styles-v1.png", "Should a tournament choose caps or visors?"],
     [siteRoutes.capsMaterialsGuide, "zhoni-cap-guide-materials-v1.png", "Is cotton always more premium than polyester?"],
     [siteRoutes.capsBrandingGuide, "zhoni-cap-guide-branding-v1.png", "When should we use a patch instead of embroidery?"],
     [siteRoutes.capsConstructionGuide, "zhoni-cap-guide-construction-v1.png", "Which closure feels most premium?"],
@@ -228,8 +229,8 @@ test("publishes a complete five-guide custom golf cap knowledge cluster with ori
     const document = await readFile(new URL(`../dist/client/${route.path.slice(1)}index.html`, import.meta.url), "utf8");
     assert.match(document, new RegExp(image.replaceAll(".", "\\.")));
     assert.match(document, new RegExp(question.replaceAll("?", "\\?")));
-    assert.match(document, /COMMON BUYER QUESTIONS/);
-    assert.match(document, /Custom Golf Caps &amp; Headwear/);
+    assert.match(document, route === siteRoutes.capsStyleGuide ? /FREQUENTLY ASKED QUESTIONS/ : /COMMON BUYER QUESTIONS/);
+    assert.match(document, /href="\/custom-golf-caps\/"/);
   }
 });
 
@@ -338,13 +339,13 @@ test("publishes the first Japanese buyer-guide collection with filters and proje
     assert.match(document, /<h1(?:\s|>)/);
     assert.match(document, new RegExp(`hreflang="en" href="https://zhonigolf\\.com${route.alternatePath.replaceAll("/", "\\/")}"`));
     assert.match(document, new RegExp(`hreflang="ja" href="https://zhonigolf\\.com${route.path.replaceAll("/", "\\/")}"`));
-    assert.match(document, /data-buyer-evidence="ja-/);
+    assert.match(document, procurementArticleKey(route) ? /data-procurement-article=/ : /data-buyer-evidence="ja-/);
 
     if (key !== "jaGuides") {
       for (const path of [productPaths[key], "/ja/solutions/", "/ja/our-process/", "/ja/request-a-quote/"]) {
         assert.match(document, new RegExp(path.replaceAll("/", "\\/")), `Expected ${path} on ${route.path}.`);
       }
-      assert.match(document, /購入担当者からのよくある質問/);
+      assert.match(document, procurementArticleKey(route) ? /よくあるご質問/ : /購入担当者からのよくある質問/);
       assert.match(document, /\?product=/);
       const schemaMatch = document.match(/<script id="zhoni-page-schema" type="application\/ld\+json">([\s\S]*?)<\/script>/);
       const graph = JSON.parse(schemaMatch[1])["@graph"];
@@ -618,8 +619,8 @@ test("keeps completed German routes in full parity with English and indexes ever
   for (const route of germanGuideArticles) {
     assert.match(hub, new RegExp(route.path.replaceAll("/", "\\/")), `Missing ${route.path} from German guide center.`);
     const document = await readFile(new URL(`../dist/client/${route.path.slice(1)}index.html`, import.meta.url), "utf8");
-    assert.match(document, /data-buyer-evidence="de-guide-/);
-    assert.match(document, /HÄUFIGE FRAGEN VON EINKÄUFERN/);
+    assert.match(document, procurementArticleKey(route) ? /data-procurement-article=/ : /data-buyer-evidence="de-guide-/);
+    assert.match(document, procurementArticleKey(route) ? /HÄUFIGE FRAGEN/ : /HÄUFIGE FRAGEN VON EINKÄUFERN/);
     for (const path of ["/de/products/", "/de/solutions/", "/de/our-process/", "/de/request-a-quote/"]) {
       assert.match(document, new RegExp(path.replaceAll("/", "\\/")), `Expected ${path} on ${route.path}.`);
     }
@@ -1083,9 +1084,13 @@ test("connects localized ball marker guides to the matching product and inquiry 
 test("publishes product-specific procurement answers in all five languages", async () => {
   const { procurementAnswers, procurementGuideProducts } = await import("../src/content/procurement-answers.js");
   const { guideAnswerIntros } = await import("../src/content/guide-answer-intros.js");
+  const { procurementArticleKey } = await import("../src/content/procurement-article-meta.js");
   const routes = Object.values(siteRoutes).filter(route => procurementGuideProducts[route.alternatePath ?? route.path]);
   assert.equal(routes.length, 20);
   for (const route of routes) {
+    // The three full guides now integrate these answers into editorial sections.
+    // Their coverage, localized links and FAQ parity are tested in procurement-articles.test.mjs.
+    if (procurementArticleKey(route)) continue;
     const copy = procurementAnswers[route.lang ?? "en"];
     const product = procurementGuideProducts[route.alternatePath ?? route.path];
     const document = await readFile(new URL(`../dist/client${route.path}index.html`, import.meta.url), "utf8");

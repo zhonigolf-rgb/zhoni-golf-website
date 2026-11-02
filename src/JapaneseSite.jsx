@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { ProcurementArticlePage } from "./ProcurementArticlePage.jsx";
+import procurementArticlesJa from "./content/procurement-articles/ja.json";
 import { resolveInquiryPlan } from "./content/product-plans.js";
 import { LanguageSwitcher } from "./locale.jsx";
 import { TurnstileField } from "./turnstile.jsx";
@@ -69,6 +71,7 @@ function Quote() {
 }
 
 export function JapaneseSite({ routeKey }) {
+  if (["jaTowelsGuide", "jaCapsStyleGuide", "jaPlushDesignGuide"].includes(routeKey)) return <ProcurementArticlePage content={procurementArticlesJa} Header={Header} Footer={Footer} />;
   if (routeKey === "jaBallMarkerManufacturingGuide") return <LocalizedBallMarkerGuide locale="ja" Header={Header} Footer={Footer} />;
   const pages = { jaHome:<Home />, jaProducts:<Products />, jaSolutions:<Solutions />, jaProcess:<Process />, jaFaq:<Faq />, jaAbout:<About />, jaQuote:<Quote />, jaBallMarkers:<BallMarkerProductPage locale="ja" Header={Header} Footer={Footer} /> };
   return pages[routeKey] ?? <JapaneseExpansion routeKey={routeKey} />;

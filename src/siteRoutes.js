@@ -1,3 +1,5 @@
+import { procurementArticleKey, procurementArticleMeta } from "./content/procurement-article-meta.js";
+
 export const siteRoutes = {
   home: { path: "/", source: "homepage", title: "Custom Golf Towels, Caps & Plush Headcovers | ZHONI", description: "Custom magnetic golf towels, caps and visors, and plush headcovers for clubs, brands and tournaments. Supporting accessories and packaging available by project." },
   products: { path: "/products/", source: "products-hub", title: "Custom Golf Towels, Caps & Plush Headcovers | Product Range", description: "Explore ZHONI's core golf towels, caps and plush headcovers, with other headcovers, ball markers, divot tools, accessories and packaging as supporting products." },
@@ -325,6 +327,14 @@ export const siteRoutes = {
   deEventFormatsGiftGuide: { path: "/de/guides/branded-golf-gifts-pro-ams-invitationals-charity-tournaments/", source: "de-pro-am-invitational-charity-golf-gifts", lang: "de", alternatePath: "/guides/branded-golf-gifts-pro-ams-invitationals-charity-tournaments/", title: "Golfgeschenke für Pro-Ams, Invitationals und Charity-Turniere | ZHONI", description: "Gebrandete Golfgeschenke passend zu Pro-Am, Club-Invitational, Charity-Turnier und Corporate Golf Day planen." },
   deWeatherReadyTournamentGuide: { path: "/de/guides/weather-ready-golf-tournament-merchandise/", source: "de-weather-ready-tournament-merchandise", lang: "de", alternatePath: "/guides/weather-ready-golf-tournament-merchandise/", title: "Wettergerechte Golfturnier-Merchandise-Planung | ZHONI", description: "Caps, Handtücher, Accessoires und Verpackung für Hitze, Regen, Wind und wechselhafte Bedingungen planen." },
 };
+
+for (const route of Object.values(siteRoutes)) {
+  const key = procurementArticleKey(route);
+  if (key) {
+    const [title, description] = procurementArticleMeta[route.lang ?? "en"][key];
+    Object.assign(route, { title, description });
+  }
+}
 
 export function normalizePath(pathname) {
   if (!pathname || pathname === "/") return "/";

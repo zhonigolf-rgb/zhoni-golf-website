@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { ProcurementArticlePage } from "./ProcurementArticlePage.jsx";
+import procurementArticlesDe from "./content/procurement-articles/de.json";
 import { resolveInquiryPlan } from "./content/product-plans.js";
 import { LanguageSwitcher } from "./locale.jsx";
 import { TurnstileField } from "./turnstile.jsx";
@@ -69,6 +71,7 @@ function Quote() {
 }
 
 export function GermanSite({ routeKey }) {
+  if (["deTowelsGuide", "deCapsStyleGuide", "dePlushDesignGuide"].includes(routeKey)) return <ProcurementArticlePage content={procurementArticlesDe} Header={Header} Footer={Footer} />;
   if (routeKey === "deBallMarkerManufacturingGuide") return <LocalizedBallMarkerGuide locale="de" Header={Header} Footer={Footer} />;
   const pages = { deHome:<Home />, deProducts:<Products />, deSolutions:<Solutions />, deProcess:<Process />, deFaq:<Faq />, deAbout:<About />, deQuote:<Quote />, deBallMarkers:<BallMarkerProductPage locale="de" Header={Header} Footer={Footer} /> };
   return pages[routeKey] ?? <GermanExpansion routeKey={routeKey} />;

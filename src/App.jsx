@@ -2,6 +2,8 @@ import { ProductPlanOptions } from "./ProductPlanOptions.jsx";
 import { resolveInquiryPlan } from "./content/product-plans.js";
 import { GuideAnswerIntro } from "./GuideAnswerIntro.jsx";
 import { ProcurementAnswers } from "./ProcurementAnswers.jsx";
+import { ProcurementArticlePage } from "./ProcurementArticlePage.jsx";
+import procurementArticlesEn from "./content/procurement-articles/en.json";
 import { Fragment, lazy, Suspense, useEffect, useRef, useState } from "react";
 import { findRoute, siteRoutes } from "./siteRoutes";
 import { trackAnalytics } from "./analytics.jsx";
@@ -408,6 +410,7 @@ const procurementGuideContent = {
 };
 
 function ProcurementTopicGuide({ topic }) {
+  if (topic === "towels" || topic === "capsStyle") return <ProcurementArticlePage content={procurementArticlesEn} Header={ZhoniPageHeader} Footer={ZhoniPageFooter} />;
   const content = procurementGuideContent[topic];
   const isCapGuide = topic.startsWith("caps");
   return <main className={`zhoni-page guide-page${isCapGuide ? " cap-guide-page" : ""}`}><ZhoniPageHeader active="solutions" />
@@ -587,6 +590,7 @@ function LegacyPlushHeadcoversPage() {
 }
 
 function PlushHeadcoverGuide({ topic }) {
+  if (topic === "design") return <ProcurementArticlePage content={procurementArticlesEn} Header={ZhoniPageHeader} Footer={ZhoniPageFooter} />;
   return <LocalizedPlushHeadcoverGuidePage content={enPlushHeadcovers} topic={topic} Header={ZhoniPageHeader} Footer={ZhoniPageFooter} Evidence={BuyerEvidenceLayer} />;
 }
 
