@@ -1,3 +1,5 @@
+import { ProcurementSeriesPage } from "./ProcurementSeriesPage.jsx";
+import seriesArticles from "./content/procurement-series/fr-CA.json";
 import { useState } from "react";
 import { ProcurementArticlePage } from "./ProcurementArticlePage.jsx";
 import procurementArticlesFrCa from "./content/procurement-articles/fr-CA.json";
@@ -70,6 +72,7 @@ function FrenchQuote() {
 }
 
 export function CanadianFrenchSite({ routeKey }) {
+  if (routeKey?.includes("Series")) return <ProcurementSeriesPage series={seriesArticles} content={procurementArticlesFrCa} Header={FrenchHeader} Footer={FrenchFooter} />;
   if (["frCaTowelsGuide", "frCaCapsStyleGuide", "frCaPlushDesignGuide"].includes(routeKey)) return <ProcurementArticlePage content={procurementArticlesFrCa} Header={FrenchHeader} Footer={FrenchFooter} />;
   if (routeKey === "frCaBallMarkerManufacturingGuide") return <LocalizedBallMarkerGuide locale="fr-CA" Header={FrenchHeader} Footer={FrenchFooter} />;
   const pages={frCaHome:<FrenchHome />,frCaProducts:<FrenchProducts />,frCaSolutions:<FrenchSolutions />,frCaProcess:<FrenchProcess />,frCaFaq:<FrenchFaq />,frCaAbout:<FrenchAbout />,frCaQuote:<FrenchQuote />,frCaBallMarkers:<BallMarkerProductPage locale="fr-CA" Header={FrenchHeader} Footer={FrenchFooter} />};

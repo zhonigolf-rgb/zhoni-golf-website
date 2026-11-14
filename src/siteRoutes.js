@@ -1,3 +1,4 @@
+import { registerSeriesRoutes } from "./content/procurement-series.js";
 import { procurementArticleKey, procurementArticleMeta } from "./content/procurement-article-meta.js";
 
 export const siteRoutes = {
@@ -327,6 +328,8 @@ export const siteRoutes = {
   deEventFormatsGiftGuide: { path: "/de/guides/branded-golf-gifts-pro-ams-invitationals-charity-tournaments/", source: "de-pro-am-invitational-charity-golf-gifts", lang: "de", alternatePath: "/guides/branded-golf-gifts-pro-ams-invitationals-charity-tournaments/", title: "Golfgeschenke für Pro-Ams, Invitationals und Charity-Turniere | ZHONI", description: "Gebrandete Golfgeschenke passend zu Pro-Am, Club-Invitational, Charity-Turnier und Corporate Golf Day planen." },
   deWeatherReadyTournamentGuide: { path: "/de/guides/weather-ready-golf-tournament-merchandise/", source: "de-weather-ready-tournament-merchandise", lang: "de", alternatePath: "/guides/weather-ready-golf-tournament-merchandise/", title: "Wettergerechte Golfturnier-Merchandise-Planung | ZHONI", description: "Caps, Handtücher, Accessoires und Verpackung für Hitze, Regen, Wind und wechselhafte Bedingungen planen." },
 };
+
+registerSeriesRoutes(siteRoutes);
 
 for (const route of Object.values(siteRoutes)) {
   const key = procurementArticleKey(route);

@@ -1,3 +1,5 @@
+import { ProcurementSeriesPage } from "./ProcurementSeriesPage.jsx";
+import seriesArticles from "./content/procurement-series/ko.json";
 import { useState } from "react";
 import { ProcurementArticlePage } from "./ProcurementArticlePage.jsx";
 import procurementArticlesKo from "./content/procurement-articles/ko.json";
@@ -66,6 +68,7 @@ function KoreanQuote() {
 }
 
 export function KoreanSite({ routeKey }) {
+  if (routeKey?.includes("Series")) return <ProcurementSeriesPage series={seriesArticles} content={procurementArticlesKo} Header={KoreanHeader} Footer={KoreanFooter} />;
   if (["koTowelsGuide", "koCapsStyleGuide", "koPlushDesignGuide"].includes(routeKey)) return <ProcurementArticlePage content={procurementArticlesKo} Header={KoreanHeader} Footer={KoreanFooter} />;
   if (routeKey === "koBallMarkerManufacturingGuide") return <LocalizedBallMarkerGuide locale="ko" Header={KoreanHeader} Footer={KoreanFooter} />;
   const pages={koHome:<KoreanHome />,koProducts:<KoreanProducts />,koSolutions:<KoreanSolutions />,koProcess:<KoreanProcess />,koFaq:<KoreanFAQ />,koAbout:<KoreanAbout />,koQuote:<KoreanQuote />,koBallMarkers:<BallMarkerProductPage locale="ko" Header={KoreanHeader} Footer={KoreanFooter} />};

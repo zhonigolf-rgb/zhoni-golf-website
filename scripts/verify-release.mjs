@@ -30,7 +30,7 @@ function fingerprint() {
       else if (entry.isFile()) { hash.update(child); hash.update(readFileSync(path.join(root,child))); }
     }
   }
-  for (const dir of ["src", "public", "scripts", "tests", "functions", "worker", ".openai"]) visit(dir);
+  for (const dir of ["content", "src", "public", "scripts", "tests", "functions", "worker", ".openai"]) visit(dir);
   for (const file of ["package.json", "package-lock.json", "vite.config.mjs", "index.html", ".env", ".env.local", ".env.production", ".env.production.local"]) {
     if (existsSync(path.join(root,file))) { hash.update(file); hash.update(readFileSync(path.join(root,file))); }
   }

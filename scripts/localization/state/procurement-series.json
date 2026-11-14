@@ -1,0 +1,90 @@
+{
+  "ko": {
+    "towelRange": {
+      "sourceHash": "e65c3ae275d67026",
+      "targetHash": "53bbc5ba15ce63c5"
+    },
+    "towelLogos": {
+      "sourceHash": "c23b259f61b55a69",
+      "targetHash": "8c5a473bf7c4d133"
+    },
+    "capReorders": {
+      "sourceHash": "2df60beb33eaee97",
+      "targetHash": "8fc1a1f4c38c0b95"
+    },
+    "capVersions": {
+      "sourceHash": "910741d1106afb16",
+      "targetHash": "fec885af78b73733"
+    },
+    "mascotRange": {
+      "sourceHash": "1aa76fd34b48969c",
+      "targetHash": "f23a04dd7c1db677"
+    }
+  },
+  "fr-CA": {
+    "towelRange": {
+      "sourceHash": "e65c3ae275d67026",
+      "targetHash": "3fc88111cb2af332"
+    },
+    "towelLogos": {
+      "sourceHash": "c23b259f61b55a69",
+      "targetHash": "4cf304e8bbb72adb"
+    },
+    "capReorders": {
+      "sourceHash": "2df60beb33eaee97",
+      "targetHash": "fcc1a38182cf4d3c"
+    },
+    "capVersions": {
+      "sourceHash": "910741d1106afb16",
+      "targetHash": "0d5d880ca2e95ada"
+    },
+    "mascotRange": {
+      "sourceHash": "1aa76fd34b48969c",
+      "targetHash": "d197d402a33f8318"
+    }
+  },
+  "ja": {
+    "towelRange": {
+      "sourceHash": "e65c3ae275d67026",
+      "targetHash": "ed8732a1abcc98f8"
+    },
+    "towelLogos": {
+      "sourceHash": "c23b259f61b55a69",
+      "targetHash": "02d919668b3ff8b1"
+    },
+    "capReorders": {
+      "sourceHash": "2df60beb33eaee97",
+      "targetHash": "2ea1f58d7ce5536b"
+    },
+    "capVersions": {
+      "sourceHash": "910741d1106afb16",
+      "targetHash": "b5e5c90ad6007427"
+    },
+    "mascotRange": {
+      "sourceHash": "1aa76fd34b48969c",
+      "targetHash": "7851ad1df5a38c73"
+    }
+  },
+  "de": {
+    "towelRange": {
+      "sourceHash": "e65c3ae275d67026",
+      "targetHash": "535d7ee6346f19b2"
+    },
+    "towelLogos": {
+      "sourceHash": "c23b259f61b55a69",
+      "targetHash": "8f693e990734b900"
+    },
+    "capReorders": {
+      "sourceHash": "2df60beb33eaee97",
+      "targetHash": "5c42c6eb1d61523b"
+    },
+    "capVersions": {
+      "sourceHash": "910741d1106afb16",
+      "targetHash": "26574a804e0baacd"
+    },
+    "mascotRange": {
+      "sourceHash": "1aa76fd34b48969c",
+      "targetHash": "347f6c9bc62971cf"
+    }
+  }
+}

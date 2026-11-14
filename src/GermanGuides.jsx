@@ -1,9 +1,11 @@
+import { seriesCatalog } from "./content/procurement-series.js";
 import { useState } from "react";
 import { LocalizedBuyerEvidence } from "./LocalizedBuyerEvidence.jsx";
 import { Arrow, GermanBuyerGuide, GermanFooter, GermanHeader } from "./GermanGuideLayout.jsx";
 import { GermanProcurement } from "./GermanProcurement.jsx";
 
 const guides = [
+  ...seriesCatalog("de").map(g => [g.key,g.group,g.label,g.title,g.href]),
   ["ballmarker","product","BALLMARKER-FERTIGUNG","Formen, Emaille, Galvanik und Magnete","/de/guides/custom-golf-ball-marker-enamel-plating-mould-guide/"],
   ["majorcalendar","event","CHAMPIONSHIP-SAISON","Planungskalender 2027 für Golfturnier-Merchandise","/de/guides/2027-major-golf-tournament-merchandise-planning-calendar/"],
   ["championshiphospitality","event","CHAMPIONSHIP-SAISON","Hospitality-Geschenke für die Championship-Woche","/de/guides/corporate-golf-hospitality-gifts-championship-week/"],

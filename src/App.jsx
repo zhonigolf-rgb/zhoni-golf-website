@@ -1,3 +1,6 @@
+import { ProcurementSeriesPage } from "./ProcurementSeriesPage.jsx";
+import seriesArticlesEn from "./content/procurement-series/en.json";
+import { seriesArticleKey, seriesCatalog } from "./content/procurement-series.js";
 import { ProductPlanOptions } from "./ProductPlanOptions.jsx";
 import { resolveInquiryPlan } from "./content/product-plans.js";
 import { GuideAnswerIntro } from "./GuideAnswerIntro.jsx";
@@ -103,6 +106,7 @@ const buyerGuideFilters = [
 ];
 
 const buyerGuideCatalog = [
+  ...seriesCatalog("en"),
   { category: "development", label: "PRODUCT DEVELOPMENT", title: "How to Choose Materials for Custom Golf Headcovers", copy: "Compare headcover materials by use, product feel, logo route and the details that need sample review.", href: siteRoutes.headcoverMaterialsGuide.path },
   { category: "development", label: "PRODUCT DEVELOPMENT", title: "Custom Golf Headcover Types Guide", copy: "Plan driver, fairway, hybrid and putter formats as a coordinated set rather than unrelated covers.", href: siteRoutes.headcoverTypesGuide.path },
   { category: "development", label: "PRODUCT DEVELOPMENT", title: "How to Prepare a Custom Golf Product Specification", copy: "Turn a reference image into an assessable brief with dimensions, materials, logo, packaging and approval points.", href: siteRoutes.productSpecificationGuide.path },
@@ -1114,6 +1118,7 @@ export function App({ initialRoute = null, KoreanSiteComponent = KoreanSite, Can
   if (route.lang === "fr-CA") return <Suspense fallback={<div className="locale-loading" role="status">ZHONI</div>}><CanadianFrenchSiteComponent routeKey={Object.keys(siteRoutes).find(key => siteRoutes[key] === route)} /><FloatingContactActions locale="fr-CA" /></Suspense>;
   if (route.lang === "ja") return <Suspense fallback={<div className="locale-loading" role="status">ZHONI</div>}><JapaneseSiteComponent routeKey={Object.keys(siteRoutes).find(key => siteRoutes[key] === route)} /><FloatingContactActions locale="ja" /></Suspense>;
   if (route.lang === "de") return <Suspense fallback={<div className="locale-loading" role="status">ZHONI</div>}><GermanSiteComponent routeKey={Object.keys(siteRoutes).find(key => siteRoutes[key] === route)} /><FloatingContactActions locale="de" /></Suspense>;
+  if (seriesArticleKey(route)) return <><ProcurementSeriesPage series={seriesArticlesEn} content={procurementArticlesEn} Header={ZhoniPageHeader} Footer={ZhoniPageFooter} route={route} /><FloatingContactActions /></>;
   if (route === siteRoutes.products) return <><ProductsHub /><FloatingContactActions /></>;
   if (route === siteRoutes.headcovers) return <><ProductCategoryPage type="headcovers" /><FloatingContactActions /></>;
   if (route === siteRoutes.plushHeadcovers) return <><PlushHeadcoversPage /><FloatingContactActions /></>;

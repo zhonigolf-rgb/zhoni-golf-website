@@ -1,3 +1,5 @@
+import { ProcurementSeriesPage } from "./ProcurementSeriesPage.jsx";
+import seriesArticles from "./content/procurement-series/de.json";
 import { useState } from "react";
 import { ProcurementArticlePage } from "./ProcurementArticlePage.jsx";
 import procurementArticlesDe from "./content/procurement-articles/de.json";
@@ -71,6 +73,7 @@ function Quote() {
 }
 
 export function GermanSite({ routeKey }) {
+  if (routeKey?.includes("Series")) return <ProcurementSeriesPage series={seriesArticles} content={procurementArticlesDe} Header={Header} Footer={Footer} />;
   if (["deTowelsGuide", "deCapsStyleGuide", "dePlushDesignGuide"].includes(routeKey)) return <ProcurementArticlePage content={procurementArticlesDe} Header={Header} Footer={Footer} />;
   if (routeKey === "deBallMarkerManufacturingGuide") return <LocalizedBallMarkerGuide locale="de" Header={Header} Footer={Footer} />;
   const pages = { deHome:<Home />, deProducts:<Products />, deSolutions:<Solutions />, deProcess:<Process />, deFaq:<Faq />, deAbout:<About />, deQuote:<Quote />, deBallMarkers:<BallMarkerProductPage locale="de" Header={Header} Footer={Footer} /> };

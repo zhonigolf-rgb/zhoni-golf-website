@@ -24,9 +24,9 @@ test("release audit verifies all routes and the reciprocal core guide network", 
   const report = auditRelease(root);
   assert.deepEqual(report.failures,[]);
   assert.equal(report.status,"PASS");
-  assert.equal(report.stats.routes,325);
+  assert.equal(report.stats.routes,350);
   assert.equal(report.stats.coreProducts,15);
-  assert.equal(report.stats.guideReturnLinks,50);
+  assert.equal(report.stats.guideReturnLinks,75);
   assert.equal(report.stats.planLinks,50);
 });
 

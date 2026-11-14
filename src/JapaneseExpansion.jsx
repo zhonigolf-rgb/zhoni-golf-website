@@ -1,3 +1,4 @@
+import { seriesCatalog } from "./content/procurement-series.js";
 import { ProductPlanOptions } from "./ProductPlanOptions.jsx";
 import { GuideAnswerIntro } from "./GuideAnswerIntro.jsx";
 import { ProcurementAnswers } from "./ProcurementAnswers.jsx";
@@ -48,6 +49,7 @@ function SolutionPage({ pageKey }) {
 }
 
 const guides = [
+  ...seriesCatalog("ja"),
   {key:"ballmarker",group:"product",label:"ボールマーカー製造",title:"金型・エナメル・めっき・マグネット",copy:"金属成形、表面仕上げ、部品組み立て、サンプル承認を確認します。",href:"/ja/guides/custom-golf-ball-marker-enamel-plating-mould-guide/"},
   { key:"majorcalendar", group:"event", label:"選手権シーズン", title:"2027年主要ゴルフトーナメント記念品計画", copy:"希望納品日から承認、量産、包装、輸送を逆算します。", href:"/ja/guides/2027-major-golf-tournament-merchandise-planning-calendar/" },
   { key:"championshiphospitality", group:"event", label:"選手権シーズン", title:"選手権週の法人ホスピタリティギフト", copy:"ホテル到着、現地接遇、スポンサー、事後フォローに合わせます。", href:"/ja/guides/corporate-golf-hospitality-gifts-championship-week/" },

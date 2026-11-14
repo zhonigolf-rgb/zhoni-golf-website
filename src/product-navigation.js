@@ -1,7 +1,7 @@
 export const coreProductGuidePaths = {
-  "/custom-golf-towels/": ["/guides/custom-golf-towels-procurement-guide/"],
-  "/custom-golf-caps/": ["/guides/custom-golf-caps-and-visors/", "/guides/custom-golf-cap-materials/", "/guides/custom-golf-cap-logo-placement/", "/guides/custom-golf-cap-construction-fit-closures/", "/guides/custom-golf-cap-sampling-production-quality/"],
-  "/custom-plush-golf-headcovers/": ["/guides/custom-plush-golf-headcover-design-guide/", "/guides/plush-golf-headcover-materials-lining-closures/", "/guides/plush-headcover-embroidery-patches-character-details/", "/guides/custom-plush-headcover-sample-quality-checklist/"],
+  "/custom-golf-towels/": ["/guides/private-label-golf-towels-pro-shop-product-range/", "/guides/custom-golf-towel-logos-embroidery-vs-printing/", "/guides/custom-golf-towels-procurement-guide/"],
+  "/custom-golf-caps/": ["/guides/reordering-custom-golf-caps-brand-consistency/", "/guides/custom-golf-caps-multiple-logo-versions/", "/guides/custom-golf-caps-and-visors/", "/guides/custom-golf-cap-materials/", "/guides/custom-golf-cap-logo-placement/", "/guides/custom-golf-cap-construction-fit-closures/", "/guides/custom-golf-cap-sampling-production-quality/"],
+  "/custom-plush-golf-headcovers/": ["/guides/mascot-plush-golf-headcover-collection-variants/", "/guides/custom-plush-golf-headcover-design-guide/", "/guides/plush-golf-headcover-materials-lining-closures/", "/guides/plush-headcover-embroidery-patches-character-details/", "/guides/custom-plush-headcover-sample-quality-checklist/"],
 };
 
 export function canonicalProductPath(path) {

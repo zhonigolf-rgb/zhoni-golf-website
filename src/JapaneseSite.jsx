@@ -1,3 +1,5 @@
+import { ProcurementSeriesPage } from "./ProcurementSeriesPage.jsx";
+import seriesArticles from "./content/procurement-series/ja.json";
 import { useState } from "react";
 import { ProcurementArticlePage } from "./ProcurementArticlePage.jsx";
 import procurementArticlesJa from "./content/procurement-articles/ja.json";
@@ -71,6 +73,7 @@ function Quote() {
 }
 
 export function JapaneseSite({ routeKey }) {
+  if (routeKey?.includes("Series")) return <ProcurementSeriesPage series={seriesArticles} content={procurementArticlesJa} Header={Header} Footer={Footer} />;
   if (["jaTowelsGuide", "jaCapsStyleGuide", "jaPlushDesignGuide"].includes(routeKey)) return <ProcurementArticlePage content={procurementArticlesJa} Header={Header} Footer={Footer} />;
   if (routeKey === "jaBallMarkerManufacturingGuide") return <LocalizedBallMarkerGuide locale="ja" Header={Header} Footer={Footer} />;
   const pages = { jaHome:<Home />, jaProducts:<Products />, jaSolutions:<Solutions />, jaProcess:<Process />, jaFaq:<Faq />, jaAbout:<About />, jaQuote:<Quote />, jaBallMarkers:<BallMarkerProductPage locale="ja" Header={Header} Footer={Footer} /> };

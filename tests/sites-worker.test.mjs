@@ -1,3 +1,4 @@
+import { seriesArticleKey } from "../src/content/procurement-series.js";
 import assert from "node:assert/strict";
 import { access, readFile, readdir, stat } from "node:fs/promises";
 import test from "node:test";
@@ -339,13 +340,13 @@ test("publishes the first Japanese buyer-guide collection with filters and proje
     assert.match(document, /<h1(?:\s|>)/);
     assert.match(document, new RegExp(`hreflang="en" href="https://zhonigolf\\.com${route.alternatePath.replaceAll("/", "\\/")}"`));
     assert.match(document, new RegExp(`hreflang="ja" href="https://zhonigolf\\.com${route.path.replaceAll("/", "\\/")}"`));
-    assert.match(document, procurementArticleKey(route) ? /data-procurement-article=/ : /data-buyer-evidence="ja-/);
+    assert.match(document, (procurementArticleKey(route) || seriesArticleKey(route)) ? /data-procurement-article=/ : /data-buyer-evidence="ja-/);
 
     if (key !== "jaGuides") {
       for (const path of [productPaths[key], "/ja/solutions/", "/ja/our-process/", "/ja/request-a-quote/"]) {
         assert.match(document, new RegExp(path.replaceAll("/", "\\/")), `Expected ${path} on ${route.path}.`);
       }
-      assert.match(document, procurementArticleKey(route) ? /よくあるご質問/ : /購入担当者からのよくある質問/);
+      assert.match(document, (procurementArticleKey(route) || seriesArticleKey(route)) ? /よくあるご質問/ : /購入担当者からのよくある質問/);
       assert.match(document, /\?product=/);
       const schemaMatch = document.match(/<script id="zhoni-page-schema" type="application\/ld\+json">([\s\S]*?)<\/script>/);
       const graph = JSON.parse(schemaMatch[1])["@graph"];
@@ -487,12 +488,12 @@ test("completes the Japanese gift, event, quote, and capabilities round", async 
 test("keeps completed Japanese routes in full parity with English", async () => {
   const template = await readFile(new URL("../index.html", import.meta.url), "utf8");
   const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
-  const hub = await readFile(new URL("../src/JapaneseExpansion.jsx", import.meta.url), "utf8");
+  const hub = await readFile(new URL("../dist/client/ja/guides/index.html", import.meta.url), "utf8");
   const englishRoutes = Object.values(siteRoutes).filter((route) => !route.lang && route.localeStage !== "pending");
   const japaneseRoutes = Object.values(siteRoutes).filter((route) => route.lang === "ja");
   const japaneseByEnglishPath = new Map(japaneseRoutes.map((route) => [route.alternatePath, route]));
 
-  assert.equal(englishRoutes.length, 65);
+  assert.equal(englishRoutes.length, 70);
   assert.equal(japaneseRoutes.length, englishRoutes.length);
 
   for (const englishRoute of englishRoutes) {
@@ -594,13 +595,13 @@ test("keeps completed German routes in full parity with English and indexes ever
   const [template, sitemap, hub] = await Promise.all([
     readFile(new URL("../index.html", import.meta.url), "utf8"),
     readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8"),
-    readFile(new URL("../src/GermanGuides.jsx", import.meta.url), "utf8"),
+    readFile(new URL("../dist/client/de/guides/index.html", import.meta.url), "utf8"),
   ]);
   const englishRoutes = Object.values(siteRoutes).filter((route) => !route.lang && route.localeStage !== "pending");
   const germanRoutes = Object.values(siteRoutes).filter((route) => route.lang === "de");
   const germanByEnglishPath = new Map(germanRoutes.map((route) => [route.alternatePath, route]));
 
-  assert.equal(englishRoutes.length, 65);
+  assert.equal(englishRoutes.length, 70);
   assert.equal(germanRoutes.length, englishRoutes.length);
 
   for (const englishRoute of englishRoutes) {
@@ -615,12 +616,12 @@ test("keeps completed German routes in full parity with English and indexes ever
   }
 
   const germanGuideArticles = germanRoutes.filter((route) => route.path.startsWith("/de/guides/") && route.path !== "/de/guides/");
-  assert.equal(germanGuideArticles.length, 42);
+  assert.equal(germanGuideArticles.length, 47);
   for (const route of germanGuideArticles) {
     assert.match(hub, new RegExp(route.path.replaceAll("/", "\\/")), `Missing ${route.path} from German guide center.`);
     const document = await readFile(new URL(`../dist/client/${route.path.slice(1)}index.html`, import.meta.url), "utf8");
-    assert.match(document, procurementArticleKey(route) ? /data-procurement-article=/ : /data-buyer-evidence="de-guide-/);
-    assert.match(document, procurementArticleKey(route) ? /HÄUFIGE FRAGEN/ : /HÄUFIGE FRAGEN VON EINKÄUFERN/);
+    assert.match(document, (procurementArticleKey(route) || seriesArticleKey(route)) ? /data-procurement-article=/ : /data-buyer-evidence="de-guide-/);
+    assert.match(document, (procurementArticleKey(route) || seriesArticleKey(route)) ? /HÄUFIGE FRAGEN/ : /HÄUFIGE FRAGEN VON EINKÄUFERN/);
     for (const path of ["/de/products/", "/de/solutions/", "/de/our-process/", "/de/request-a-quote/"]) {
       assert.match(document, new RegExp(path.replaceAll("/", "\\/")), `Expected ${path} on ${route.path}.`);
     }
@@ -744,7 +745,7 @@ test("keeps the completed Korean routes in full parity with English", async () =
   const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
   const englishRoutes = Object.values(siteRoutes).filter(route => !route.lang && route.localeStage !== "pending");
   const koreanRoutes = Object.values(siteRoutes).filter(route => route.lang === "ko");
-  assert.equal(englishRoutes.length, 65);
+  assert.equal(englishRoutes.length, 70);
   assert.equal(koreanRoutes.length, englishRoutes.length);
 
   const koreanByEnglishPath = new Map(koreanRoutes.map(route => [route.alternatePath, route]));
@@ -761,7 +762,7 @@ test("keeps the completed Korean routes in full parity with English", async () =
 });
 
 test("lists every Korean buyer-guide article in the localized guide center", async () => {
-  const guideHub = await readFile(new URL("../src/KoreanExpansion.jsx", import.meta.url), "utf8");
+  const guideHub = await readFile(new URL("../dist/client/ko/guides/index.html", import.meta.url), "utf8");
   const koreanGuides = Object.values(siteRoutes).filter(route => route.lang === "ko" && route.path.startsWith("/ko/guides/") && route.path !== "/ko/guides/");
   assert.ok(koreanGuides.length > 20);
   for (const route of koreanGuides) assert.match(guideHub, new RegExp(route.path.replaceAll("/", "\\/")), `Missing ${route.path} from Korean guide center.`);
@@ -922,13 +923,13 @@ test("publishes Canadian French product-development and event-planning guide clu
 test("keeps completed Canadian French routes in full parity with English", async () => {
   const template = await readFile(new URL("../index.html", import.meta.url), "utf8");
   const sitemap = await readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8");
-  const hub = await readFile(new URL("../src/CanadianFrenchExpansion.jsx", import.meta.url), "utf8");
+  const hub = await readFile(new URL("../dist/client/fr-ca/guides/index.html", import.meta.url), "utf8");
   const finalPages = await readFile(new URL("../src/CanadianFrenchFinalGuides.jsx", import.meta.url), "utf8");
   const englishRoutes = Object.values(siteRoutes).filter((route) => !route.lang && route.localeStage !== "pending");
   const frenchRoutes = Object.values(siteRoutes).filter((route) => route.lang === "fr-CA");
   const frenchByEnglishPath = new Map(frenchRoutes.map((route) => [route.alternatePath, route]));
 
-  assert.equal(englishRoutes.length, 65);
+  assert.equal(englishRoutes.length, 70);
   assert.equal(frenchRoutes.length, englishRoutes.length);
 
   for (const englishRoute of englishRoutes) {

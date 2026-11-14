@@ -10,6 +10,7 @@
     "verify": "node scripts/verify-release.mjs",
     "verify:quick": "node scripts/verify-release.mjs --quick",
     "test:sites": "node --test tests/sites-worker.test.mjs",
+    "i18n:prepare-series": "node scripts/localization/prepare-procurement-series.mjs",
     "i18n:sync": "node scripts/localization/sync.mjs",
     "i18n:check": "node scripts/localization/check.mjs",
     "test:i18n": "node --test tests/localization-engine.test.mjs"
